@@ -1,41 +1,30 @@
-import React, {useState} from "react";
+import {Box, Container, Typography} from "@mui/material";
+import Grid from '@mui/material/Grid2';
+import {PowerProfile} from "./PowerProfile.tsx";
+import {CharacterIdentity} from "./CharacterIdentity.tsx";
+import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
+import {getKarmaPowerLoadout} from "./KarmaPowerLoadout.ts";
 
-type KarmaSpecialty = 'Escape Artist' | 'Ink Fighter' | 'Special Agent' | 'Clockbot';
-type EscapeArtistStudies = 'Creative Karmastry' | 'Clockwork Karmastry' | 'Bio Karmastry' | 'Machine Karmastry' | 'Quantum Karmastry';
-type InkFighterStudies = 'Melee' | 'Projectile' | 'Animal' | 'Body' | 'Elemental'
-type SpecialAgentStudies = 'Scout' | 'Disrupter' | 'Bodyguard' | 'Operative' | 'Tinker'
-type ClockbotStudies = 'Decoy' | 'Karmastry-Assist' | 'Medical' | 'Heavy' | 'Experimental'
-type Study = EscapeArtistStudies | InkFighterStudies | SpecialAgentStudies | ClockbotStudies;
+
+export enum Affiliation {
+    wolfgangAcademy = 'Wolfgang Academy',
+    gears = 'Great Escape Artist Society',
+    inkFightingElite = 'Ink Fighting Elite',
+    nka = 'National Karmastry Authority',
+    clockbotUnion = 'Clockbot Union',
+    independent = 'Independent'
+}
 
 export const CharacterSheet = () => {
-    const [playerName, setPlayerName] = useState<string>('')
-    const [characterName, setCharacterName] = useState<string>('')
-    const [age, setAge] = useState<string>('')
-    const [gender, setGender] = useState<string>('')
-    const [height, setHeight] = useState<string>('')
-    const [weight, setWeight] = useState<string>('')
-    const [karmaSpecialty, setKarmaSpecialty] = useState<KarmaSpecialty>()
-    const [affiliation, setAffiliation] = useState<'Wolfgang Academy' | 'Great Escape Artist Society' | 'Ink Fighting Elite' | 'National Karmastry Authority' | 'Clockbot Union' | 'Independent'>()
-
-    const [study, setStudy] = useState<Study>()
-    const [level, setLevel] = useState(1)
-    const [aura, setAura] = useState<number>()
-    const [technique, setTechnique] = useState<number>()
-    const [stamina, setStamina] = useState<number>()
-    const [functionStat, setFunction] = useState<number>()
-    const [willpower, setWillpower] = useState<number>()
-    const [agility, setAgility] = useState<number>()
-    return (
-        <Container>
-            <HStack gap="10" width="full">
-                <Field label="Player Name" required>
-                    <Input placeholder="me@example.com" variant="subtle" />
-                </Field>
-                <Field label="Email" required>
-                    <Input placeholder="me@example.com" variant="outline" />
-                </Field>
-            </HStack>
-            Player Name: <textarea value={playerName} onChange={(e) => setPlayerName(e.target.value)}/>
-        </Container>
-    );
+    const {karmaSpecialty, study} = useCharacterSheetFields();
+    return <Container>
+        <Grid container spacing={3}>
+            <Grid size={{md: 5, xs: 12}}>
+                <CharacterIdentity/>
+            </Grid>
+            <Grid size={{md: 7, xs: 12}}>
+                {(karmaSpecialty && study) ? <PowerProfile powers={getKarmaPowerLoadout(karmaSpecialty, study)}/> : <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
+            </Grid>
+        </Grid>
+    </Container>
 };
