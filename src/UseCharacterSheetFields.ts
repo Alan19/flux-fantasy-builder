@@ -1,13 +1,14 @@
 import {useLocalStorage} from "usehooks-ts";
-import {KarmaSpecialty} from "./KarmaSpecialty.tsx";
+import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 import {Affiliation} from "./CharacterSheet.tsx";
-import {Study} from "./GetStudies.ts";
+import {FlawList, TraitList} from "./Traits.tsx";
 
 export function useCharacterSheetFields() {
     // Character creation choices
     const [playerName, setPlayerName] = useLocalStorage('player-name', '')
     const [characterName, setCharacterName] = useLocalStorage('character-name', '')
     const [characterImageURL, setCharacterImageURL] = useLocalStorage('character-image-url', '')
+    const [gearOfDestinyURL, setGearOfDestinyURL] = useLocalStorage('gear-of-destiny-url', '')
     const [age, setAge] = useLocalStorage('age', '')
     const [gender, setGender] = useLocalStorage('gender', '')
     const [height, setHeight] = useLocalStorage('height', '')
@@ -16,14 +17,54 @@ export function useCharacterSheetFields() {
     const [study, setStudy] = useLocalStorage<Study | undefined>('study', undefined)
     const [affiliation, setAffiliation] = useLocalStorage<Affiliation | undefined>('affiliation', undefined)
     const [background, setBackground] = useLocalStorage("background", "")
+    const [traits, setTraits] = useLocalStorage<Record<TraitList, boolean>>('traits', {
+        "Good Looking": false,
+        Calm: false,
+        Dependable: false,
+        Determined: false,
+        Handy: false,
+        Honorable: false,
+        Inspirational: false,
+        Loyal: false,
+        Protective: false,
+        Spunky: false,
+        Talented: false
+    })
+    const [flaws, setFlaws] = useLocalStorage<Record<FlawList, boolean>>('flaws', {
+        "Hot Headed": false,
+        "Tongue Tied": false,
+        Arrogant: false,
+        Clumsy: false,
+        Cowardly: false,
+        Insecure: false,
+        Paranoid: false,
+        Reckless: false,
+        Secretive: false,
+        Selfish: false,
+        Unmotivated: false
+    })
+
+    function toggleTrait(trait: TraitList) {
+        setTraits(prevState => ({
+            ...prevState,
+            [trait]: !prevState[trait]
+        }))
+    }
+
+    function toggleFlaw(trait: FlawList) {
+        setFlaws(prevState => ({
+            ...prevState,
+            [trait]: !prevState[trait]
+        }))
+    }
 
     // Attributes
-    const [aura, setAura] = useLocalStorage<number | undefined>('aura', undefined)
-    const [technique, setTechnique] = useLocalStorage<number | undefined>('technique', undefined)
-    const [stamina, setStamina] = useLocalStorage<number | undefined>('stamina', undefined)
-    const [functionStat, setFunction] = useLocalStorage<number | undefined>('function', undefined)
-    const [willpower, setWillpower] = useLocalStorage<number | undefined>('willpower', undefined)
-    const [agility, setAgility] = useLocalStorage<number | undefined>('agility', undefined)
+    const [aura, setAura] = useLocalStorage<number>('aura', 1)
+    const [technique, setTechnique] = useLocalStorage<number>('technique', 1)
+    const [stamina, setStamina] = useLocalStorage<number>('stamina', 1)
+    const [functionStat, setFunction] = useLocalStorage<number>('function', 1)
+    const [willpower, setWillpower] = useLocalStorage<number>('willpower', 1)
+    const [agility, setAgility] = useLocalStorage<number>('agility', 1)
 
     // Karma Power Names
     const [basicAttack, setBasicAttack] = useLocalStorage('basic-attack', '')
@@ -40,6 +81,9 @@ export function useCharacterSheetFields() {
     const [configuration, setConfiguration] = useLocalStorage('configuration', "")
     const [positiveKarma, setPositiveKarma] = useLocalStorage<number>('positive-karma', 0)
     const [negativeKarma, setNegativeKarma] = useLocalStorage<number>('negative-karma', 0)
+    const [karmaPool, setKarmaPool] = useLocalStorage<number>('karma-pool', 0)
+    const [paybackPoints, setPaybackPoints] = useLocalStorage<number>('payback-points', 0)
+    const [currentHP, setCurrentHP] = useLocalStorage<number>('current-hp', 0)
 
     return {
         playerName,
@@ -99,6 +143,18 @@ export function useCharacterSheetFields() {
         positiveKarma,
         setPositiveKarma,
         negativeKarma,
-        setNegativeKarma
+        setNegativeKarma,
+        gearOfDestinyURL,
+        setGearOfDestinyURL,
+        karmaPool,
+        setKarmaPool,
+        paybackPoints,
+        setPaybackPoints,
+        currentHP,
+        setCurrentHP,
+        traits,
+        toggleTrait,
+        flaws,
+        toggleFlaw
     }
 }

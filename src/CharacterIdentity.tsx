@@ -1,9 +1,8 @@
 import {FormControl, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {KarmaSpecialty} from "./KarmaSpecialty.tsx";
+import {getDefenseModifier, getHealingPercent, getStudies, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 import {Affiliation} from "./CharacterSheet.tsx";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
-import {getDefenseModifier, getHealingPercent, getStudies, Study} from "./GetStudies.ts";
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();
@@ -12,6 +11,7 @@ export function CharacterIdentity() {
             <TextField fullWidth value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>
             <TextField fullWidth value={characterIdentity.characterName} onChange={(e) => characterIdentity.setCharacterName(e.target.value)} label="Character Name"/>
             <TextField fullWidth size={"small"} value={characterIdentity.characterImageURL} onChange={(e) => characterIdentity.setCharacterImageURL(e.target.value)} label="Character Image URL"/>
+            <TextField fullWidth size={"small"} value={characterIdentity.gearOfDestinyURL} onChange={(e) => characterIdentity.setGearOfDestinyURL(e.target.value)} label="Gear of Destiny Image URL"/>
             <Grid container spacing={1}>
                 <Grid size={{xs: 6, md: 3}}>
                     <TextField fullWidth value={characterIdentity.age} onChange={(e) => characterIdentity.setAge(e.target.value)} label="Age"/>

@@ -1,5 +1,4 @@
-import {KarmaSpecialty} from "./KarmaSpecialty.tsx";
-import {Study} from "./GetStudies.ts";
+import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 
 interface KarmaAttack {
     damage: number;

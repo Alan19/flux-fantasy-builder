@@ -4,6 +4,7 @@ import {PowerProfile} from "./PowerProfile.tsx";
 import {CharacterIdentity} from "./CharacterIdentity.tsx";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {getKarmaPowerLoadout} from "./KarmaPowerLoadout.ts";
+import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
 
 
 export enum Affiliation {
@@ -24,6 +25,7 @@ export const CharacterSheet = () => {
             </Grid>
             <Grid size={{md: 7, xs: 12}}>
                 {(karmaSpecialty && study) ? <PowerProfile powers={getKarmaPowerLoadout(karmaSpecialty, study)}/> : <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
+                <TraitAndFlawTable/>
             </Grid>
         </Grid>
     </Container>

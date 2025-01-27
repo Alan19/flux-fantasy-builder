@@ -1,1 +1,0 @@
-export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
