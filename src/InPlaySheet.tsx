@@ -18,10 +18,10 @@ function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
     let advantages = "";
     switch (karmaSpecialty) {
         case KarmaSpecialty.escapeArtist:
-            advantages += "● Escape Artists can replenish 10 KP when completely depleted in battle."
+            advantages += "● Escape Artists can replenish 10 KP when completely depleted in battle"
             break
         case KarmaSpecialty.clockbot:
-            advantages += "● Can absorb 50% of payback and karma-weapon attacks without taking damage, halving all potential damage."
+            advantages += "● Can absorb 50% of payback and karma-weapon attacks without taking damage, halving all potential damage"
             break
         case KarmaSpecialty.inkFighter:
             advantages += "● Can trade Movement for an extra action in combat"

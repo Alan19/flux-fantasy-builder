@@ -11,7 +11,7 @@ export type FlawList = "Hot Headed" | "Insecure" | "Tongue Tied" | "Arrogant" | 
 export const selectableTraits: Record<TraitList, Trait> = {
     Dependable: {description: "People rely upon and look up to you.", effect: "Ability to perform Combos at -2 KP cost."},
     "Good Looking": {description: "Hey there, handsome!", effect: "+2 to Aura rolls when the initial roll is lower than 10."},
-    Handy: {description: "You're good at fixing things.", effect: "Pass 3 Technique Checks without rolling per session"},
+    Handy: {description: "You're good at fixing things.", effect: "Pass 3 Technique Checks without rolling per session."},
     Determined: {description: "You won't let anything stop you!", effect: "Trade a Quick Action for another Turn of Movement in combat."},
     Calm: {description: "You're cool under pressure.", effect: "Gain one Quick Action per Turn in combat."},
     Talented: {description: "Wow, you're a natural at this!", effect: "Gain +1 Modifier to any one Talent under 3."},
