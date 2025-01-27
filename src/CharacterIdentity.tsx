@@ -146,7 +146,7 @@ export function CharacterIdentity() {
                     <TextField variant={"filled"} slotProps={{input: {readOnly: true,}}} value={10 + (characterIdentity.function ?? 0)} label={"HP"}/>
                 </Grid>
                 <Grid size={{xs: 6, md: 4}}>
-                    <TextField variant={"filled"} slotProps={{input: {readOnly: true,}}} value={characterIdentity.affiliation ? "+" + getDefenseModifier(characterIdentity.affiliation) : ""} label={"DEF"}/>
+                    <TextField variant={"filled"} slotProps={{input: {readOnly: true,}}} value={characterIdentity.affiliation ? "+" + getDefenseModifier(characterIdentity.affiliation, characterIdentity.level) : ""} label={"DEF"}/>
                 </Grid>
                 <Grid size={{xs: 6, md: 4}}>
                     <TextField variant={"filled"} slotProps={{input: {readOnly: true,}}} value={1 + (characterIdentity.agility ?? 0)} label={"MOV"}/>
