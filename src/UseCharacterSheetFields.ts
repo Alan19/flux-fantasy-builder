@@ -1,7 +1,6 @@
 import {useLocalStorage} from "usehooks-ts";
-import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {Affiliation} from "./CharacterSheet.tsx";
-import {FlawList, TraitList} from "./Traits.tsx";
+import {Affiliation, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
+import {FlawList, TraitList} from "./Traits.ts";
 
 export function useCharacterSheetFields() {
     // Character creation choices
@@ -84,6 +83,8 @@ export function useCharacterSheetFields() {
     const [karmaPool, setKarmaPool] = useLocalStorage<number>('karma-pool', 0)
     const [paybackPoints, setPaybackPoints] = useLocalStorage<number>('payback-points', 0)
     const [currentHP, setCurrentHP] = useLocalStorage<number>('current-hp', 0)
+    const [items, setItems] = useLocalStorage('items', '')
+    const [otherSkills, setOtherSkills] = useLocalStorage('other-skills', '')
 
     return {
         playerName,
@@ -155,6 +156,10 @@ export function useCharacterSheetFields() {
         traits,
         toggleTrait,
         flaws,
-        toggleFlaw
+        toggleFlaw,
+        items,
+        setItems,
+        otherSkills,
+        setOtherSkills
     }
 }

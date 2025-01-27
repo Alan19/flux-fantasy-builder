@@ -1,5 +1,3 @@
-import {Affiliation} from "./CharacterSheet.tsx";
-
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
 export enum EscapeArtistStudies {creativeKarmastry = 'Creative Karmastry', clockworkKarmastry = 'Clockwork Karmastry', bioKarmastry = 'Bio Karmastry', machineKarmastry = 'Machine Karmastry', quantumKarmastry = 'Quantum Karmastry'}
@@ -27,12 +25,15 @@ export function getStudies(karmaSpecialty: KarmaSpecialty | undefined) {
     }
 }
 
-export function getMaxKarma(specialty: KarmaSpecialty, _level: number) {
-    if (specialty === KarmaSpecialty.escapeArtist) {
-        return 25
-    } else {
-        return 20;
+export function getMaxKarma(specialty: KarmaSpecialty, level: number) {
+    let karmaPool = specialty === KarmaSpecialty.escapeArtist ? 25 : 20;
+    if (level >= 2) {
+        karmaPool += 5;
     }
+    if (level >= 10) {
+        karmaPool += 10;
+    }
+    return karmaPool;
 }
 
 export function getHealingPercent(karmaSpecialty: KarmaSpecialty) {
@@ -47,17 +48,35 @@ export function getHealingPercent(karmaSpecialty: KarmaSpecialty) {
     }
 }
 
-export function getDefenseModifier(affiliation: Affiliation) {
+export enum Affiliation {
+    wolfgangAcademy = 'Wolfgang Academy',
+    gears = 'Great Escape Artist Society',
+    inkFightingElite = 'Ink Fighting Elite',
+    nka = 'National Karmastry Authority',
+    clockbotUnion = 'Clockbot Union',
+    independent = 'Independent'
+}
+
+export function getDefenseModifier(affiliation: Affiliation, level: number) {
+    let defenseModifier;
     switch (affiliation) {
         case Affiliation.independent:
         case Affiliation.wolfgangAcademy:
-            return 1
+            defenseModifier = 1;
+            break
         case Affiliation.gears:
         case Affiliation.nka:
-            return 2
+            defenseModifier = 2;
+            break
         case Affiliation.clockbotUnion:
-            return 3
+        case Affiliation.inkFightingElite:
+            defenseModifier = 3;
+            break
     }
+    if (level >= 7) {
+        defenseModifier += 1;
+    }
+    return defenseModifier;
 }
 
 interface TalentModifiers {
@@ -121,4 +140,12 @@ export function getEffectiveTalents(study: Study | undefined, aura: number, tech
             talents.aura += 1;
     }
     return [talents, boostedTalents];
+}
+
+export function getMaxHP(effectiveTalents: TalentModifiers, level: number) {
+    return 10 + (effectiveTalents.function ?? 0) + (level >= 3 ? 7 : 0);
+}
+
+export function getMovModifier(effectiveTalents: TalentModifiers, level: number) {
+    return 1 + (effectiveTalents.agility ?? 0) + (level >= 8 ? 1 : 0);
 }

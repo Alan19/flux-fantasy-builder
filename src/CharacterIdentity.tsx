@@ -1,7 +1,6 @@
 import {FormControl, InputAdornment, InputLabel, MenuItem, Select, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
-import {getDefenseModifier, getHealingPercent, getStudies, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {Affiliation} from "./CharacterSheet.tsx";
+import {Affiliation, getDefenseModifier, getHealingPercent, getStudies, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
 export function CharacterIdentity() {

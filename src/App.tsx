@@ -1,5 +1,5 @@
 import './App.css'
-import {CharacterSheet} from "./CharacterSheet.tsx";
+import {CharacterInfoInput} from "./CharacterInfoInput.tsx";
 import {Route, Router} from "wouter";
 import {useHashLocation} from "wouter/use-hash-location";
 import {InPlaySheet} from "./InPlaySheet.tsx";
@@ -9,7 +9,7 @@ function App() {
     return (
         <>
             <Router hook={useHashLocation}>
-                <Route path="/"><CharacterSheet/></Route>
+                <Route path="/"><CharacterInfoInput/></Route>
                 <Route path={"/sheet"}><InPlaySheet/></Route>
             </Router>
             <Container>

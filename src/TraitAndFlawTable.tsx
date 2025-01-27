@@ -1,5 +1,5 @@
-import {Checkbox, FormControlLabel, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {affiliationFlaws, affiliationTraits, FlawList, selectableFlaws, selectableTraits, Trait, TraitList} from "./Traits.tsx";
+import {Checkbox, FormControlLabel, FormHelperText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {affiliationFlaws, affiliationTraits, FlawList, selectableFlaws, selectableTraits, Trait, TraitList} from "./Traits.ts";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
 export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
@@ -14,7 +14,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
         }
     }
 
-    function getSelectedFlaws(): [string, Trait][] {
+    function getDisplayedFlaws(): [string, Trait][] {
         if (props.inPlay) {
             const selectedTraits = Object.entries(characterSheetFields.flaws).filter(([, value]) => value).map(([key]) => key)
             return Object.entries(selectableFlaws).filter(([key]) => selectedTraits.includes(key));
@@ -75,7 +75,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                             {affiliationFlaws[characterSheetFields.affiliation].effect}
                         </TableCell>
                     </>}
-                    {getSelectedFlaws().map(([trait, {description, effect}]) =>
+                    {getDisplayedFlaws().map(([trait, {description, effect}]) =>
                         <TableRow key={trait}>
                             <TableCell component="th" scope="row">
                                 {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.flaws[trait as FlawList]} onChange={() => characterSheetFields.toggleFlaw(trait as FlawList)}/>} label={trait}/>}
@@ -89,6 +89,8 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                         </TableRow>)}
                 </TableBody>
             </Table>
+            {/*TODO Update color when done*/}
+            {!props.inPlay && <FormHelperText error={getDisplayedTraits().length !== getDisplayedFlaws().length}>The number of traits and flaws should be equal!</FormHelperText>}
         </TableContainer>
     )
         ;
