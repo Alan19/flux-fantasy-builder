@@ -15,10 +15,7 @@ export const CharacterInfoInput = () => {
         <Container>
             <div style={{display: "flex", flexDirection: "column"}}>
                 <Link to={'/sheet'} style={{alignSelf: "end"}}>
-                    When you're done filling out information here, click here to view a web version of the Flux Fantasy character sheet!
-                    <IconButton>
-                        <ArrowForward/>
-                    </IconButton>
+                    <Typography>When you're done filling out information here, click here to view a web version of the Flux Fantasy character sheet!<IconButton><ArrowForward/></IconButton></Typography>
                 </Link>
             </div>
             <Grid container spacing={3}>

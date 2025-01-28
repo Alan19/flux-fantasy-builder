@@ -1,4 +1,4 @@
-import {Box, Container, Fade, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
+import {Box, Button, Container, Fade, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfile} from "./PowerProfile.tsx";
@@ -8,6 +8,8 @@ import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, ge
 import {ArrowBack, ArrowUpward, Check, DirectionsRun, Favorite, Recommend, Shield, Warning} from "@mui/icons-material";
 import {Link} from "wouter";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
+import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
+import {useEffect, useState} from "react";
 
 function TypographyWithAdornment(props: Readonly<{ text: string }>) {
     const {text} = props;
@@ -77,20 +79,34 @@ function getSpecialItems(karmaSpecialty: KarmaSpecialty) {
 export function InPlaySheet() {
     const characterSheetFields = useCharacterSheetFields();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
+    const [printMode, setPrintMode] = useState(false)
+
+    function printCharacterSheet() {
+        setPrintMode(true);
+    }
+
+    useEffect(() => {
+        if (printMode) {
+            window.print()
+            setPrintMode(false)
+        }
+    }, [printMode])
+
     return <Fade in>
         <div>
             <Container>
-                <div>
+                {!printMode && <div>
                     <Link to={'/'}>
-                        <IconButton><ArrowBack/></IconButton> Made a mistake? Click here to go back and correct your character's origin!
+                        <Typography><IconButton><ArrowBack/></IconButton>Made a mistake? Click here to go back and correct your character's origin!</Typography>
                     </Link>
-                </div>
+                </div>}
+
                 <Grid container spacing={2}>
-                    <Grid size={{md: 5}}>
-                        <Typography variant={"h4"}>Flux Fantasy</Typography>
-                        <Typography variant={"body1"}>Character Sheet</Typography>
+                    <Grid size={{md: 4}}>
+                        <img src={fluxFantasyLogo} style={{width: '100%'}} alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>
+                        <Typography variant={"subtitle2"}>Character Sheet</Typography>
                     </Grid>
-                    <Grid size={{md: 7}} style={{paddingTop: 8}}>
+                    <Grid size={{md: 8}}>
                         <TextField fullWidth variant={"outlined"} value={characterSheetFields.playerName} label={"Player Name"} slotProps={{input: {readOnly: true}}}/>
                     </Grid>
                 </Grid>
@@ -388,6 +404,7 @@ export function InPlaySheet() {
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
                             <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
+                            {!printMode && <Button variant={"contained"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
                     </Grid>
                 </Grid>
