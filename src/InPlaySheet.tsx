@@ -1,4 +1,4 @@
-import {Box, Button, Container, Fade, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
+import {Box, Button, Checkbox, Container, Fade, FormControlLabel, FormGroup, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfile} from "./PowerProfile.tsx";
@@ -10,6 +10,7 @@ import {Link} from "wouter";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
 import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
 import {useEffect, useState} from "react";
+import {karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, talentsSkillTree, useSkillTree, vitalitySkillTree} from "./UseSkillTree.ts";
 
 function TypographyWithAdornment(props: Readonly<{ text: string }>) {
     const {text} = props;
@@ -80,6 +81,7 @@ export function InPlaySheet() {
     const characterSheetFields = useCharacterSheetFields();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
     const [printMode, setPrintMode] = useState(false)
+    const {skills, toggleSkill, getEnabledSkills} = useSkillTree();
 
     function printCharacterSheet() {
         setPrintMode(true);
@@ -91,6 +93,10 @@ export function InPlaySheet() {
             setPrintMode(false)
         }
     }, [printMode])
+
+    function isSkillUnlocked(value: SkillTreeNode) {
+        return (value.prerequisites?.every(skill => getEnabledSkills().includes(skill)) ?? true) && (value.links?.some(skill => getEnabledSkills().includes(skill)) ?? true) && (!value.level || characterSheetFields.level >= value.level);
+    }
 
     return <Fade in>
         <div>
@@ -403,9 +409,69 @@ export function InPlaySheet() {
                                 </div>
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
-                            <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
+                            <TextField label={'Other Learned SkillName and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
                             {!printMode && <Button variant={"contained"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
+                    </Grid>
+                </Grid>
+                <TypographyWithAdornment text={"Skill Tree"}/>
+                <Grid container spacing={2}>
+                    {/*TODO Add error if you remove prerequisite*/}
+                    <Grid size={{md: 3}}>
+                        <Typography variant={"h6"}>Vitality</Typography>
+                        <FormGroup>
+                            {Object.entries(vitalitySkillTree).map(([key, value]) => {
+                                const skillName = key as SkillName;
+                                return <FormControlLabel control={<Checkbox/>}
+                                                         checked={skills[skillName]}
+                                                         onChange={() => toggleSkill(skillName)}
+                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         label={key}
+                                                         key={key}/>;
+                            })}
+                        </FormGroup>
+                    </Grid>
+                    <Grid size={{md: 3}}>
+                        <Typography variant={"h6"}>Personality</Typography>
+                        <FormGroup>
+                            {Object.entries(personalitySkillTree).map(([key, value]) => {
+                                const skillName = key as SkillName;
+                                return <FormControlLabel control={<Checkbox/>}
+                                                         checked={skills[skillName]}
+                                                         onChange={() => toggleSkill(skillName)}
+                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         label={key}
+                                                         key={key}/>;
+                            })}
+                        </FormGroup>
+                    </Grid>
+                    <Grid size={{md: 3}}>
+                        <Typography variant={"h6"}>Karma</Typography>
+                        <FormGroup>
+                            {Object.entries(karmaSkillTree).map(([key, value]) => {
+                                const skillName = key as SkillName;
+                                return <FormControlLabel control={<Checkbox/>}
+                                                         checked={skills[skillName]}
+                                                         onChange={() => toggleSkill(skillName)}
+                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         label={key}
+                                                         key={key}/>;
+                            })}
+                        </FormGroup>
+                    </Grid>
+                    <Grid size={{md: 3}}>
+                        <Typography variant={"h6"}>Talent</Typography>
+                        <FormGroup>
+                            {Object.entries(talentsSkillTree).map(([key, value]) => {
+                                const skillName = key as SkillName;
+                                return <FormControlLabel control={<Checkbox/>}
+                                                         checked={skills[skillName]}
+                                                         onChange={() => toggleSkill(skillName)}
+                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         label={key}
+                                                         key={key}/>;
+                            })}
+                        </FormGroup>
                     </Grid>
                 </Grid>
             </Container>

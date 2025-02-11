@@ -5,6 +5,7 @@ import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();
+    const skillPoints = characterIdentity.level * 2 + (characterIdentity.level >= 3 ? 1 : 0);
     return (
         <Stack spacing={3}>
             <TextField fullWidth value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>

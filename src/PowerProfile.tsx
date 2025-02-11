@@ -47,6 +47,65 @@ export function PowerProfile(props: Readonly<{ powers: [SwapPowerChoices, KarmaP
     } = useCharacterSheetFields();
     const selectedSwapPowerObject = swapPowers.basic.find(value => value.name === selectedSwapPower);
 
+    function getCost(cost: number) {
+        return cost + (paybackPoints >= 50 ? 2 : 0);
+    }
+
+    function getPowerSetForTier(sectionName: string, tier: number) {
+        return <>
+            <TableHead>
+                <TableRow>
+                    <TableCell>{sectionName} Powers</TableCell>
+                    <TableCell align="right">Cost</TableCell>
+                    <TableCell align="right">Damage</TableCell>
+                    <TableCell align="right">Range</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                <TableRow>
+                    <TableCell>{getNameCell(readOnly, basicAttack, `${sectionName} Attack`, setBasicAttack)}</TableCell>
+                    <TableCell align="right">{getCost(karmaPowers.costs.attackAndDefense[tier])}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+                    <TableCell align="right">{karmaPowers.attack.damage[tier]}</TableCell>
+                    <TableCell align="right">{karmaPowers.attack.range[tier]}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{getNameCell(readOnly, basicCombo, `${sectionName} Combo`, setBasicCombo)}</TableCell>
+                    <TableCell align="right">{getCost(karmaPowers.costs.combo[tier])}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+                    <TableCell align="right">{karmaPowers.combo.damage[tier]}</TableCell>
+                    <TableCell align="right">{karmaPowers.combo.range[tier]}</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{getNameCell(readOnly, basicSignature, `${sectionName} Signature`, setBasicSignature)}</TableCell>
+                    <TableCell align="right">{getCost(karmaPowers.costs.signature[tier])}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+                    <TableCell align="right">{karmaPowers.signature.damage[tier]}</TableCell>
+                    <TableCell align="right">{karmaPowers.signature.range[tier]}</TableCell>
+                </TableRow>
+            </TableBody>
+            <TableHead>
+                <TableRow>
+                    <TableCell></TableCell>
+                    <TableCell align="right">Cost</TableCell>
+                    <TableCell align="right"></TableCell>
+                    <TableCell align="right">Effect</TableCell>
+                </TableRow>
+            </TableHead>
+            <TableBody>
+                <TableRow>
+                    <TableCell>{getNameCell(readOnly, basicDefense, `${sectionName} Defense`, setBasicDefense)}</TableCell>
+                    <TableCell align="right">{karmaPowers.costs.attackAndDefense[tier]}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+                    <TableCell align="right"></TableCell>
+                    <TableCell align="right">+{karmaPowers.defense.effect[tier]} to DEF</TableCell>
+                </TableRow>
+                <TableRow>
+                    <TableCell>{getNameCell(readOnly, locomotion, `${sectionName} Locomotion`, setLocomotion)}</TableCell>
+                    <TableCell align="right">{getCost(locomotionCost[tier])}{paybackPoints >= 50 ? "(⬆)" : ""} for each square moved</TableCell>
+                    <TableCell align="right"></TableCell>
+                    <TableCell align="right">+{locomotionRanges[tier]} to MOV for that turn</TableCell>
+                </TableRow>
+            </TableBody>
+        </>;
+    }
+
     return <TableContainer>
         <RadioGroup value={selectedSwapPower} onChange={event => setSelectedSwapPower(event.target.value)}>
             <Table>
@@ -61,56 +120,10 @@ export function PowerProfile(props: Readonly<{ powers: [SwapPowerChoices, KarmaP
                 <TableBody>
                     {readOnly && selectedSwapPowerObject ? getSelectedSwapPower(selectedSwapPowerObject) : getSwapPowerColumn(swapPowers)}
                 </TableBody>
-                <TableHead>
-                    <TableRow>
-                        <TableCell>Karma Powers</TableCell>
-                        <TableCell align="right">Cost</TableCell>
-                        <TableCell align="right">Damage</TableCell>
-                        <TableCell align="right">Range</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <TableCell>{getNameCell(readOnly, basicAttack, "Basic Attack", setBasicAttack)}</TableCell>
-                        <TableCell align="right">{karmaPowers.costs.attackAndDefense[0] ?? (paybackPoints < 50 ? 5 : 7)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
-                        <TableCell align="right">{karmaPowers.attack.damage[0]}</TableCell>
-                        <TableCell align="right">{karmaPowers.attack.range[0]}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>{getNameCell(readOnly, basicCombo, "Basic Combo", setBasicCombo)}</TableCell>
-                        <TableCell align="right">{karmaPowers.costs.combo[0] ?? (paybackPoints < 50 ? 7 : 9)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
-                        <TableCell align="right">{karmaPowers.combo.damage[0]}</TableCell>
-                        <TableCell align="right">{karmaPowers.combo.range[0]}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>{getNameCell(readOnly, basicSignature, "Basic Signature", setBasicSignature)}</TableCell>
-                        <TableCell align="right">{karmaPowers.costs.signature[0] ?? (paybackPoints < 50 ? 10 : 12)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
-                        <TableCell align="right">{karmaPowers.signature.damage[0]}</TableCell>
-                        <TableCell align="right">{karmaPowers.signature.range[0]}</TableCell>
-                    </TableRow>
-                </TableBody>
-                <TableHead>
-                    <TableRow>
-                        <TableCell></TableCell>
-                        <TableCell align="right">Cost</TableCell>
-                        <TableCell align="right"></TableCell>
-                        <TableCell align="right">Effect</TableCell>
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    <TableRow>
-                        <TableCell>{getNameCell(readOnly, basicDefense, "Basic Defense", setBasicDefense)}</TableCell>
-                        <TableCell align="right">{karmaPowers.costs.attackAndDefense[0] ?? (paybackPoints < 50 ? 5 : 7)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
-                        <TableCell align="right"></TableCell>
-                        <TableCell align="right">+{karmaPowers.defense.effect[0]} to DEF</TableCell>
-                    </TableRow>
-                    <TableRow>
-                        <TableCell>{getNameCell(readOnly, locomotion, "Locomotion", setLocomotion)}</TableCell>
-                        <TableCell align="right">{`${locomotionCost[0] ?? (paybackPoints < 50 ? 3 : 5)}${paybackPoints >= 50 ? "(⬆)" : ""} for each square moved`}</TableCell>
-                        <TableCell align="right"></TableCell>
-                        <TableCell align="right">{locomotionRanges[0]}</TableCell>
-                    </TableRow>
-                </TableBody>
+                {getPowerSetForTier("Basic", 0)}
+                {getPowerSetForTier("Basic Tier 2", 1)}
+                {getPowerSetForTier("Advanced", 2)}
+                {getPowerSetForTier("Advanced Tier 2", 3)}
             </Table>
         </RadioGroup>
     </TableContainer>;
