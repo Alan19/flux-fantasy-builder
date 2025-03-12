@@ -25,20 +25,18 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
 
     return (
         <TableContainer>
-            <Table>
+            <Table size={"small"}>
                 <TableHead>
                     <TableRow>
                         <TableCell>Trait</TableCell>
-                        <TableCell>Description</TableCell>
                         <TableCell>Effect</TableCell>
+                        <TableCell>Description</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.inPlay && characterSheetFields.affiliation && <>
                         <TableCell component="th" scope="row">
                             {affiliationTraits[characterSheetFields.affiliation].name}
-                        </TableCell>
-                        <TableCell>
                         </TableCell>
                         <TableCell>
                             {affiliationTraits[characterSheetFields.affiliation].effect}
@@ -50,26 +48,24 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                                 {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.traits[trait as TraitList]} onChange={() => characterSheetFields.toggleTrait(trait as TraitList)}/>} label={trait}/>}
                             </TableCell>
                             <TableCell>
-                                {description}
+                                {effect}
                             </TableCell>
                             <TableCell>
-                                {effect}
+                                {description}
                             </TableCell>
                         </TableRow>)}
                 </TableBody>
                 <TableHead>
                     <TableRow>
                         <TableCell>Flaw</TableCell>
-                        <TableCell>Description</TableCell>
                         <TableCell>Effect</TableCell>
+                        <TableCell>Description</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {props.inPlay && characterSheetFields.affiliation && <>
                         <TableCell component="th" scope="row">
                             {affiliationFlaws[characterSheetFields.affiliation].name}
-                        </TableCell>
-                        <TableCell>
                         </TableCell>
                         <TableCell>
                             {affiliationFlaws[characterSheetFields.affiliation].effect}
@@ -81,10 +77,10 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                                 {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.flaws[trait as FlawList]} onChange={() => characterSheetFields.toggleFlaw(trait as FlawList)}/>} label={trait}/>}
                             </TableCell>
                             <TableCell>
-                                {description}
+                                {effect}
                             </TableCell>
                             <TableCell>
-                                {effect}
+                                {description}
                             </TableCell>
                         </TableRow>)}
                 </TableBody>

@@ -1,0 +1,1 @@
+export const shadedBoxStyle = {background: "var(--fbc-light-gray)", padding: 16};

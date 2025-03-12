@@ -149,3 +149,4 @@ export function getMaxHP(effectiveTalents: TalentModifiers, level: number) {
 export function getMovModifier(effectiveTalents: TalentModifiers, level: number) {
     return 1 + (effectiveTalents.agility ?? 0) + (level >= 8 ? 1 : 0);
 }
+

@@ -65,13 +65,6 @@ export function useCharacterSheetFields() {
     const [willpower, setWillpower] = useLocalStorage<number>('willpower', 1)
     const [agility, setAgility] = useLocalStorage<number>('agility', 1)
 
-    // Karma Power Names
-    const [basicAttack, setBasicAttack] = useLocalStorage('basic-attack', '')
-    const [basicCombo, setBasicCombo] = useLocalStorage('basic-combo', '')
-    const [basicSignature, setBasicSignature] = useLocalStorage('basic-signature', '')
-    const [basicDefense, setBasicDefense] = useLocalStorage('basic-defense', '')
-    const [locomotion, setLocomotion] = useLocalStorage('locomotion', '')
-    const [selectedSwapPower, setSelectedSwapPower] = useLocalStorage<string>('selected-swap-power', '')
 
     // Inventory and other editable information
     const [level, setLevel] = useLocalStorage('level', 1)
@@ -127,18 +120,6 @@ export function useCharacterSheetFields() {
         setMerits,
         configuration,
         setConfiguration,
-        basicAttack,
-        setBasicAttack,
-        basicCombo,
-        setBasicCombo,
-        basicSignature,
-        setBasicSignature,
-        basicDefense,
-        setBasicDefense,
-        locomotion,
-        setLocomotion,
-        selectedSwapPower,
-        setSelectedSwapPower,
         characterImageURL,
         setCharacterImageURL,
         positiveKarma,

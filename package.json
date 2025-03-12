@@ -15,14 +15,15 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@fontsource-variable/oxanium": "^5.2.5",
     "@fontsource/roboto": "^5.1.1",
-    "@mui/base": "5.0.0-beta.68",
-    "@mui/icons-material": "^6.4.0",
-    "@mui/material": "^6.4.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-icons": "^5.4.0",
-    "usehooks-ts": "^3.1.0",
+    "@mui/base": "5.0.0-beta.6",
+    "@mui/icons-material": "^6.4.5",
+    "@mui/material": "^6.4.5",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-icons": "^5.5.0",
+    "usehooks-ts": "^3.1.1",
     "wouter": "^3.3.5"
   },
   "devDependencies": {
@@ -31,12 +32,12 @@
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",
     "eslint": "^9.17.0",
-    "eslint-plugin-react-hooks": "^5.0.0",
-    "eslint-plugin-react-refresh": "^0.4.16",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-react-refresh": "^0.4.19",
+    "gh-pages": "^6.3.0",
     "globals": "^15.14.0",
-    "typescript": "~5.6.2",
-    "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5",
-    "gh-pages": "^6.3.0"
+    "typescript": "~5.6.3",
+    "typescript-eslint": "^8.24.1",
+    "vite": "^6.0.11"
   }
 }

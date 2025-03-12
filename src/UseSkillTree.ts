@@ -242,62 +242,43 @@ export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode
     }
 }
 
+export const fullSkillTree: { [skillName in SkillName]: SkillTreeNode } = {...vitalitySkillTree, ...karmaSkillTree, ...personalitySkillTree, ...talentsSkillTree}
+
+export type SkillTreeSelections = {
+    [K in 2 | 4 | 5 | 6 | 7 | 8 | 9 | 10]: SkillName[] & { length: 0 | 1 | 2 };
+} & {
+    3: SkillName[] & { length: 0 | 1 | 2 | 3 };
+};
 export function useSkillTree() {
-    const [skills, setSkills] = useLocalStorage<Record<SkillName, boolean>>("skills", {
-        "Advanced Attacks (Tier 2)": false,
-        "Advanced Attack": false,
-        "Combo 1": false,
-        "Combo 2": false,
-        "Combo 3": false,
-        "DEF Enhance": false,
-        "Destiny Saves": false,
-        "Health 1": false,
-        "Health 2": false,
-        "Health 3": false,
-        "Health 4": false,
-        "Karma Alignment": false,
-        "Karma Pool 1": false,
-        "Karma Pool 2": false,
-        "Karma Pool 3": false,
-        "Karma Pool 4": false,
-        "Karma Surge": false,
-        "Med+ Kit 1": false,
-        "Med+ Kit 2": false,
-        "Merits 2": false,
-        "MOV Enhance": false,
-        "Multi-Study": false,
-        "Negative Force": false,
-        "Perception 1": false,
-        "Perception 2": false,
-        "Positive Force": false,
-        "Reroll 1": false,
-        "Reroll 2": false,
-        "Resist Payback 2": false,
-        "Resist Payback": false,
-        "Talent 1": false,
-        "Talent 2": false,
-        "Talent 3": false,
-        "Talent 4": false,
-        "Tier 2 Basic Attack": false,
-        "Trading Cards 2": false,
-        "Trading Cards": false,
-        "Vitality Enhance": false,
-        Affiliation: false,
-        Copycat: false,
-        Merits: false,
-        Share: false,
-        Traits: false
+    const [skills, setSkills] = useLocalStorage<SkillTreeSelections>("skills", {
+        "2": [],
+        "3": [],
+        "4": [],
+        "5": [],
+        "6": [],
+        "7": [],
+        "8": [],
+        "9": [],
+        "10": []
     })
 
-    function toggleSkill(skill: SkillName) {
-        setSkills(prevState => ({
-            ...prevState,
-            [skill]: !prevState[skill]
-        }))
+    function toggleSkill(skill: SkillName, level: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10) {
+        setSkills(prevState => {
+            if (prevState[level].includes(skill)) {
+                return ({
+                    ...prevState,
+                    [level]: prevState[level].filter(selectedSkill => selectedSkill !== skill),
+                })
+            }
+            return ({
+                ...prevState,
+                [level]: prevState[level].concat(skill),
+            })
+        })
     }
 
     function getEnabledSkills() {
-        return Object.keys(skills).filter(value => skills[value as SkillName])
+        return Object.values(skills).flatMap(skill => skill)
     }
 
     return {skills, toggleSkill, getEnabledSkills}

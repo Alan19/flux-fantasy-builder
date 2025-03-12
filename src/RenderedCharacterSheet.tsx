@@ -1,21 +1,18 @@
 import {Box, Button, Checkbox, Container, Fade, FormControlLabel, FormGroup, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
-import {PowerProfile} from "./PowerProfile.tsx";
+import {PowerProfileTable} from "./PowerProfileTable.tsx";
 import {getKarmaPowerLoadout} from "./KarmaPowerLoadout.ts";
-import DoubleArrowIcon from '@mui/icons-material/DoubleArrow';
 import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier, KarmaSpecialty} from "./KarmaSpecialty.ts";
 import {ArrowBack, ArrowUpward, Check, DirectionsRun, Favorite, Recommend, Shield, Warning} from "@mui/icons-material";
 import {Link} from "wouter";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
 import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
 import {useEffect, useState} from "react";
-import {karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, talentsSkillTree, useSkillTree, vitalitySkillTree} from "./UseSkillTree.ts";
+import {karmaSkillTree, personalitySkillTree, SkillName, talentsSkillTree, useSkillTree, vitalitySkillTree} from "./UseSkillTree.ts";
+import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
+import {isSkillUnlocked} from "./IsSkillUnlocked.tsx";
 
-function TypographyWithAdornment(props: Readonly<{ text: string }>) {
-    const {text} = props;
-    return <Typography fontWeight={"bold"} variant={"h5"} style={{lineHeight: '29px'}}><DoubleArrowIcon style={{verticalAlign: "bottom", height: '29px'}}/> {text}</Typography>;
-}
 
 function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
     let advantages = "";
@@ -77,7 +74,7 @@ function getSpecialItems(karmaSpecialty: KarmaSpecialty) {
     }
 }
 
-export function InPlaySheet() {
+export function RenderedCharacterSheet() {
     const characterSheetFields = useCharacterSheetFields();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
     const [printMode, setPrintMode] = useState(false)
@@ -94,9 +91,6 @@ export function InPlaySheet() {
         }
     }, [printMode])
 
-    function isSkillUnlocked(value: SkillTreeNode) {
-        return (value.prerequisites?.every(skill => getEnabledSkills().includes(skill)) ?? true) && (value.links?.some(skill => getEnabledSkills().includes(skill)) ?? true) && (!value.level || characterSheetFields.level >= value.level);
-    }
 
     return <Fade in>
         <div>
@@ -124,8 +118,6 @@ export function InPlaySheet() {
                                 <img src={characterSheetFields.characterImageURL} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
                             </div>
                             <div>
-                                <TypographyWithAdornment text={"Karmic Alignment Points"}/>
-                                <div style={{background: "var(--fbc-light-gray)", padding: 16}}>
                                     <Grid container spacing={1} style={{marginTop: 8}}>
                                         <Grid size={{xs: 6}}>
                                             <TextField onKeyDown={(event) => {
@@ -138,7 +130,7 @@ export function InPlaySheet() {
                                                        variant={"outlined"}
                                                        type={"number"}
                                                        value={characterSheetFields.positiveKarma}
-                                                       label={"Positive"}/>
+                                                       label={"Positive KAP"}/>
                                         </Grid>
                                         <Grid size={{xs: 6}}>
                                             <TextField onKeyDown={(event) => {
@@ -151,10 +143,9 @@ export function InPlaySheet() {
                                                        variant={"outlined"}
                                                        type={"number"}
                                                        value={characterSheetFields.negativeKarma}
-                                                       label={"Negative"}/>
+                                                       label={"Negative KAP"}/>
                                         </Grid>
                                     </Grid>
-                                </div>
                             </div>
                             <TextField label={'Advantages'}
                                        multiline
@@ -318,7 +309,7 @@ export function InPlaySheet() {
                             <div>
                                 <TypographyWithAdornment text={"Karma Power Profile"}/>
                                 {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
-                                    <div style={{background: "var(--fbc-light-gray)"}}><PowerProfile powers={getKarmaPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/></div> :
+                                    <div style={{background: "var(--fbc-light-gray)"}}><PowerProfileTable powers={getKarmaPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/></div> :
                                     <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
                             </div>
                             <div>
@@ -409,7 +400,7 @@ export function InPlaySheet() {
                                 </div>
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
-                            <TextField label={'Other Learned SkillName and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
+                            <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
                             {!printMode && <Button variant={"contained"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
                     </Grid>
@@ -423,9 +414,9 @@ export function InPlaySheet() {
                             {Object.entries(vitalitySkillTree).map(([key, value]) => {
                                 const skillName = key as SkillName;
                                 return <FormControlLabel control={<Checkbox/>}
-                                                         checked={skills[skillName]}
-                                                         onChange={() => toggleSkill(skillName)}
-                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         checked={getEnabledSkills().includes(skillName)}
+                                                         onChange={() => toggleSkill(skillName, 2)}
+                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
                                                          label={key}
                                                          key={key}/>;
                             })}
@@ -437,9 +428,9 @@ export function InPlaySheet() {
                             {Object.entries(personalitySkillTree).map(([key, value]) => {
                                 const skillName = key as SkillName;
                                 return <FormControlLabel control={<Checkbox/>}
-                                                         checked={skills[skillName]}
-                                                         onChange={() => toggleSkill(skillName)}
-                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         checked={getEnabledSkills().includes(skillName)}
+                                                         onChange={() => toggleSkill(skillName, 2)}
+                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
                                                          label={key}
                                                          key={key}/>;
                             })}
@@ -451,9 +442,9 @@ export function InPlaySheet() {
                             {Object.entries(karmaSkillTree).map(([key, value]) => {
                                 const skillName = key as SkillName;
                                 return <FormControlLabel control={<Checkbox/>}
-                                                         checked={skills[skillName]}
-                                                         onChange={() => toggleSkill(skillName)}
-                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         checked={getEnabledSkills().includes(skillName)}
+                                                         onChange={() => toggleSkill(skillName, 2)}
+                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
                                                          label={key}
                                                          key={key}/>;
                             })}
@@ -465,9 +456,9 @@ export function InPlaySheet() {
                             {Object.entries(talentsSkillTree).map(([key, value]) => {
                                 const skillName = key as SkillName;
                                 return <FormControlLabel control={<Checkbox/>}
-                                                         checked={skills[skillName]}
-                                                         onChange={() => toggleSkill(skillName)}
-                                                         disabled={!isSkillUnlocked(value) && !getEnabledSkills().includes(key)}
+                                                         checked={getEnabledSkills().includes(skillName)}
+                                                         onChange={() => toggleSkill(skillName, 2)}
+                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
                                                          label={key}
                                                          key={key}/>;
                             })}

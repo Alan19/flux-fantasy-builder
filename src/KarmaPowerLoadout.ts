@@ -1,4 +1,5 @@
 import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
+import {PowerTier} from "./UsePowerLoadoutSettings.ts";
 
 interface KarmaAttack {
     damage: [number, number, number, number];
@@ -29,13 +30,13 @@ export interface KarmaPowerLoadout extends KarmaPowerSet {
 
 export type SwapPowerChoices = { basic: [SwapPower, SwapPower, SwapPower], advanced: [SwapPower, SwapPower, SwapPower], effect?: string };
 
-type SpecialtyCosts = {
+export type SpecialtyCosts = {
     attackAndDefense: [number, number, number, number];
     combo: [number, number, number, number]
     signature: [number, number, number, number]
 };
 
-export const locomotionCost = [3, 5, 7, 9];
+export const locomotionCosts = [3, 5, 7, 9];
 export const locomotionRanges: [number, number, number, number] = [1, 2, 3, 4];
 
 export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapPowerChoices, KarmaPowerLoadout] {
@@ -77,7 +78,7 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
     const projectileInkFighterEffects: [string?, string?, string?, string?] = ["", "", "Your attack hits one other enemy for +4 damage.", "Your attack hits two other enemies for +6 damage."]
     const bodyInkFighterEffects: [string?, string?, string?, string?] = ["", "", "Add +2 to your health. This ability can stack. Resets after battle.", "Add +4 to your health. This ability can stack. Resets after battle."]
     const elementalInkFighterEffects: [string?, string?, string?, string?] = ["", "", "Add +1 to defense the next time you are attacked. This ability can stack. Resets after you are attacked.", "Add +2 to defense the next time you are attacked. This ability can stack. Resets after you are attacked."]
-    const specialAgentEffects: [string?, string?, string?, string?] = ["", "+2 Damage to Escape Artists", "+1 to Damage for each attack performed in battle for all attacks. Stacks and resets at the end of the battle.", "+2 to Damage for each attack performed in battle for all attacks. Stacks and resets at the end of the battle."]
+    const specialAgentEffects: [string?, string?, string?, string?] = ["", "", "+1 to Damage for each attack performed in battle for all attacks. Stacks and resets at the end of the battle.", "+2 to Damage for each attack performed in battle for all attacks. Stacks and resets at the end of the battle."]
 
     const loadouts: { [study in Study]: KarmaPowerLoadout } = {
         "Creative Karmastry": {
@@ -177,7 +178,7 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
             effects: specialAgentEffects
         },
         Tinker: {
-            attack: {damage: [4, 7, 12, 17], range: ["0-4", "0-4", "0-4", "0-4"]},
+            attack: {damage: [4, 7, 12, 17], range: ["0-4", "0-5", "0-6", "0-7"]},
             defense: {effect: [1, 2, 3, 4]},
             combo: {damage: [7, 10, 14, 19], range: ["1-2", "1-2", "1-2", "1-2"]},
             signature: {damage: [6, 9, 13, 18], range: ["3-5", "3-5", "3-5", "3-5"]},
@@ -298,4 +299,18 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
         }
     }
     return [swapPowers[specialty], loadouts[study]];
+}
+
+export function getTierName(powerTier: PowerTier) {
+    switch (powerTier) {
+        case PowerTier.basic:
+            return "Basic"
+        case PowerTier.basic2:
+            return "Basic Tier 2"
+        case PowerTier.advanced:
+            return "Advanced"
+        case PowerTier.advanced2:
+            return "Advanced Tier 2"
+
+    }
 }
