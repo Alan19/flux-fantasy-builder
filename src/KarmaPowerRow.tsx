@@ -24,7 +24,6 @@ function getBaseCost(powerType: PowerType, powerTier: PowerTier, costsForSpecial
     }
 }
 
-
 export function KarmaPowerRow(props: Readonly<{
     powerType: PowerType
     karmaPowerLoadout: KarmaPowerLoadout,

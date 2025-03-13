@@ -6,7 +6,7 @@ import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
 
 export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, KarmaPowerLoadout], readOnly?: boolean }>) {
     const {readOnly = false, powers} = props;
-    const [swapPowers, karmaPowers] = powers;
+    const [, karmaPowers] = powers;
     const powerNames = usePowerLoadoutSettings();
     const {paybackPoints} = useCharacterSheetFields()
 

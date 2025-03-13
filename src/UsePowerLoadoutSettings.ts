@@ -44,6 +44,7 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
     const [advanced2Locomotion, setAdvanced2Locomotion] = useLocalStorage('advanced-2-locomotion', '')
     const [selectedSwapPower, setSelectedSwapPower] = useLocalStorage<string>('selected-swap-power', '')
 
+    // TODO Allow swap power as an option
     const [selectedAttackTier, setSelectedAttackTier] = useLocalStorage<PowerTier>('selected-attack-tier', PowerTier.basic)
     const [selectedDefenseTier, setSelectedDefenseTier] = useLocalStorage<PowerTier>('selected-defense-tier', PowerTier.basic)
     const [selectedComboTier, setSelectedComboTier] = useLocalStorage<PowerTier>('selected-combo-tier', PowerTier.basic)
