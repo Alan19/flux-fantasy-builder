@@ -21,7 +21,7 @@ export enum VitalitySkills {
     defenseEnhance = 'DEF Enhance',
 }
 
-enum KarmaSkills {
+export enum KarmaSkills {
     karmaPool1 = 'Karma Pool 1',
     karmaPool2 = 'Karma Pool 2',
     karmaPool3 = 'Karma Pool 3',
@@ -244,42 +244,12 @@ export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode
 
 export const fullSkillTree: { [skillName in SkillName]: SkillTreeNode } = {...vitalitySkillTree, ...karmaSkillTree, ...personalitySkillTree, ...talentsSkillTree}
 
-export type SkillTreeSelections = {
-    [K in 2 | 4 | 5 | 6 | 7 | 8 | 9 | 10]: SkillName[] & { length: 0 | 1 | 2 };
-} & {
-    3: SkillName[] & { length: 0 | 1 | 2 | 3 };
-};
 export function useSkillTree() {
-    const [skills, setSkills] = useLocalStorage<SkillTreeSelections>("skills", {
-        "2": [],
-        "3": [],
-        "4": [],
-        "5": [],
-        "6": [],
-        "7": [],
-        "8": [],
-        "9": [],
-        "10": []
-    })
+    const [skills, setSkills] = useLocalStorage<SkillName[]>("skills", [])
 
-    function toggleSkill(skill: SkillName, level: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10) {
-        setSkills(prevState => {
-            if (prevState[level].includes(skill)) {
-                return ({
-                    ...prevState,
-                    [level]: prevState[level].filter(selectedSkill => selectedSkill !== skill),
-                })
-            }
-            return ({
-                ...prevState,
-                [level]: prevState[level].concat(skill),
-            })
-        })
+    function toggleSkill(skill: SkillName) {
+        setSkills(prevState => prevState.includes(skill) ? prevState.filter(value => value !== skill) : prevState.concat(skill))
     }
 
-    function getEnabledSkills() {
-        return Object.values(skills).flatMap(skill => skill)
-    }
-
-    return {skills, toggleSkill, getEnabledSkills}
+    return {skills, toggleSkill}
 }

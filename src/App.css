@@ -1,0 +1,4 @@
+.Mui-checked {
+    /*noinspection CssUnresolvedCustomProperty*/
+    color: var(--md-sys-color-primary) !important;
+}

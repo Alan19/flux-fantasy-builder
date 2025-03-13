@@ -1,4 +1,4 @@
-import {Box, Button, Checkbox, Container, Fade, FormControlLabel, FormGroup, IconButton, InputAdornment, Stack, TextField, Typography} from "@mui/material";
+import {Box, Container, Fade, IconButton, InputAdornment, Paper, Stack, TextField, Typography} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
@@ -9,9 +9,11 @@ import {Link} from "wouter";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
 import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
 import {useEffect, useState} from "react";
-import {karmaSkillTree, personalitySkillTree, SkillName, talentsSkillTree, useSkillTree, vitalitySkillTree} from "./UseSkillTree.ts";
 import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
-import {isSkillUnlocked} from "./IsSkillUnlocked.tsx";
+import {shadedBoxStyle} from "./ShadedBoxStyle.tsx";
+import {Button} from "@mui/material-next";
+import {SkillTree} from "./SkillTree.tsx";
+import {ModeToggle} from "./ModeToggle.tsx";
 
 
 function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
@@ -78,7 +80,6 @@ export function RenderedCharacterSheet() {
     const characterSheetFields = useCharacterSheetFields();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
     const [printMode, setPrintMode] = useState(false)
-    const {skills, toggleSkill, getEnabledSkills} = useSkillTree();
 
     function printCharacterSheet() {
         setPrintMode(true);
@@ -93,7 +94,7 @@ export function RenderedCharacterSheet() {
 
 
     return <Fade in>
-        <div>
+        <div style={{display: "flex"}}>
             <Container>
                 {!printMode && <div>
                     <Link to={'/'}>
@@ -118,34 +119,34 @@ export function RenderedCharacterSheet() {
                                 <img src={characterSheetFields.characterImageURL} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
                             </div>
                             <div>
-                                    <Grid container spacing={1} style={{marginTop: 8}}>
-                                        <Grid size={{xs: 6}}>
-                                            <TextField onKeyDown={(event) => {
-                                                if (!/[0-9]/.test(event.key)) {
-                                                    event.preventDefault();
-                                                }
-                                            }}
-                                                       onChange={(e) => characterSheetFields.setPositiveKarma(Math.max(0, Number(e.target.value)))}
-                                                       fullWidth
-                                                       variant={"outlined"}
-                                                       type={"number"}
-                                                       value={characterSheetFields.positiveKarma}
-                                                       label={"Positive KAP"}/>
-                                        </Grid>
-                                        <Grid size={{xs: 6}}>
-                                            <TextField onKeyDown={(event) => {
-                                                if (!/[0-9]/.test(event.key)) {
-                                                    event.preventDefault();
-                                                }
-                                            }}
-                                                       onChange={(e) => characterSheetFields.setNegativeKarma(Math.max(0, Number(e.target.value)))}
-                                                       fullWidth
-                                                       variant={"outlined"}
-                                                       type={"number"}
-                                                       value={characterSheetFields.negativeKarma}
-                                                       label={"Negative KAP"}/>
-                                        </Grid>
+                                <Grid container spacing={1} style={{marginTop: 8}}>
+                                    <Grid size={{xs: 6}}>
+                                        <TextField onKeyDown={(event) => {
+                                            if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                            }
+                                        }}
+                                                   onChange={(e) => characterSheetFields.setPositiveKarma(Math.max(0, Number(e.target.value)))}
+                                                   fullWidth
+                                                   variant={"outlined"}
+                                                   type={"number"}
+                                                   value={characterSheetFields.positiveKarma}
+                                                   label={"Positive KAP"}/>
                                     </Grid>
+                                    <Grid size={{xs: 6}}>
+                                        <TextField onKeyDown={(event) => {
+                                            if (!/[0-9]/.test(event.key)) {
+                                                event.preventDefault();
+                                            }
+                                        }}
+                                                   onChange={(e) => characterSheetFields.setNegativeKarma(Math.max(0, Number(e.target.value)))}
+                                                   fullWidth
+                                                   variant={"outlined"}
+                                                   type={"number"}
+                                                   value={characterSheetFields.negativeKarma}
+                                                   label={"Negative KAP"}/>
+                                    </Grid>
+                                </Grid>
                             </div>
                             <TextField label={'Advantages'}
                                        multiline
@@ -203,118 +204,123 @@ export function RenderedCharacterSheet() {
                         <Stack spacing={2}>
                             <div>
                                 <TypographyWithAdornment text={"Identity"}/>
-                                <Grid container spacing={2} style={{background: "var(--fbc-light-gray)", padding: 16}}>
-                                    <Grid size={{xs: 12}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} slotProps={{input: {readOnly: true}}}/>
+                                <Paper>
+                                    <Grid container spacing={2} style={shadedBoxStyle}>
+                                        <Grid size={{xs: 12}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 3}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.age} label={"Age"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 3}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.gender} label={"Gender"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 3}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.height} label={"Height"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 3}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.weight} label={"Weight"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 6}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.karmaSpecialty} label={"Karma Specialty"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 6}}>
+                                            <TextField fullWidth variant={"outlined"} value={characterSheetFields.affiliation} label={"Affiliation"} slotProps={{input: {readOnly: true}}}/>
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={{md: 3}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.age} label={"Age"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 3}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.gender} label={"Gender"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 3}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.height} label={"Height"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 3}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.weight} label={"Weight"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 6}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.karmaSpecialty} label={"Karma Specialty"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 6}}>
-                                        <TextField fullWidth variant={"outlined"} value={characterSheetFields.affiliation} label={"Affiliation"} slotProps={{input: {readOnly: true}}}/>
-                                    </Grid>
-                                </Grid>
+                                </Paper>
                             </div>
                             <div>
                                 <TypographyWithAdornment text={"Talents"}/>
-                                <Grid container spacing={2} style={{background: "var(--fbc-light-gray)", padding: 16}}>
-                                    {/*TODO Add adornment and score increase for study talent boost*/}
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.aura}
-                                                   label={"Aura"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Aura") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                <Paper>
+                                    <Grid container spacing={2} style={shadedBoxStyle}>
+                                        {/*TODO Add adornment and score increase for study talent boost*/}
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.aura}
+                                                       label={"Aura"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Aura") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.technique}
+                                                       label={"Technique"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Technique") && <InputAdornment position="start"><Recommend/></InputAdornment>}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.stamina}
+                                                       label={"Stamina"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Stamina") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.function}
+                                                       label={"Function"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Function") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.willpower}
+                                                       label={"Willpower"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Willpower") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                        </Grid>
+                                        <Grid size={{md: 2}}>
+                                            <TextField fullWidth
+                                                       variant={"standard"}
+                                                       value={"+" + effectiveTalents.agility}
+                                                       label={"Agility"}
+                                                       slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Agility") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
+                                        </Grid>
+                                        {/*TODO Add number range validation for level / HP / karma pool*/}
+                                        <Grid size={{md: 4}}>
+                                            <TextField variant={"filled"}
+                                                       slotProps={{
+                                                           input: {
+                                                               startAdornment: <InputAdornment position="start"><Favorite/></InputAdornment>,
+                                                               endAdornment: <InputAdornment position="start">/ {getMaxHP(effectiveTalents, characterSheetFields.level)}</InputAdornment>
+                                                           }
+                                                       }}
+                                                       onKeyPress={(event) => {
+                                                           if (!/[0-9]/.test(event.key)) {
+                                                               event.preventDefault();
+                                                           }
+                                                       }}
+                                                       type={"number"}
+                                                       onChange={(e) => characterSheetFields.setCurrentHP(Math.max(0, Number(e.target.value)))}
+                                                       value={characterSheetFields.currentHP}
+                                                       label={"HP"}/>
+                                        </Grid>
+                                        <Grid size={{md: 4}}>
+                                            <TextField variant={"filled"}
+                                                       slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><Shield/></InputAdornment>}}}
+                                                       value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level) : "+1"}
+                                                       label={"DEF"}/>
+                                        </Grid>
+                                        <Grid size={{md: 4}}>
+                                            <TextField variant={"filled"}
+                                                       slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><DirectionsRun/></InputAdornment>}}}
+                                                       value={getMovModifier(effectiveTalents, characterSheetFields.level)}
+                                                       label={"MOV"}/>
+                                        </Grid>
                                     </Grid>
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.technique}
-                                                   label={"Technique"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Technique") && <InputAdornment position="start"><Recommend/></InputAdornment>}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.stamina}
-                                                   label={"Stamina"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Stamina") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.function}
-                                                   label={"Function"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Function") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.willpower}
-                                                   label={"Willpower"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Willpower") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
-                                    </Grid>
-                                    <Grid size={{md: 2}}>
-                                        <TextField fullWidth
-                                                   variant={"standard"}
-                                                   value={"+" + effectiveTalents.agility}
-                                                   label={"Agility"}
-                                                   slotProps={{input: {readOnly: true, endAdornment: boostedTalents.includes("Agility") && <InputAdornment position="start"><ArrowUpward/></InputAdornment>}}}/>
-                                    </Grid>
-                                    {/*TODO Add number range validation for level / HP / karma pool*/}
-                                    <Grid size={{md: 4}}>
-                                        <TextField variant={"filled"}
-                                                   slotProps={{
-                                                       input: {
-                                                           startAdornment: <InputAdornment position="start"><Favorite/></InputAdornment>,
-                                                           endAdornment: <InputAdornment position="start">/ {getMaxHP(effectiveTalents, characterSheetFields.level)}</InputAdornment>
-                                                       }
-                                                   }}
-                                                   onKeyPress={(event) => {
-                                                       if (!/[0-9]/.test(event.key)) {
-                                                           event.preventDefault();
-                                                       }
-                                                   }}
-                                                   type={"number"}
-                                                   onChange={(e) => characterSheetFields.setCurrentHP(Math.max(0, Number(e.target.value)))}
-                                                   value={characterSheetFields.currentHP}
-                                                   label={"HP"}/>
-                                    </Grid>
-                                    <Grid size={{md: 4}}>
-                                        <TextField variant={"filled"}
-                                                   slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><Shield/></InputAdornment>}}}
-                                                   value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level) : "+1"}
-                                                   label={"DEF"}/>
-                                    </Grid>
-                                    <Grid size={{md: 4}}>
-                                        <TextField variant={"filled"}
-                                                   slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><DirectionsRun/></InputAdornment>}}}
-                                                   value={getMovModifier(effectiveTalents, characterSheetFields.level)}
-                                                   label={"MOV"}/>
-                                    </Grid>
-                                </Grid>
+                                </Paper>
                             </div>
                             <div>
                                 <TypographyWithAdornment text={"Karma Power Profile"}/>
                                 {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
-                                    <div style={{background: "var(--fbc-light-gray)"}}><PowerProfileTable powers={getKarmaPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/></div> :
+                                    <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}><PowerProfileTable powers={getKarmaPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)}
+                                                                                                                               readOnly/></Paper> :
                                     <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
                             </div>
                             <div>
                                 <TypographyWithAdornment text={"Traits & Flaws"}/>
-                                <div style={{background: "var(--fbc-light-gray)"}}><TraitAndFlawTable inPlay/></div>
+                                <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}><TraitAndFlawTable inPlay/></Paper>
                             </div>
                         </Stack>
                     </Grid>
@@ -349,7 +355,7 @@ export function RenderedCharacterSheet() {
                             </div>
                             <div>
                                 <TypographyWithAdornment text={"Karma Pool"}/>
-                                <div style={{background: "var(--fbc-light-gray)", padding: 16}}>
+                                <Paper style={shadedBoxStyle}>
                                     <Grid container spacing={1}>
                                         <Grid size={{md: 6}}>
                                             <TextField fullWidth
@@ -397,75 +403,21 @@ export function RenderedCharacterSheet() {
                                                        label={"Payback"}/>
                                         </Grid>
                                     </Grid>
-                                </div>
+                                </Paper>
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
                             <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
-                            {!printMode && <Button variant={"contained"} onClick={() => printCharacterSheet()}>Print</Button>}
+                            {!printMode && <Button variant={"outlined"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
                     </Grid>
                 </Grid>
                 <TypographyWithAdornment text={"Skill Tree"}/>
-                <Grid container spacing={2}>
-                    {/*TODO Add error if you remove prerequisite*/}
-                    <Grid size={{md: 3}}>
-                        <Typography variant={"h6"}>Vitality</Typography>
-                        <FormGroup>
-                            {Object.entries(vitalitySkillTree).map(([key, value]) => {
-                                const skillName = key as SkillName;
-                                return <FormControlLabel control={<Checkbox/>}
-                                                         checked={getEnabledSkills().includes(skillName)}
-                                                         onChange={() => toggleSkill(skillName, 2)}
-                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
-                                                         label={key}
-                                                         key={key}/>;
-                            })}
-                        </FormGroup>
-                    </Grid>
-                    <Grid size={{md: 3}}>
-                        <Typography variant={"h6"}>Personality</Typography>
-                        <FormGroup>
-                            {Object.entries(personalitySkillTree).map(([key, value]) => {
-                                const skillName = key as SkillName;
-                                return <FormControlLabel control={<Checkbox/>}
-                                                         checked={getEnabledSkills().includes(skillName)}
-                                                         onChange={() => toggleSkill(skillName, 2)}
-                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
-                                                         label={key}
-                                                         key={key}/>;
-                            })}
-                        </FormGroup>
-                    </Grid>
-                    <Grid size={{md: 3}}>
-                        <Typography variant={"h6"}>Karma</Typography>
-                        <FormGroup>
-                            {Object.entries(karmaSkillTree).map(([key, value]) => {
-                                const skillName = key as SkillName;
-                                return <FormControlLabel control={<Checkbox/>}
-                                                         checked={getEnabledSkills().includes(skillName)}
-                                                         onChange={() => toggleSkill(skillName, 2)}
-                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
-                                                         label={key}
-                                                         key={key}/>;
-                            })}
-                        </FormGroup>
-                    </Grid>
-                    <Grid size={{md: 3}}>
-                        <Typography variant={"h6"}>Talent</Typography>
-                        <FormGroup>
-                            {Object.entries(talentsSkillTree).map(([key, value]) => {
-                                const skillName = key as SkillName;
-                                return <FormControlLabel control={<Checkbox/>}
-                                                         checked={getEnabledSkills().includes(skillName)}
-                                                         onChange={() => toggleSkill(skillName, 2)}
-                                                         disabled={!isSkillUnlocked(value, getEnabledSkills(), characterSheetFields.level) && !getEnabledSkills().includes(skillName)}
-                                                         label={key}
-                                                         key={key}/>;
-                            })}
-                        </FormGroup>
-                    </Grid>
-                </Grid>
+                <SkillTree readOnly/>
             </Container>
+            {/*TODO Make this mobile compatible by putting this on the bottom*/}
+            <div style={{marginTop: 16, marginRight: 16}}>
+                <ModeToggle/>
+            </div>
         </div>
     </Fade>;
 }
