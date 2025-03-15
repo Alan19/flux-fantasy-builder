@@ -11,7 +11,7 @@ import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
 import {useEffect, useState} from "react";
 import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
 import {shadedBoxStyle} from "./ShadedBoxStyle.tsx";
-import {Button} from "@mui/material-next";
+import {Button, useColorScheme} from "@mui/material-next";
 import {SkillTree} from "./SkillTree.tsx";
 import {ModeToggle} from "./ModeToggle.tsx";
 
@@ -80,6 +80,7 @@ export function RenderedCharacterSheet() {
     const characterSheetFields = useCharacterSheetFields();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
     const [printMode, setPrintMode] = useState(false)
+    const {mode, systemMode} = useColorScheme();
 
     function printCharacterSheet() {
         setPrintMode(true);
@@ -98,13 +99,14 @@ export function RenderedCharacterSheet() {
             <Container>
                 {!printMode && <div>
                     <Link to={'/'}>
-                        <Typography><IconButton><ArrowBack/></IconButton>Made a mistake? Click here to go back and correct your character's origin!</Typography>
+                        <Typography color={'var(--md-sys-color-onSurface)'}><IconButton><ArrowBack/></IconButton>Made a mistake? Click here to go back and correct your character's origin!</Typography>
                     </Link>
                 </div>}
 
                 <Grid container spacing={2}>
                     <Grid size={{md: 4}}>
-                        <img src={fluxFantasyLogo} style={{width: '100%'}} alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>
+                        <img src={fluxFantasyLogo} style={{width: '100%', filter: mode === "dark" || systemMode === "dark" ? "invert(1)" : "invert(0)"}}
+                             alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>
                         <Typography variant={"subtitle2"}>Character Sheet</Typography>
                     </Grid>
                     <Grid size={{md: 8}}>

@@ -11,7 +11,8 @@ export const CharacterInfoInput = () => {
             <Container>
                 <div style={{display: "flex", flexDirection: "column"}}>
                     <Link to={'/sheet'} style={{alignSelf: "end"}}>
-                        <Typography>When you're done filling out information here, click here to view a web version of the Flux Fantasy character sheet!<IconButton><ArrowForward/></IconButton></Typography>
+                        <Typography color={'var(--md-sys-color-onSurface)'}>When you're done filling out information here, click here to view a web version of the Flux Fantasy character
+                            sheet!<IconButton><ArrowForward/></IconButton></Typography>
                     </Link>
                 </div>
                 <CharacterIdentity/>

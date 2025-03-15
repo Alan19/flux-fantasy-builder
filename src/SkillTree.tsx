@@ -4,6 +4,7 @@ import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeN
 import {isSkillUnlocked} from "./IsSkillUnlocked.tsx";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
+// TODO Remove when readonly is done
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: false}) {
     const {skills, toggleSkill} = useSkillTree();
