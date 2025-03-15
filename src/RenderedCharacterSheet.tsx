@@ -407,7 +407,7 @@ export function RenderedCharacterSheet() {
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
                             <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
-                            {!printMode && <Button variant={"outlined"} onClick={() => printCharacterSheet()}>Print</Button>}
+                            {!printMode && <Button variant={"outlined"} color={"tertiary"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
                     </Grid>
                 </Grid>

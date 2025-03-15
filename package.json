@@ -17,12 +17,10 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource-variable/oxanium": "^5.2.5",
     "@fontsource/roboto": "^5.1.1",
-    "@mui/base": "5.0.0-beta.6",
+    "@mui/base": "7.0.0-beta.4",
     "@mui/icons-material": "^6.4.5",
     "@mui/material": "^6.4.5",
     "@mui/material-next": "6.0.0-alpha.126",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
     "usehooks-ts": "^3.1.1",
     "wouter": "^3.3.5"
@@ -40,5 +38,9 @@
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.24.1",
     "vite": "^6.0.11"
+  },
+  "overrides": {
+    "react": "19.x",
+    "react-dom": "19.x"
   }
 }

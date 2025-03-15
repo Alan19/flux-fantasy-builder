@@ -245,7 +245,7 @@ export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode
 export const fullSkillTree: { [skillName in SkillName]: SkillTreeNode } = {...vitalitySkillTree, ...karmaSkillTree, ...personalitySkillTree, ...talentsSkillTree}
 
 export function useSkillTree() {
-    const [skills, setSkills] = useLocalStorage<SkillName[]>("skills", [])
+    const [skills, setSkills] = useLocalStorage<SkillName[]>("skill-selection", [])
 
     function toggleSkill(skill: SkillName) {
         setSkills(prevState => prevState.includes(skill) ? prevState.filter(value => value !== skill) : prevState.concat(skill))
