@@ -4,11 +4,10 @@ import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeN
 import {isSkillUnlocked} from "./IsSkillUnlocked.tsx";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
-export function SkillTree(props: Readonly<{ readOnly?: boolean }> = {readOnly: false}) {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: false}) {
     const {skills, toggleSkill} = useSkillTree();
     const {level} = useCharacterSheetFields()
-    const {readOnly} = props;
-
     function getSkillCheckbox(skillName: SkillName, skillData: SkillTreeNode) {
         return <FormControlLabel control={<Checkbox/>}
                                  checked={skills.includes(skillName)}
