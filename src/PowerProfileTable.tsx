@@ -3,16 +3,18 @@ import {RadioGroup, Table, TableBody, TableCell, TableContainer, TableHead, Tabl
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerTier, PowerType, usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
 import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
+import {useSkillTree} from "./UseSkillTree.ts";
 
 export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, KarmaPowerLoadout], readOnly?: boolean }>) {
     const {readOnly = false, powers} = props;
     const [, karmaPowers] = powers;
     const powerNames = usePowerLoadoutSettings();
     const {paybackPoints} = useCharacterSheetFields()
+    const {skills} = useSkillTree();
 
     function getPowerSetForTier(tier: PowerTier) {
         return Object.values(PowerType).map(value => <KarmaPowerRow key={value} powerType={value} karmaPowerLoadout={karmaPowers} powerLoadoutSettings={powerNames} paybackPoints={paybackPoints}
-                                                                    editablePowerInfo={[tier, powerNames[tier][value][0], powerNames[tier][value][1]]}/>);
+                                                                    editablePowerInfo={[tier, powerNames[tier][value][0], powerNames[tier][value][1]]} selectedSkills={skills}/>);
     }
 
     return <TableContainer>
@@ -28,7 +30,7 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {readOnly ? Object.values(PowerType).map(value => <KarmaPowerRow key={value} powerType={value} karmaPowerLoadout={karmaPowers} powerLoadoutSettings={powerNames} paybackPoints={paybackPoints}/>) :
+                    {readOnly ? Object.values(PowerType).map(value => <KarmaPowerRow key={value} powerType={value} karmaPowerLoadout={karmaPowers} powerLoadoutSettings={powerNames} paybackPoints={paybackPoints} selectedSkills={skills}/>) :
                         <>
                             {getPowerSetForTier(0)}
                             <TableRow>

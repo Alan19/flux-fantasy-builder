@@ -2,6 +2,7 @@ import {FormControl, InputLabel, MenuItem, Select, TableCell, TableRow, TextFiel
 import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
 
 import {getTierName, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts} from "./KarmaPowerLoadout.ts";
+import {KarmaSkills, SkillName} from "./UseSkillTree.ts";
 
 function getNamesForPowerType(powerType: PowerType, powerLoadoutSettings: PowerLoadoutSettings): [string, string, string, string] {
     return [powerLoadoutSettings[0][powerType][0], powerLoadoutSettings[1][powerType][0], powerLoadoutSettings[2][powerType][0], powerLoadoutSettings[3][powerType][0]]
@@ -29,13 +30,23 @@ export function KarmaPowerRow(props: Readonly<{
     karmaPowerLoadout: KarmaPowerLoadout,
     powerLoadoutSettings: PowerLoadoutSettings,
     paybackPoints: number,
+    selectedSkills: SkillName[],
     editablePowerInfo?: [PowerTier, string, ((value: string) => void)],
 }>) {
-    const {powerType, editablePowerInfo, paybackPoints, karmaPowerLoadout, powerLoadoutSettings} = props;
+    const {powerType, editablePowerInfo, paybackPoints, karmaPowerLoadout, powerLoadoutSettings, selectedSkills} = props;
     const isAttack = powerType === PowerType.attack || powerType === PowerType.combo || powerType === PowerType.signature
     const [currentPowerTierForPower, setCurrentPowerTierForPower] = powerLoadoutSettings[powerType];
     const tierToDisplay: PowerTier = editablePowerInfo?.[0] ?? currentPowerTierForPower;
     const label = `${getTierName(tierToDisplay)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`;
+
+    function isMenuItemDisabled(skills: SkillName[], tier: number) {
+        const hasBasic = tier === PowerTier.basic;
+        const hasBasic2 = tier === PowerTier.basic2 && skills.includes(KarmaSkills.tier2BasicAttacks);
+        const hasAdvanced = tier === PowerTier.advanced && skills.includes(KarmaSkills.advancedAttacks);
+        const hasAdvanced2 = tier === PowerTier.advanced2 && skills.includes(KarmaSkills.advancedAttacks2);
+        return !(hasBasic || hasBasic2 || hasAdvanced || hasAdvanced2);
+    }
+
     return <TableRow>
         <TableCell style={{paddingTop: 10}}>
             {/*Textbox if the user is in editing mode, dropdown if the user is in-play mode*/}
@@ -47,7 +58,7 @@ export function KarmaPowerRow(props: Readonly<{
                             onChange={event => setCurrentPowerTierForPower(event.target.value as PowerTier)}
                             value={currentPowerTierForPower}
                             size={"small"}>
-                        {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem key={index} value={index}>{value}</MenuItem>)}
+                        {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index} value={index}>{value}</MenuItem>)}
                         {/*TODO Add swap powers here*/}
                     </Select>
                 </FormControl>}
