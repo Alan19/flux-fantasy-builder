@@ -17,6 +17,10 @@ export function useCharacterSheetFields() {
     const [affiliation, setAffiliation] = useLocalStorage<Affiliation | undefined>('affiliation', undefined)
     const [background, setBackground] = useLocalStorage("background", "")
     const [traits, setTraits] = useLocalStorage<Record<TraitList, boolean>>('traits', {
+        Adaptable: false,
+        Observant: false,
+        Resilient: false,
+        Thrifty: false,
         "Good Looking": false,
         Calm: false,
         Dependable: false,
@@ -30,6 +34,10 @@ export function useCharacterSheetFields() {
         Talented: false
     })
     const [flaws, setFlaws] = useLocalStorage<Record<FlawList, boolean>>('flaws', {
+        Distant: false,
+        Distracted: false,
+        Extravagant: false,
+        Lovesick: false,
         "Hot Headed": false,
         "Tongue Tied": false,
         Arrogant: false,
