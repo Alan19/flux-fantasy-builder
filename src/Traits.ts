@@ -5,8 +5,8 @@ export interface Trait {
     effect: string;
 }
 
-export type TraitList = "Dependable" | "Good Looking" | "Handy" | "Determined" | "Calm" | "Talented" | "Loyal" | "Inspirational" | "Honorable" | "Spunky" | "Protective"
-export type FlawList = "Hot Headed" | "Insecure" | "Tongue Tied" | "Arrogant" | "Reckless" | "Selfish" | "Unmotivated" | "Clumsy" | "Paranoid" | "Cowardly" | "Secretive"
+export type TraitList = "Dependable" | "Good Looking" | "Handy" | "Determined" | "Calm" | "Talented" | "Loyal" | "Inspirational" | "Honorable" | "Spunky" | "Protective" | "Thrifty" | "Observant" | "Adaptable" | "Resilient"
+export type FlawList = "Hot Headed" | "Insecure" | "Tongue Tied" | "Arrogant" | "Reckless" | "Selfish" | "Unmotivated" | "Clumsy" | "Paranoid" | "Cowardly" | "Secretive" | "Lovesick" | "Distracted" | "Extravagant" | "Distant"
 
 export const selectableTraits: Record<TraitList, Trait> = {
     Dependable: {description: "People rely upon and look up to you.", effect: "Ability to perform Combos at -2 KP cost."},
@@ -19,7 +19,11 @@ export const selectableTraits: Record<TraitList, Trait> = {
     Inspirational: {description: "You always know how to bring others up.", effect: "Add your Modifier to another Player's Talent roll twice per game."},
     Honorable: {description: "You do the right thing.", effect: "Common-uncommon items with one time use now have two uses for you."},
     Spunky: {description: "You've got a lot of energy.", effect: "Gain ⧗5 for every natural 20 roll."},
-    Protective: {description: "You're always defending others.", effect: "+2 Defense when performing a Defense move in combat."}
+    Protective: {description: "You're always defending others.", effect: "+2 Defense when performing a Defense move in combat."},
+    Adaptable: {description: "It's a good thing you're flexible.", effect: "When failing a Basic Action roll, reroll 2 times per Checkpoint."},
+    Resilient: {description: "You're tough.", effect: "Gain +1 Destiny Rewrite per Checkpoint."},
+    Thrifty: {description: "You're always finding a good deal.", effect: "Gain an additional +⧗5 when finding merits"},
+    Observant: {description: "Great eye!", effect: "+2 to Function rolls when the initial roll is lower than 10."}
 }
 export const selectableFlaws: Record<FlawList, Trait> = {
     "Hot Headed": {description: "You get too worked up too quickly.", effect: "Lose your first Turn at the start of battle."},
@@ -32,7 +36,11 @@ export const selectableFlaws: Record<FlawList, Trait> = {
     Clumsy: {description: "Where did I put that?", effect: "Only carry up to 10 items at a time."},
     Paranoid: {description: "Someone is watching me!", effect: "Basic Defense powers cost +5 KP to perform."},
     Cowardly: {description: "You're not one to rush into battle.", effect: "When rolling for Initiative in combat, -5"},
-    Secretive: {description: "You don't trust anyone.", effect: "Can't share items with others."}
+    Secretive: {description: "You don't trust anyone.", effect: "Can't share items with others."},
+    Lovesick: {description: "You fall in love with everyone you meet.", effect: "When rolling for Aura, roll twice and take the lower result."},
+    Distracted: {description: "Huh? What did you say?", effect: "On rolls requiring multiple people to succeed, subtract 2 from your roll result."},
+    Extravagant: {description: "You have expensive taste.", effect: "Items cost +⧗5 merits more than listed."},
+    Distant: {description: "You keep others at a distance.", effect: "Can only perform one Combo per combat."}
 }
 
 export const affiliationTraits: Record<Affiliation, { name: string, effect: string }> = {
@@ -59,6 +67,10 @@ export const affiliationTraits: Record<Affiliation, { name: string, effect: stri
     "Ink Fighting Elite": {
         name: "Get Back Up",
         effect: "When below 25% HP, add +3 to all rolls."
+    },
+    [Affiliation.foreignVisitor]: {
+        name: "Diplomatic Immunity",
+        effect: "+4 Damage on all attacks when fighting against Special Agents"
     }
 }
 
@@ -86,5 +98,9 @@ export const affiliationFlaws: Record<Affiliation, { name: string, effect: strin
     "Ink Fighting Elite": {
         name: "Bruised",
         effect: "-1 to Function rolls."
+    },
+    [Affiliation.foreignVisitor]: {
+        name: "Language Barrier",
+        effect: "-1 to Technique"
     }
 }

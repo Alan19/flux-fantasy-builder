@@ -33,25 +33,25 @@ function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
             break
     }
     if (level >= 2) {
-        advantages += "\n● +5 to your Karma Pool"
+        advantages += "\n● +5 to Karma Pool"
     }
     if (level >= 3) {
-        advantages += "\n● +7 to your HP"
+        advantages += "\n● +10 HP Boost"
     }
     if (level >= 4) {
-        advantages += "\n● Extra Skill Tree point just for this level"
+        advantages += "\n● Extra Skill Tree point"
     }
     if (level >= 5) {
-        advantages += "\n● +1 to any Talent"
+        advantages += "\n● +1 to Any Talent"
     }
     if (level >= 6) {
-        advantages += "\n● 10% increase in all shop discounts"
+        advantages += "\n● 10% Discount in all Shops"
     }
     if (level >= 7) {
         advantages += "\n● +1 to DEF"
     }
     if (level >= 8) {
-        advantages += "\n● +1 to MOV"
+        advantages += "\n● +1 to DEF"
     }
     if (level >= 9) {
         advantages += "\n● All one-time items can be used twice"
@@ -307,7 +307,7 @@ export function RenderedCharacterSheet() {
                                         <Grid size={{md: 4}}>
                                             <TextField variant={"filled"}
                                                        slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><DirectionsRun/></InputAdornment>}}}
-                                                       value={getMovModifier(effectiveTalents, characterSheetFields.level)}
+                                                       value={getMovModifier(effectiveTalents)}
                                                        label={"MOV"}/>
                                         </Grid>
                                     </Grid>

@@ -54,7 +54,8 @@ export enum Affiliation {
     inkFightingElite = 'Ink Fighting Elite',
     nka = 'National Karmastry Authority',
     clockbotUnion = 'Clockbot Union',
-    independent = 'Independent'
+    independent = 'Independent',
+    foreignVisitor = 'Foreign Visitor',
 }
 
 export function getDefenseModifier(affiliation: Affiliation, level: number) {
@@ -66,6 +67,7 @@ export function getDefenseModifier(affiliation: Affiliation, level: number) {
             break
         case Affiliation.gears:
         case Affiliation.nka:
+        case Affiliation.foreignVisitor:
             defenseModifier = 2;
             break
         case Affiliation.clockbotUnion:
@@ -74,6 +76,9 @@ export function getDefenseModifier(affiliation: Affiliation, level: number) {
             break
     }
     if (level >= 7) {
+        defenseModifier += 1;
+    }
+    if (level >= 8) {
         defenseModifier += 1;
     }
     return defenseModifier;
@@ -146,7 +151,7 @@ export function getMaxHP(effectiveTalents: TalentModifiers, level: number) {
     return 10 + (effectiveTalents.function ?? 0) + (level >= 3 ? 7 : 0);
 }
 
-export function getMovModifier(effectiveTalents: TalentModifiers, level: number) {
-    return 1 + (effectiveTalents.agility ?? 0) + (level >= 8 ? 1 : 0);
+export function getMovModifier(effectiveTalents: TalentModifiers) {
+    return 1 + (effectiveTalents.agility ?? 0);
 }
 
