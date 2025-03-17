@@ -2,7 +2,7 @@ import {Box, Container, Fade, IconButton, InputAdornment, Paper, Stack, TextFiel
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
-import {getKarmaPowerLoadout} from "./KarmaPowerLoadout.ts";
+import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
 import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier, KarmaSpecialty} from "./KarmaSpecialty.ts";
 import {ArrowBack, ArrowUpward, Check, DirectionsRun, Favorite, Recommend, Shield, Warning} from "@mui/icons-material";
 import {Link} from "wouter";
@@ -316,9 +316,13 @@ export function RenderedCharacterSheet() {
                             <div>
                                 <TypographyWithAdornment text={"Karma Power Profile"}/>
                                 {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
-                                    <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}><PowerProfileTable powers={getKarmaPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)}
-                                                                                                                               readOnly/></Paper> :
-                                    <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
+                                    <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                                        <PowerProfileTable powers={getPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)}
+                                                           readOnly/>
+                                    </Paper> :
+                                    <Box>
+                                        <Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography>
+                                    </Box>}
                             </div>
                             <div>
                                 <TypographyWithAdornment text={"Traits & Flaws"}/>

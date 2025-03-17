@@ -7,7 +7,7 @@ import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
 import {ExpandMore} from "@mui/icons-material";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
-import {getKarmaPowerLoadout} from "./KarmaPowerLoadout.ts";
+import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
 import {SkillTree} from "./SkillTree.tsx";
 
 export function CharacterIdentity() {
@@ -188,7 +188,7 @@ export function CharacterIdentity() {
                         <TypographyWithAdornment text={"Karma Abilities"}/>
                     </AccordionSummary>
                     <AccordionDetails>
-                        {characterIdentity.karmaSpecialty && characterIdentity.study ? <PowerProfileTable powers={getKarmaPowerLoadout(characterIdentity.karmaSpecialty, characterIdentity.study)}/> :
+                        {characterIdentity.karmaSpecialty && characterIdentity.study ? <PowerProfileTable powers={getPowerLoadout(characterIdentity.karmaSpecialty, characterIdentity.study)}/> :
                             <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
                     </AccordionDetails>
                 </Accordion>

@@ -18,7 +18,9 @@ export enum PowerTier {
 
 export type PowerLoadoutSettings = Record<PowerTier, { [type in PowerType]: [string, React.Dispatch<React.SetStateAction<string>>] }>
     & Record<'swapPower', [string, React.Dispatch<React.SetStateAction<string>>]>
-    & Record<PowerType, [PowerTier, React.Dispatch<React.SetStateAction<PowerTier>>]>;
+    & Record<'advancedSwapPower', [string, React.Dispatch<React.SetStateAction<string>>]>
+    & Record<PowerType.defense | PowerType.combo | PowerType.signature | PowerType.locomotion, [PowerTier, React.Dispatch<React.SetStateAction<PowerTier>>]>
+    & Record<PowerType.attack, [PowerTier | string, React.Dispatch<React.SetStateAction<PowerTier | string>>]>;
 
 export function usePowerLoadoutSettings(): PowerLoadoutSettings {
     // Karma Power Names
@@ -43,9 +45,10 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
     const [advancedLocomotion, setAdvancedLocomotion] = useLocalStorage('advanced-locomotion', '')
     const [advanced2Locomotion, setAdvanced2Locomotion] = useLocalStorage('advanced-2-locomotion', '')
     const [selectedSwapPower, setSelectedSwapPower] = useLocalStorage<string>('selected-swap-power', '')
+    const [selectedAdvancedSwapPower, setSelectedAdvancedSwapPower] = useLocalStorage<string>('selected-advanced-swap-power', '')
 
-    // TODO Allow swap power as an option
-    const [selectedAttackTier, setSelectedAttackTier] = useLocalStorage<PowerTier>('selected-attack-tier', PowerTier.basic)
+    // String option is a swap power
+    const [selectedAttackTier, setSelectedAttackTier] = useLocalStorage<PowerTier | string>('selected-attack-tier', PowerTier.basic)
     const [selectedDefenseTier, setSelectedDefenseTier] = useLocalStorage<PowerTier>('selected-defense-tier', PowerTier.basic)
     const [selectedComboTier, setSelectedComboTier] = useLocalStorage<PowerTier>('selected-combo-tier', PowerTier.basic)
     const [selectedSignatureTier, setSelectedSignatureTier] = useLocalStorage<PowerTier>('selected-signature-tier', PowerTier.basic)
@@ -81,6 +84,7 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
             locomotion: [advanced2Locomotion, setAdvanced2Locomotion]
         },
         swapPower: [selectedSwapPower, setSelectedSwapPower],
+        advancedSwapPower: [selectedAdvancedSwapPower, setSelectedAdvancedSwapPower],
         [PowerType.attack]: [selectedAttackTier, setSelectedAttackTier],
         [PowerType.defense]: [selectedDefenseTier, setSelectedDefenseTier],
         [PowerType.combo]: [selectedComboTier, setSelectedComboTier],

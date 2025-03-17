@@ -1,7 +1,7 @@
 import {FormControl, InputLabel, MenuItem, Select, TableCell, TableRow, TextField} from "@mui/material";
 import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
 
-import {getTierName, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts} from "./KarmaPowerLoadout.ts";
+import {getTierName, isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
 import {KarmaSkills, SkillName} from "./UseSkillTree.ts";
 
 function getNamesForPowerType(powerType: PowerType, powerLoadoutSettings: PowerLoadoutSettings): [string, string, string, string] {
@@ -29,16 +29,18 @@ export function KarmaPowerRow(props: Readonly<{
     powerType: PowerType
     karmaPowerLoadout: KarmaPowerLoadout,
     powerLoadoutSettings: PowerLoadoutSettings,
+    swapPowers: SwapPowerChoices,
     paybackPoints: number,
     selectedSkills: SkillName[],
     editablePowerInfo?: [PowerTier, string, ((value: string) => void)],
 }>) {
-    const {powerType, editablePowerInfo, paybackPoints, karmaPowerLoadout, powerLoadoutSettings, selectedSkills} = props;
+    const {powerType, editablePowerInfo, paybackPoints, karmaPowerLoadout, powerLoadoutSettings, selectedSkills, swapPowers} = props;
     const isAttack = powerType === PowerType.attack || powerType === PowerType.combo || powerType === PowerType.signature
-    const [currentPowerTierForPower, setCurrentPowerTierForPower] = powerLoadoutSettings[powerType];
-    const tierToDisplay: PowerTier = editablePowerInfo?.[0] ?? currentPowerTierForPower;
+    const [currentPowerTierForPower] = powerLoadoutSettings[powerType];
+    const [, setAttackPowerTier] = powerLoadoutSettings.attack;
+    const tierToDisplay = editablePowerInfo?.[0] ?? currentPowerTierForPower;
     const label = `${getTierName(tierToDisplay)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`;
-
+    console.log(currentPowerTierForPower, karmaPowerLoadout)
     function isMenuItemDisabled(skills: SkillName[], tier: number) {
         const hasBasic = tier === PowerTier.basic;
         const hasBasic2 = tier === PowerTier.basic2 && skills.includes(KarmaSkills.tier2BasicAttacks);
@@ -47,6 +49,7 @@ export function KarmaPowerRow(props: Readonly<{
         return !(hasBasic || hasBasic2 || hasAdvanced || hasAdvanced2);
     }
 
+    const selectedSwapPower = swapPowers.basic.concat(swapPowers.advanced).find(value => value.name === powerLoadoutSettings.attack[0]);
     return <TableRow>
         <TableCell style={{paddingTop: 10}}>
             {/*Textbox if the user is in editing mode, dropdown if the user is in-play mode*/}
@@ -55,19 +58,20 @@ export function KarmaPowerRow(props: Readonly<{
                     <InputLabel>{label}</InputLabel>
                     <Select label={label}
                             fullWidth
-                            onChange={event => setCurrentPowerTierForPower(event.target.value as PowerTier)}
+                            onChange={event => setAttackPowerTier(event.target.value)}
                             value={currentPowerTierForPower}
                             size={"small"}>
+                        <MenuItem value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0]}</MenuItem>
+                        <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]}>{powerLoadoutSettings.advancedSwapPower[0]}</MenuItem>
                         {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index} value={index}>{value}</MenuItem>)}
-                        {/*TODO Add swap powers here*/}
                     </Select>
                 </FormControl>}
         </TableCell>
-        <TableCell align="right">{getCostLabel(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
-        <TableCell align="right">{isAttack && karmaPowerLoadout[powerType].damage[tierToDisplay]}</TableCell>
-        <TableCell align="right">{isAttack && karmaPowerLoadout[powerType].range[tierToDisplay]}</TableCell>
-        {isAttack && <TableCell align="right">{karmaPowerLoadout.effects[tierToDisplay]}</TableCell>}
-        {powerType === PowerType.defense && <TableCell align="right">+{karmaPowerLoadout.defense.effect[tierToDisplay]} to DEF on next turn.</TableCell>}
-        {powerType === PowerType.locomotion && <TableCell align="right">+{locomotionRanges[tierToDisplay]} MOV</TableCell>}
+        <TableCell align="right">{isSwapPower(tierToDisplay) ? "" : getCostLabel(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints)}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+        <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.damage : karmaPowerLoadout[powerType].damage[tierToDisplay])}</TableCell>
+        <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.range : karmaPowerLoadout[powerType].range[tierToDisplay])}</TableCell>
+        {isAttack && <TableCell align="right">{(isSwapPower(tierToDisplay) ? selectedSwapPower?.effect : karmaPowerLoadout.effects[tierToDisplay])}</TableCell>}
+        {powerType === PowerType.defense && !isSwapPower(tierToDisplay) && <TableCell align="right">+{karmaPowerLoadout.defense.effect[tierToDisplay]} to DEF on next turn.</TableCell>}
+        {powerType === PowerType.locomotion && !isSwapPower(tierToDisplay) && <TableCell align="right">+{locomotionRanges[tierToDisplay]} MOV</TableCell>}
     </TableRow>
 }

@@ -11,9 +11,14 @@ interface KarmaUtility {
 }
 
 export interface SwapPower {
+    effect?: string;
     name: string;
     damage: number;
     range: string;
+}
+
+export function isSwapPower(power: string | PowerTier): power is string {
+    return typeof power === 'string';
 }
 
 export type KarmaPowerSet = {
@@ -28,7 +33,7 @@ export interface KarmaPowerLoadout extends KarmaPowerSet {
     effects: [string?, string?, string?, string?];
 }
 
-export type SwapPowerChoices = { basic: [SwapPower, SwapPower, SwapPower], advanced: [SwapPower, SwapPower, SwapPower], effect?: string };
+export type SwapPowerChoices = { basic: [SwapPower, SwapPower, SwapPower], advanced: [SwapPower, SwapPower, SwapPower] };
 
 export type SpecialtyCosts = {
     attackAndDefense: [number, number, number, number];
@@ -39,7 +44,7 @@ export type SpecialtyCosts = {
 export const locomotionCosts = [3, 5, 7, 9];
 export const locomotionRanges: [number, number, number, number] = [1, 2, 3, 4];
 
-export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapPowerChoices, KarmaPowerLoadout] {
+export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapPowerChoices, KarmaPowerLoadout] {
     const costs: {
         [specialty in KarmaSpecialty]: {
             attackAndDefense: [number, number, number, number];
@@ -245,6 +250,9 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
         }
     }
 
+    const escapeArtistSwapPowerEffect = "+5 KP restored";
+    const specialAgentSwapPowerEffect = "Reduces the Perception Threshold of enemy target by 2.";
+    const clockbotSwapPowerEffect = "+2 damage to humans.";
     const swapPowers: { [specialty in KarmaSpecialty]: SwapPowerChoices } = {
         [KarmaSpecialty.specialAgent]: {
             basic: [
@@ -253,11 +261,11 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
                 {name: "Taser", damage: 6, range: "0"}
             ],
             advanced: [
-                {name: "Mini Grenade", damage: 8, range: "0-2"},
-                {name: "Self Defense", damage: 10, range: "0-1"},
-                {name: "Poison Dart", damage: 12, range: "1-3"}
+                {name: "Mini Grenade", damage: 8, range: "0-2", effect: specialAgentSwapPowerEffect},
+                {name: "Self Defense", damage: 10, range: "0-1", effect: specialAgentSwapPowerEffect},
+                {name: "Poison Dart", damage: 12, range: "1-3", effect: specialAgentSwapPowerEffect}
             ],
-            effect: "Reduces the Perception Threshold of enemy target by 2."
+
         },
         [KarmaSpecialty.inkFighter]: {
             basic: [
@@ -278,11 +286,10 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
                 {name: "Shoulder Check", damage: 5, range: "0"}
             ],
             advanced: [
-                {name: "Block", damage: 11, range: "0-2"},
-                {name: "Windmill Arms", damage: 10, range: "0-3"},
-                {name: "Body Slam", damage: 12, range: "0-1"}
+                {name: "Block", damage: 11, range: "0-2", effect: clockbotSwapPowerEffect},
+                {name: "Windmill Arms", damage: 10, range: "0-3", effect: clockbotSwapPowerEffect},
+                {name: "Body Slam", damage: 12, range: "0-1", effect: clockbotSwapPowerEffect}
             ],
-            effect: "+2 damage to humans."
         },
         [KarmaSpecialty.escapeArtist]: {
             basic: [
@@ -291,18 +298,20 @@ export function getKarmaPowerLoadout(specialty: KarmaSpecialty, study: Study): [
                 {name: "Bite", damage: 4, range: "0"}
             ],
             advanced: [
-                {name: "Torus Smash", damage: 7, range: "0-4"},
-                {name: "Backhand", damage: 9, range: "1-2"},
-                {name: "Stomp", damage: 10, range: "0-1"}
+                {name: "Torus Smash", damage: 7, range: "0-4", effect: escapeArtistSwapPowerEffect},
+                {name: "Backhand", damage: 9, range: "1-2", effect: escapeArtistSwapPowerEffect},
+                {name: "Stomp", damage: 10, range: "0-1", effect: escapeArtistSwapPowerEffect}
             ],
-            effect: "+5 KP restored"
         }
     }
     return [swapPowers[specialty], loadouts[study]];
 }
 
-export function getTierName(powerTier: PowerTier) {
-    switch (powerTier) {
+export function getTierName(power: PowerTier | string) {
+    if (typeof power === 'string') {
+        return "Swap Power"
+    }
+    switch (power) {
         case PowerTier.basic:
             return "Basic"
         case PowerTier.basic2:
@@ -311,6 +320,5 @@ export function getTierName(powerTier: PowerTier) {
             return "Advanced"
         case PowerTier.advanced2:
             return "Advanced Tier 2"
-
     }
 }
