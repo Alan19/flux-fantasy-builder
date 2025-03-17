@@ -1,4 +1,5 @@
 import {useLocalStorage} from "usehooks-ts";
+import {TalentModifiers} from "./KarmaSpecialty.ts";
 
 export type SkillName = VitalitySkills | KarmaSkills | TalentSkills | PersonalitySkills;
 export type SkillTreeNode = {
@@ -6,6 +7,7 @@ export type SkillTreeNode = {
     prerequisites?: (SkillName)[],
     links?: SkillName[],
     level?: number,
+    options?: string[]
 }
 
 export enum VitalitySkills {
@@ -32,9 +34,10 @@ export enum KarmaSkills {
     resistPayback = 'Resist Payback',
     resistPayback2 = 'Resist Payback 2',
     karmaSurge = 'Karma Surge',
+    range = 'Range'
 }
 
-enum TalentSkills {
+export enum TalentSkills {
     talent1 = 'Talent 1',
     talent2 = 'Talent 2',
     talent3 = 'Talent 3',
@@ -48,7 +51,7 @@ enum TalentSkills {
     multiStudy = 'Multi-Study',
 }
 
-enum PersonalitySkills {
+export enum PersonalitySkills {
     perception1 = 'Perception 1',
     perception2 = 'Perception 2',
     combo1 = 'Combo 1',
@@ -65,20 +68,18 @@ enum PersonalitySkills {
 
 export const vitalitySkillTree: { [skill in VitalitySkills]: SkillTreeNode } = {
     [VitalitySkills.health1]: {
-        description: "Increase HP +5",
+        description: "Increase HP Cap by 5",
     },
     [VitalitySkills.health2]: {
-        description: "Increase HP +7",
+        description: "Increase HP Cap by 7",
         links: [VitalitySkills.health1]
     },
     [VitalitySkills.health3]: {
-        description: "Increase HP +10",
-        prerequisites: [VitalitySkills.health2],
-        links: [VitalitySkills.copycat, VitalitySkills.medKit1],
-        level: 4
+        description: "Increase HP Cap by 10",
+        links: [VitalitySkills.health2]
     },
     [VitalitySkills.health4]: {
-        description: "Increase HP +12",
+        description: "Increase HP Cap by 12",
         links: [VitalitySkills.health3]
     },
     [VitalitySkills.movementEnhance]: {
@@ -89,7 +90,7 @@ export const vitalitySkillTree: { [skill in VitalitySkills]: SkillTreeNode } = {
         links: [VitalitySkills.movementEnhance]
     },
     [VitalitySkills.vitalityEnhance]: {
-        description: "Increase either MOV or DEF by +3",
+        description: "Increase either MOV or DEF by +2",
         links: [VitalitySkills.defenseEnhance]
     },
     [VitalitySkills.medKit1]: {
@@ -108,22 +109,22 @@ export const vitalitySkillTree: { [skill in VitalitySkills]: SkillTreeNode } = {
 
 export const karmaSkillTree: { [skill in KarmaSkills]: SkillTreeNode } = {
     [KarmaSkills.karmaPool1]: {
-        description: "Gain 10 Karma Pool"
+        description: "Increase Karma Pool cap by 15"
     },
     [KarmaSkills.karmaPool2]: {
-        description: "Gain 15 Karma Pool",
+        description: "Increase Karma Pool cap by 25",
         links: [KarmaSkills.karmaPool1]
     },
     [KarmaSkills.karmaPool3]: {
-        description: "Gain 30 Karma Pool",
+        description: "Increase Karma Pool cap by 35",
         links: [KarmaSkills.advancedAttacks]
     },
     [KarmaSkills.karmaPool4]: {
-        description: "Gain 30 Karma Pool",
-        links: [KarmaSkills.resistPayback2]
+        description: "Increase Karma Pool cap by 50",
+        links: [KarmaSkills.range]
     },
     [KarmaSkills.tier2BasicAttacks]: {
-        description: "Can now perform Tier 2 Basic Attacks",
+        description: "Advance to Tier 2 Basic attacks",
         links: [KarmaSkills.karmaPool2]
     },
     [KarmaSkills.resistPayback]: {
@@ -135,16 +136,20 @@ export const karmaSkillTree: { [skill in KarmaSkills]: SkillTreeNode } = {
         links: [KarmaSkills.advancedAttacks2]
     },
     [KarmaSkills.advancedAttacks]: {
-        description: "Can now perform Advanced Attacks",
+        description: "You can now perform Advanced Karmastry Attacks",
         links: [KarmaSkills.resistPayback]
     },
     [KarmaSkills.advancedAttacks2]: {
-        description: "Can now perform Tier 2 Advanced Attacks",
+        description: "Can now perform Tier 2 Advanced Karmastry Attacks",
         links: [KarmaSkills.karmaPool3]
     },
     [KarmaSkills.karmaSurge]: {
         description: "Produce a more powerful Karma Surge for 35 damage at the same Karma cost",
-        links: [TalentSkills.destinySaves, KarmaSkills.advancedAttacks]
+        prerequisites: [TalentSkills.destinySaves, KarmaSkills.advancedAttacks]
+    },
+    [KarmaSkills.range]: {
+        description: "Increase the range of all attacks by 3.",
+        links: [KarmaSkills.resistPayback2]
     }
 }
 
@@ -153,7 +158,7 @@ export const talentsSkillTree: { [skill in TalentSkills]: SkillTreeNode } = {
         description: "Re-roll any roll twice per Checkpoint",
     },
     [TalentSkills.reroll2]: {
-        description: "Re-roll any roll three times per Checkpoint",
+        description: "Re-roll any roll four times per Checkpoint",
         links: [TalentSkills.reroll1],
     },
     [TalentSkills.talent1]: {
@@ -180,7 +185,7 @@ export const talentsSkillTree: { [skill in TalentSkills]: SkillTreeNode } = {
     },
     [TalentSkills.destinySaves]: {
         description: "Gain one extra Destiny Save",
-        links: [TalentSkills.reroll2, TalentSkills.talent4],
+        prerequisites: [TalentSkills.reroll2, TalentSkills.talent4],
     },
     [TalentSkills.share]: {
         description: "Share your Basic Action roll with two other Players",
@@ -188,56 +193,55 @@ export const talentsSkillTree: { [skill in TalentSkills]: SkillTreeNode } = {
     },
     [TalentSkills.multiStudy]: {
         description: "Gain the advantage of one other specialty",
-        links: [TalentSkills.share],
-        level: 8
+        prerequisites: [TalentSkills.destinySaves, KarmaSkills.advancedAttacks]
     }
 }
 
 export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode } = {
     [PersonalitySkills.perception1]: {
-        description: "When rolling for Perception of an enemy or NPC, get a re-roll if the initial roll was below 5",
+        description: "When rolling for Perception, get a re-roll if the initial roll was below 5",
     },
     [PersonalitySkills.perception2]: {
-        description: "Once per Checkpoint, pass a Perception Threshold automatically without rolling",
+        description: "Once per session, pass a Perception Threshold automatically without rolling",
         links: [PersonalitySkills.perception1],
     },
     [PersonalitySkills.merits1]: {
-        description: "Gain +5 merits each time you receive some"
+        description: "Gain +10 merits each time you gain merits."
     },
     [PersonalitySkills.merits2]: {
-        description: "Sell items for 10% more",
+        description: "Sell items for 10% more.",
         links: [PersonalitySkills.merits1]
     },
     [PersonalitySkills.combo1]: {
-        description: "Perform 3 Combos per combat",
+        description: "Perform 3 Combos per combat.",
         links: [PersonalitySkills.perception1],
     },
     [PersonalitySkills.combo2]: {
-        description: "Combos take 10 less Karma to perform",
+        description: "Combos take 10 less KP to perform",
         links: [PersonalitySkills.combo1],
     },
     [PersonalitySkills.combo3]: {
-        description: "Advanced Attacks perform Combos in 1 turn and for 5 less karma",
-        prerequisites: [PersonalitySkills.traits, PersonalitySkills.combo2],
+        description: "Perform 4 Combos per combat for 5 less KP.",
+        links: [PersonalitySkills.combo2],
     },
     [PersonalitySkills.karmaAlignment]: {
-        description: "Gain 2 points in either Positive or Negative Karma consequence",
+        description: "Gain the ability to trade KAPS between positive and negative once per session.",
         links: [PersonalitySkills.perception1],
     },
     [PersonalitySkills.positiveForce]: {
-        description: "When gaining positive KAP, gain double",
+        description: "When gaining positive KAPs, gain double.",
         links: [PersonalitySkills.karmaAlignment]
     },
     [PersonalitySkills.negativeForce]: {
-        description: "When gaining negative KAP, gain double",
+        description: "When gaining negative KAPs, gain double.",
         links: [PersonalitySkills.karmaAlignment]
     },
     [PersonalitySkills.affiliation]: {
-        description: "Trade your Affiliations, Traits, and Flaws with another Affiliation",
+        description: "Gain the trait and flaw of another affiliation.",
         links: [PersonalitySkills.perception2],
     },
     [PersonalitySkills.traits]: {
-        description: "Gain 1 Trait with no Flaw",
+        description: "Gain a basic trait with no flaw.",
         links: [PersonalitySkills.affiliation],
     }
 }
@@ -246,10 +250,24 @@ export const fullSkillTree: { [skillName in SkillName]: SkillTreeNode } = {...vi
 
 export function useSkillTree() {
     const [skills, setSkills] = useLocalStorage<SkillName[]>("skill-selection", [])
+    const [vitalityOptions, setVitalityOptions] = useLocalStorage<"MOV" | "DEF" | undefined>("vitality-options", undefined)
+    const [talent1Options, setTalent1Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-1-options", undefined)
+    const [talent2Options, setTalent2Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-2-options", undefined)
+    const [talent3Options, setTalent3Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-3-options", undefined)
+    const [talent4Options, setTalent4Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-4-options", undefined)
+    const [level5Talent, setLevel5Talent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
 
     function toggleSkill(skill: SkillName) {
         setSkills(prevState => prevState.includes(skill) ? prevState.filter(value => value !== skill) : prevState.concat(skill))
     }
 
-    return {skills, toggleSkill}
+    return {
+        skills, toggleSkill,
+        vitalityOptions, setVitalityOptions,
+        talent1Options, setTalent1Options,
+        talent2Options, setTalent2Options,
+        talent3Options, setTalent3Options,
+        talent4Options, setTalent4Options,
+        level5Talent, setLevel5Talent
+    }
 }

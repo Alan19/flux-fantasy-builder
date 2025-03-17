@@ -1,3 +1,5 @@
+import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "./UseSkillTree.ts";
+
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
 export enum EscapeArtistStudies {creativeKarmastry = 'Creative Karmastry', clockworkKarmastry = 'Clockwork Karmastry', bioKarmastry = 'Bio Karmastry', machineKarmastry = 'Machine Karmastry', quantumKarmastry = 'Quantum Karmastry'}
@@ -25,7 +27,7 @@ export function getStudies(karmaSpecialty: KarmaSpecialty | undefined) {
     }
 }
 
-export function getMaxKarma(specialty: KarmaSpecialty, level: number) {
+export function getMaxKarma(specialty: KarmaSpecialty, level: number, skills: SkillName[]) {
     let karmaPool = specialty === KarmaSpecialty.escapeArtist ? 25 : 20;
     if (level >= 2) {
         karmaPool += 5;
@@ -33,19 +35,42 @@ export function getMaxKarma(specialty: KarmaSpecialty, level: number) {
     if (level >= 10) {
         karmaPool += 10;
     }
+    if (skills.includes(KarmaSkills.karmaPool1)) {
+        karmaPool += 15;
+    }
+    if (skills.includes(KarmaSkills.karmaPool2)) {
+        karmaPool += 25;
+    }
+    if (skills.includes(KarmaSkills.karmaPool3)) {
+        karmaPool += 35;
+    }
+    if (skills.includes(KarmaSkills.karmaPool4)) {
+        karmaPool += 50;
+    }
     return karmaPool;
 }
 
-export function getHealingPercent(karmaSpecialty: KarmaSpecialty) {
+export function getHealingPercent(karmaSpecialty: KarmaSpecialty, skills: SkillName[]) {
+    let healingPercentage;
     switch (karmaSpecialty) {
         case KarmaSpecialty.escapeArtist:
         case KarmaSpecialty.clockbot:
-            return 25
+            healingPercentage = 25
+            break;
         case KarmaSpecialty.inkFighter:
-            return 50
+            healingPercentage = 50
+            break;
         case KarmaSpecialty.specialAgent:
-            return 100
+            healingPercentage = 100
+            break;
     }
+    if (skills.includes(VitalitySkills.medKit1)) {
+        healingPercentage += 25;
+    }
+    if (skills.includes(VitalitySkills.medKit2)) {
+        healingPercentage += 25;
+    }
+    return Math.min(healingPercentage, 100);
 }
 
 export enum Affiliation {
@@ -58,7 +83,7 @@ export enum Affiliation {
     foreignVisitor = 'Foreign Visitor',
 }
 
-export function getDefenseModifier(affiliation: Affiliation, level: number) {
+export function getDefenseModifier(affiliation: Affiliation, level: number, skills: SkillName[], vitalityOption: "DEF" | "MOV" | undefined) {
     let defenseModifier;
     switch (affiliation) {
         case Affiliation.independent:
@@ -81,10 +106,16 @@ export function getDefenseModifier(affiliation: Affiliation, level: number) {
     if (level >= 8) {
         defenseModifier += 1;
     }
+    if (skills.includes(VitalitySkills.defenseEnhance)) {
+        defenseModifier += 2;
+    }
+    if (skills.includes(VitalitySkills.vitalityEnhance) && vitalityOption === 'DEF') {
+        defenseModifier += 2;
+    }
     return defenseModifier;
 }
 
-interface TalentModifiers {
+export interface TalentModifiers {
     aura: number;
     technique: number;
     stamina: number;
@@ -95,7 +126,21 @@ interface TalentModifiers {
 
 type BoostedTalents = ("Aura" | "Technique" | "Agility" | "Stamina" | "Willpower" | "Function")[];
 
-export function getEffectiveTalents(study: Study | undefined, aura: number, technique: number, stamina: number, functionStat: number, willpower: number, agility: number): [TalentModifiers, BoostedTalents] {
+// TODO Lower the number of parameters
+export function getEffectiveTalents(study: Study | undefined,
+                                    aura: number,
+                                    technique: number,
+                                    stamina: number,
+                                    functionStat: number,
+                                    willpower: number,
+                                    agility: number,
+                                    talent1Options: keyof TalentModifiers | undefined,
+                                    talent2Options: keyof TalentModifiers | undefined,
+                                    talent3Options: keyof TalentModifiers | undefined,
+                                    talent4Options: keyof TalentModifiers | undefined,
+                                    level5Talent: keyof TalentModifiers | undefined,
+                                    skills: SkillName[],
+                                    level: number): [TalentModifiers, BoostedTalents] {
     const talents: TalentModifiers = {
         aura: aura,
         technique: technique,
@@ -144,14 +189,54 @@ export function getEffectiveTalents(study: Study | undefined, aura: number, tech
             boostedTalents.push("Aura");
             talents.aura += 1;
     }
+    if (skills.includes(TalentSkills.talent1) && talent1Options) {
+        talents[talent1Options] += 1;
+    }
+    if (skills.includes(TalentSkills.talent2) && talent2Options) {
+        talents[talent2Options] += 1;
+    }
+    if (skills.includes(TalentSkills.talent3) && talent3Options) {
+        talents[talent3Options] += 1;
+    }
+    if (skills.includes(TalentSkills.talent4) && talent4Options) {
+        talents[talent4Options] += 1;
+    }
+    if (level >= 5 && level5Talent) {
+        talents[level5Talent] += 1;
+    }
     return [talents, boostedTalents];
 }
 
-export function getMaxHP(effectiveTalents: TalentModifiers, level: number) {
-    return 10 + (effectiveTalents.function ?? 0) + (level >= 3 ? 7 : 0);
+export function getMaxHP(effectiveTalents: TalentModifiers, level: number, skills: SkillName[]) {
+    let totalHP = 10;
+    totalHP += (effectiveTalents.function ?? 0)
+    if (level >= 3) {
+        totalHP += 7;
+    }
+    if (skills.includes(VitalitySkills.health1)) {
+        totalHP += 5;
+    }
+    if (skills.includes(VitalitySkills.health2)) {
+        totalHP += 7;
+    }
+    if (skills.includes(VitalitySkills.health3)) {
+        totalHP += 10;
+    }
+    if (skills.includes(VitalitySkills.health4)) {
+        totalHP += 12;
+    }
+    return totalHP;
 }
 
-export function getMovModifier(effectiveTalents: TalentModifiers) {
-    return 1 + (effectiveTalents.agility ?? 0);
+export function getMovModifier(effectiveTalents: TalentModifiers, skills: SkillName[], vitalityOption: "DEF" | "MOV" | undefined) {
+    let totalMOV = 1;
+    totalMOV += (effectiveTalents.agility ?? 0);
+    if (skills.includes(VitalitySkills.movementEnhance)) {
+        totalMOV += 1;
+    }
+    if (skills.includes(VitalitySkills.vitalityEnhance) && vitalityOption === 'MOV') {
+        totalMOV += 2;
+    }
+    return totalMOV;
 }
 

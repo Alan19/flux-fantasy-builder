@@ -14,6 +14,7 @@ import {shadedBoxStyle} from "./ShadedBoxStyle.tsx";
 import {Button, useColorScheme} from "@mui/material-next";
 import {SkillTree} from "./SkillTree.tsx";
 import {ModeToggle} from "./ModeToggle.tsx";
+import {useSkillTree} from "./UseSkillTree.ts";
 
 
 function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
@@ -78,7 +79,21 @@ function getSpecialItems(karmaSpecialty: KarmaSpecialty) {
 
 export function RenderedCharacterSheet() {
     const characterSheetFields = useCharacterSheetFields();
-    const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility)
+    const {skills, level5Talent, talent1Options, vitalityOptions, talent3Options, talent4Options, talent2Options} = useSkillTree();
+    const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study,
+        characterSheetFields.aura,
+        characterSheetFields.technique,
+        characterSheetFields.stamina,
+        characterSheetFields.function,
+        characterSheetFields.willpower,
+        characterSheetFields.agility,
+        talent1Options,
+        talent2Options,
+        talent3Options,
+        talent4Options,
+        level5Talent,
+        skills,
+        characterSheetFields.level)
     const [printMode, setPrintMode] = useState(false)
     const {mode, systemMode} = useColorScheme();
 
@@ -192,7 +207,7 @@ export function RenderedCharacterSheet() {
                                     <TextField
                                         label="Med+ Kit %"
                                         variant={"outlined"}
-                                        value={characterSheetFields.karmaSpecialty ? (getHealingPercent(characterSheetFields.karmaSpecialty) + "%") : ""}
+                                        value={characterSheetFields.karmaSpecialty ? (getHealingPercent(characterSheetFields.karmaSpecialty, skills) + "%") : ""}
                                         slotProps={{input: {readOnly: true}}}
                                     />
                                 </Grid>
@@ -285,7 +300,7 @@ export function RenderedCharacterSheet() {
                                                        slotProps={{
                                                            input: {
                                                                startAdornment: <InputAdornment position="start"><Favorite/></InputAdornment>,
-                                                               endAdornment: <InputAdornment position="start">/ {getMaxHP(effectiveTalents, characterSheetFields.level)}</InputAdornment>
+                                                               endAdornment: <InputAdornment position="start">/ {getMaxHP(effectiveTalents, characterSheetFields.level, skills)}</InputAdornment>
                                                            }
                                                        }}
                                                        onKeyPress={(event) => {
@@ -301,13 +316,13 @@ export function RenderedCharacterSheet() {
                                         <Grid size={{md: 4}}>
                                             <TextField variant={"filled"}
                                                        slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><Shield/></InputAdornment>}}}
-                                                       value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level) : "+1"}
+                                                       value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level, skills, vitalityOptions) : "+1"}
                                                        label={"DEF"}/>
                                         </Grid>
                                         <Grid size={{md: 4}}>
                                             <TextField variant={"filled"}
                                                        slotProps={{input: {readOnly: true, startAdornment: <InputAdornment position="start"><DirectionsRun/></InputAdornment>}}}
-                                                       value={getMovModifier(effectiveTalents)}
+                                                       value={getMovModifier(effectiveTalents, skills, vitalityOptions)}
                                                        label={"MOV"}/>
                                         </Grid>
                                     </Grid>
@@ -377,7 +392,7 @@ export function RenderedCharacterSheet() {
                                                            input: {
                                                                endAdornment: (
                                                                    <InputAdornment position="end">
-                                                                       / {characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level) : 0}
+                                                                       / {characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level, skills) : 0}
                                                                    </InputAdornment>
                                                                ),
                                                            },

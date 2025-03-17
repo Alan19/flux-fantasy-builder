@@ -9,9 +9,11 @@ import {ExpandMore} from "@mui/icons-material";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
 import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
 import {SkillTree} from "./SkillTree.tsx";
+import {useSkillTree} from "./UseSkillTree.ts";
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();
+    const {skills} = useSkillTree()
     return <Stack spacing={3}>
         <Grid container spacing={1} alignItems={"stretch"}>
             <Grid style={{display: "flex", flexDirection: "column"}} size={{md: 6}}>
@@ -105,7 +107,7 @@ export function CharacterIdentity() {
                             <TextField
                                 label="Med+ Kit %"
                                 variant={"filled"}
-                                value={characterIdentity.karmaSpecialty ? getHealingPercent(characterIdentity.karmaSpecialty) + "%" : ""}
+                                value={characterIdentity.karmaSpecialty ? getHealingPercent(characterIdentity.karmaSpecialty, skills) + "%" : ""}
                                 slotProps={{
                                     input: {
                                         readOnly: true,
