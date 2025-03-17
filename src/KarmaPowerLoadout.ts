@@ -307,18 +307,3 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
     return [swapPowers[specialty], loadouts[study]];
 }
 
-export function getTierName(power: PowerTier | string) {
-    if (typeof power === 'string') {
-        return "Swap Power"
-    }
-    switch (power) {
-        case PowerTier.basic:
-            return "Basic"
-        case PowerTier.basic2:
-            return "Basic Tier 2"
-        case PowerTier.advanced:
-            return "Advanced"
-        case PowerTier.advanced2:
-            return "Advanced Tier 2"
-    }
-}

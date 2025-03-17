@@ -1,7 +1,7 @@
 import {FormControl, InputLabel, MenuItem, Select, TableCell, TableRow, TextField} from "@mui/material";
 import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
 
-import {getTierName, isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
+import {isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
 import {KarmaSkills, SkillName} from "./UseSkillTree.ts";
 
 function getNamesForPowerType(powerType: PowerType, powerLoadoutSettings: PowerLoadoutSettings): [string, string, string, string] {
@@ -25,6 +25,23 @@ function getBaseCost(powerType: PowerType, powerTier: PowerTier, costsForSpecial
     }
 }
 
+export function getTierName(power: PowerTier | string) {
+// TODO Add label for advanced swap power
+    if (typeof power === 'string') {
+        return "Swap Power"
+    }
+    switch (power) {
+        case PowerTier.basic:
+            return "Basic"
+        case PowerTier.basic2:
+            return "Basic Tier 2"
+        case PowerTier.advanced:
+            return "Advanced"
+        case PowerTier.advanced2:
+            return "Advanced Tier 2"
+    }
+}
+
 export function KarmaPowerRow(props: Readonly<{
     powerType: PowerType
     karmaPowerLoadout: KarmaPowerLoadout,
@@ -40,7 +57,6 @@ export function KarmaPowerRow(props: Readonly<{
     const [, setAttackPowerTier] = powerLoadoutSettings.attack;
     const tierToDisplay = editablePowerInfo?.[0] ?? currentPowerTierForPower;
     const label = `${getTierName(tierToDisplay)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`;
-    console.log(currentPowerTierForPower, karmaPowerLoadout)
     function isMenuItemDisabled(skills: SkillName[], tier: number) {
         const hasBasic = tier === PowerTier.basic;
         const hasBasic2 = tier === PowerTier.basic2 && skills.includes(KarmaSkills.tier2BasicAttacks);
@@ -62,7 +78,7 @@ export function KarmaPowerRow(props: Readonly<{
                             value={currentPowerTierForPower}
                             size={"small"}>
                         <MenuItem value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0]}</MenuItem>
-                        <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]}>{powerLoadoutSettings.advancedSwapPower[0]}</MenuItem>
+                        <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]} disabled={!selectedSkills.includes(KarmaSkills.advancedAttacks)}>{powerLoadoutSettings.advancedSwapPower[0]}</MenuItem>
                         {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index} value={index}>{value}</MenuItem>)}
                     </Select>
                 </FormControl>}
