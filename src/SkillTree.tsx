@@ -1,5 +1,5 @@
 import Grid from "@mui/material/Grid2";
-import {Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Paper, Select, Stack, Typography} from "@mui/material";
+import {Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
 import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "./UseSkillTree.ts";
 import {isSkillUnlocked} from "./IsSkillUnlocked.tsx";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
@@ -26,7 +26,7 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
     const karmaSkillPoints = Math.max(level - 1 - karmaSkillCount, 0);
     const otherSkillPoints = (level - 1) * 2 + (level > 3 ? 1 : 0) - Math.max(karmaSkillCount - (level - 1), 0) - nonKarmaSkillCount;
 
-    return <Paper style={{padding: 16, backgroundColor: "var(--md-sys-color-surfaceContainerHigh)"}}>
+    return <>
         {/*TODO Disable skill selection if you run out of skill points*/}
         <Typography>You have {karmaSkillPoints} Karma skill points and {otherSkillPoints} skill points left!</Typography>
         <Grid container spacing={2}>
@@ -108,5 +108,5 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
                 </Select>
             </FormControl>}
         </Stack>
-    </Paper>
+    </>
 }

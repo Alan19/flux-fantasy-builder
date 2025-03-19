@@ -17,7 +17,7 @@ export function CharacterIdentity() {
     return <Stack spacing={3}>
         <Grid container spacing={1} alignItems={"stretch"}>
             <Grid style={{display: "flex", flexDirection: "column"}} size={{md: 6}}>
-                <TypographyWithAdornment text={"About You"}/>
+                <TypographyWithAdornment coloredText text={"About You"}/>
                 <Paper style={{...shadedBoxStyle, flex: 1}}>
                     <Stack spacing={2}>
                         <TextField fullWidth size={"small"} value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>
@@ -43,7 +43,7 @@ export function CharacterIdentity() {
                 </Paper>
             </Grid>
             <Grid size={{md: 6}} style={{display: "flex", flexDirection: "column"}}>
-                <TypographyWithAdornment text={"Your Karmastry"}/>
+                <TypographyWithAdornment text={"Your Karmastry"} coloredText/>
                 <Paper style={{...shadedBoxStyle, flex: 1}}>
                     <Grid container spacing={2}>
                         <Grid size={{xs: 12}}>
@@ -75,6 +75,7 @@ export function CharacterIdentity() {
                                 label="Merits"
                                 variant={"outlined"}
                                 value={characterIdentity.merits}
+                                fullWidth
                                 slotProps={{
                                     input: {
                                         startAdornment: <InputAdornment position="start">⧗</InputAdornment>,
@@ -94,6 +95,7 @@ export function CharacterIdentity() {
                                 label="Med+ Kits"
                                 variant={"outlined"}
                                 value={characterIdentity.medKits}
+                                fullWidth
                                 type="number"
                                 onKeyPress={(event) => {
                                     if (!/[0-9]/.test(event.key)) {
@@ -107,6 +109,7 @@ export function CharacterIdentity() {
                             <TextField
                                 label="Med+ Kit %"
                                 variant={"filled"}
+                                fullWidth
                                 value={characterIdentity.karmaSpecialty ? getHealingPercent(characterIdentity.karmaSpecialty, skills) + "%" : ""}
                                 slotProps={{
                                     input: {
@@ -179,7 +182,7 @@ export function CharacterIdentity() {
             <Grid size={{md: 12}}>
                 <Accordion style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
                     <AccordionSummary expandIcon={<ExpandMore/>}>
-                        <TypographyWithAdornment text={"Traits and Flaws"}/>
+                        <TypographyWithAdornment text={"Traits and Flaws"} coloredText/>
                     </AccordionSummary>
                     <AccordionDetails>
                         <TraitAndFlawTable/>
@@ -187,16 +190,21 @@ export function CharacterIdentity() {
                 </Accordion>
                 <Accordion style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
                     <AccordionSummary expandIcon={<ExpandMore/>}>
-                        <TypographyWithAdornment text={"Karma Abilities"}/>
+                        <TypographyWithAdornment text={"Karma Abilities"} coloredText/>
                     </AccordionSummary>
                     <AccordionDetails>
                         {characterIdentity.karmaSpecialty && characterIdentity.study ? <PowerProfileTable powers={getPowerLoadout(characterIdentity.karmaSpecialty, characterIdentity.study)}/> :
                             <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
                     </AccordionDetails>
                 </Accordion>
-            </Grid>
-            <Grid size={{md: 12}}>
-                <SkillTree/>
+                <Accordion>
+                    <AccordionSummary expandIcon={<ExpandMore/>} style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                        <TypographyWithAdornment text={"Skill Tree"} coloredText/>
+                    </AccordionSummary>
+                    <AccordionDetails>
+                        <SkillTree/>
+                    </AccordionDetails>
+                </Accordion>
             </Grid>
         </Grid>
     </Stack>;

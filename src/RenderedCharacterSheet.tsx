@@ -4,17 +4,17 @@ import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
 import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
 import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier, KarmaSpecialty} from "./KarmaSpecialty.ts";
-import {ArrowBack, ArrowUpward, Check, DirectionsRun, Favorite, Recommend, Shield, Warning} from "@mui/icons-material";
+import {ArrowBack, ArrowUpward, Check, DirectionsRun, Favorite, Print, Recommend, Shield, Warning} from "@mui/icons-material";
 import {Link} from "wouter";
 import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
-import fluxFantasyLogo from "./assets/ff_logo_transparent_cropped.png"
 import {useEffect, useState} from "react";
 import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
 import {shadedBoxStyle} from "./ShadedBoxStyle.tsx";
-import {Button, useColorScheme} from "@mui/material-next";
+import {Button} from "@mui/material-next";
 import {SkillTree} from "./SkillTree.tsx";
 import {ModeToggle} from "./ModeToggle.tsx";
 import {useSkillTree} from "./UseSkillTree.ts";
+import {ColoredLogo} from "./ColoredLogo.tsx";
 
 
 function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
@@ -95,7 +95,6 @@ export function RenderedCharacterSheet() {
         skills,
         characterSheetFields.level)
     const [printMode, setPrintMode] = useState(false)
-    const {mode, systemMode} = useColorScheme();
 
     function printCharacterSheet() {
         setPrintMode(true);
@@ -120,8 +119,7 @@ export function RenderedCharacterSheet() {
 
                 <Grid container spacing={2}>
                     <Grid size={{md: 4}}>
-                        <img src={fluxFantasyLogo} style={{width: '100%', filter: mode === "dark" || systemMode === "dark" ? "invert(1)" : "invert(0)"}}
-                             alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>
+                        <ColoredLogo/>
                         <Typography variant={"subtitle2"}>Character Sheet</Typography>
                     </Grid>
                     <Grid size={{md: 8}}>
@@ -132,7 +130,7 @@ export function RenderedCharacterSheet() {
                     <Grid size={{md: 3}}>
                         <Stack spacing={2}>
                             <div>
-                                <TypographyWithAdornment text={"Portrait"}/>
+                                <TypographyWithAdornment text={"Portrait"} coloredText/>
                                 <img src={characterSheetFields.characterImageURL} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
                             </div>
                             <div>
@@ -220,7 +218,7 @@ export function RenderedCharacterSheet() {
                     <Grid size={{md: 6}}>
                         <Stack spacing={2}>
                             <div>
-                                <TypographyWithAdornment text={"Identity"}/>
+                                <TypographyWithAdornment text={"Identity"} coloredText/>
                                 <Paper>
                                     <Grid container spacing={2} style={shadedBoxStyle}>
                                         <Grid size={{xs: 12}}>
@@ -248,7 +246,7 @@ export function RenderedCharacterSheet() {
                                 </Paper>
                             </div>
                             <div>
-                                <TypographyWithAdornment text={"Talents"}/>
+                                <TypographyWithAdornment text={"Talents"} coloredText/>
                                 <Paper>
                                     <Grid container spacing={2} style={shadedBoxStyle}>
                                         {/*TODO Add adornment and score increase for study talent boost*/}
@@ -329,7 +327,7 @@ export function RenderedCharacterSheet() {
                                 </Paper>
                             </div>
                             <div>
-                                <TypographyWithAdornment text={"Karma Power Profile"}/>
+                                <TypographyWithAdornment text={"Karma Power Profile"} coloredText/>
                                 {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
                                     <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
                                         <PowerProfileTable powers={getPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)}
@@ -340,7 +338,7 @@ export function RenderedCharacterSheet() {
                                     </Box>}
                             </div>
                             <div>
-                                <TypographyWithAdornment text={"Traits & Flaws"}/>
+                                <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
                                 <Paper style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}><TraitAndFlawTable inPlay/></Paper>
                             </div>
                         </Stack>
@@ -371,11 +369,11 @@ export function RenderedCharacterSheet() {
                                 type={"number"}
                             />
                             <div>
-                                <TypographyWithAdornment text={"Gear of Destiny"}/>
+                                <TypographyWithAdornment text={"Gear of Destiny"} coloredText/>
                                 <img src={characterSheetFields.gearOfDestinyURL} style={{width: '100%'}}/>
                             </div>
                             <div>
-                                <TypographyWithAdornment text={"Karma Pool"}/>
+                                <TypographyWithAdornment text={"Karma Pool"} coloredText/>
                                 <Paper style={shadedBoxStyle}>
                                     <Grid container spacing={1}>
                                         <Grid size={{md: 6}}>
@@ -428,12 +426,14 @@ export function RenderedCharacterSheet() {
                             </div>
                             <TextField label={'Items'} multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
                             <TextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
-                            {!printMode && <Button variant={"outlined"} color={"tertiary"} onClick={() => printCharacterSheet()}>Print</Button>}
+                            {!printMode && <Button startIcon={<Print/>} variant={"outlined"} color={"tertiary"} onClick={() => printCharacterSheet()}>Print</Button>}
                         </Stack>
                     </Grid>
                 </Grid>
-                <TypographyWithAdornment text={"Skill Tree"}/>
-                <SkillTree readOnly/>
+                <TypographyWithAdornment text={"Skill Tree"} coloredText/>
+                <Paper style={{padding: 16, background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                    <SkillTree readOnly/>
+                </Paper>
             </Container>
             {/*TODO Make this mobile compatible by putting this on the bottom*/}
             <div style={{marginTop: 16, marginRight: 16}}>
