@@ -1,4 +1,5 @@
 import {extendTheme} from "@mui/material-next";
+import {AppTheme} from "./ModeToggle.tsx";
 
 export const flux = extendTheme({
     ref: {
@@ -258,3 +259,14 @@ export const marco = extendTheme({
     }
 
 })
+
+export function getTheme(theme: AppTheme) {
+    switch (theme) {
+        case "Hugo":
+            return hugold
+        case "Marco":
+            return marco;
+        case "Lucky":
+            return flux;
+    }
+}

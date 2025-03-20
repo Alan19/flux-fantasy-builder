@@ -2,8 +2,3 @@
     /*noinspection CssUnresolvedCustomProperty*/
     color: var(--md-sys-color-primary) !important;
 }
-
-body {
-    /*noinspection CssUnresolvedCustomProperty*/
-    /*background: var(--md-sys-color-surface) !important;*/
-}

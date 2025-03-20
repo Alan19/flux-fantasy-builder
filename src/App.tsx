@@ -5,8 +5,7 @@ import {useHashLocation} from "wouter/use-hash-location";
 import {RenderedCharacterSheet} from "./RenderedCharacterSheet.tsx";
 import {Container, createTheme, CssBaseline, ThemeProvider, Typography} from "@mui/material";
 import {CssVarsProvider} from "@mui/material-next";
-import {useLocalStorage} from "usehooks-ts";
-import {AppTheme, getTheme} from "./ModeToggle.tsx";
+import {flux} from "./themes.ts";
 
 const theme = createTheme({
     typography: {
@@ -32,10 +31,8 @@ const theme = createTheme({
 })
 
 function App() {
-    const [appTheme] = useLocalStorage<AppTheme>("app-theme", "Lucky");
-
     return (
-        <CssVarsProvider theme={getTheme(appTheme)}>
+        <CssVarsProvider theme={flux}>
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
                 <Router hook={useHashLocation}>
