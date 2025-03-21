@@ -1,4 +1,4 @@
-import {Container, Fade, Grid2, IconButton, Typography} from "@mui/material";
+import {Container, Fade, Grid2, IconButton, Typography, useMediaQuery, useTheme} from "@mui/material";
 import {CharacterIdentity} from "./CharacterIdentity.tsx";
 import {Link} from "wouter";
 import {ArrowForward} from "@mui/icons-material";
@@ -6,8 +6,11 @@ import {ModeToggle} from "./ModeToggle.tsx";
 import {ColoredLogo} from "./ColoredLogo.tsx";
 
 export const CharacterInfoInput = () => {
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('xl'));
+
     return <Fade in>
-        <div style={{display: "flex", alignItems: "start"}}>
+        <div style={{display: matches ? "flex" : "inherit"}}>
             <Container>
                 <div style={{display: "flex", justifyContent: "flex-end"}}>
                     <Link to={'/sheet'}>
@@ -24,8 +27,8 @@ export const CharacterInfoInput = () => {
                 </Grid2>
                 <CharacterIdentity/>
             </Container>
-            <div style={{marginTop: 16, marginRight: 16, position: "sticky", top: 16}}>
-                <ModeToggle/>
+            <div style={matches ? {position: 'fixed', top: 16, right: 16} : {marginTop: 16}}>
+                {matches ? <ModeToggle/> : <Container><ModeToggle/></Container>}
             </div>
         </div>
     </Fade>

@@ -1,4 +1,4 @@
-import {Box, Container, Fade, IconButton, InputAdornment, Paper, Stack, TextField, Typography} from "@mui/material";
+import {Box, Container, Fade, IconButton, InputAdornment, Paper, Stack, TextField, Typography, useMediaQuery, useTheme} from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {PowerProfileTable} from "./PowerProfileTable.tsx";
@@ -82,6 +82,8 @@ export function RenderedCharacterSheet() {
     const {skills, level5Talent, talent1Options, vitalityOptions, talent3Options, talent4Options, talent2Options, talentedTalent} = useSkillTree();
     const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility, talent1Options, talent2Options, talent3Options, talent4Options, level5Talent, talentedTalent, skills, characterSheetFields.level, characterSheetFields.traits)
     const [printMode, setPrintMode] = useState(false)
+    const theme = useTheme();
+    const matches = useMediaQuery(theme.breakpoints.up('xl'));
 
     function printCharacterSheet() {
         setPrintMode(true);
@@ -96,7 +98,7 @@ export function RenderedCharacterSheet() {
 
 
     return <Fade in>
-        <div style={{display: "flex"}}>
+        <div style={{display: matches ? "flex" : "inherit"}}>
             <Container>
                 {!printMode && <div>
                     <Link to={'/'}>
@@ -424,9 +426,8 @@ export function RenderedCharacterSheet() {
                     </Paper>
                 </div>
             </Container>
-            {/*TODO Make this mobile compatible by putting this on the bottom*/}
-            <div style={{marginTop: 16, marginRight: 16, position: "sticky", top: 16}}>
-                <ModeToggle/>
+            <div style={matches ? {position: 'fixed', top: 16, right: 16} : {marginTop: 16}}>
+                {matches ? <ModeToggle/> : <Container><ModeToggle/></Container>}
             </div>
         </div>
     </Fade>;
