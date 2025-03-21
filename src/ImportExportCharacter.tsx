@@ -35,7 +35,7 @@ export function ImportExportCharacter() {
     }
 
     return <>
-        <Button startIcon={<Upload/>} variant={"outlined"} disabled color={"secondary"}>Import</Button>
+        <Button startIcon={<Upload/>} variant={"outlined"} disabled color={"secondary"}>Import<br/>(coming soon!)</Button>
         <Button onClick={() => exportCharacter()} startIcon={<SaveAlt/>} variant={"outlined"} color={"secondary"}>Export</Button>
     </>;
 }

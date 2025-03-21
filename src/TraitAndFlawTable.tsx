@@ -7,8 +7,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
 
     function getDisplayedTraits(): [string, Trait][] {
         if (props.inPlay) {
-            const selectedTraits = Object.entries(characterSheetFields.traits).filter(([, value]) => value).map(([key]) => key)
-            return Object.entries(selectableTraits).filter(([key]) => selectedTraits.includes(key));
+            return characterSheetFields.traits.map(value => [value, selectableTraits[value]]);
         } else {
             return Object.entries(selectableTraits);
         }
@@ -16,8 +15,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
 
     function getDisplayedFlaws(): [string, Trait][] {
         if (props.inPlay) {
-            const selectedTraits = Object.entries(characterSheetFields.flaws).filter(([, value]) => value).map(([key]) => key)
-            return Object.entries(selectableFlaws).filter(([key]) => selectedTraits.includes(key));
+            return characterSheetFields.flaws.map(value => [value, selectableFlaws[value]]);
         } else {
             return Object.entries(selectableFlaws);
         }
@@ -42,8 +40,8 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                             {affiliationTraits[characterSheetFields.affiliation].effect}
                         </TableCell>
                     </>}
-                    {getDisplayedTraits().map(([trait, {description, effect}]) =>
-                        <TableRow key={trait}>
+                    {getDisplayedTraits().map(([trait, {description, effect}]) => {
+                        return <TableRow key={trait}>
                             <TableCell component="th" scope="row">
                                 {props.inPlay ? trait :
                                     <FormControlLabel control={<Checkbox checked={characterSheetFields.traits.includes(trait as Traits)} onChange={() => characterSheetFields.toggleTrait(trait as Traits)}/>} label={trait}/>}
@@ -54,7 +52,8 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                             <TableCell>
                                 {description}
                             </TableCell>
-                        </TableRow>)}
+                        </TableRow>;
+                    })}
                 </TableBody>
                 <TableHead>
                     <TableRow>
