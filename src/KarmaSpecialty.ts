@@ -1,4 +1,5 @@
 import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "./UseSkillTree.ts";
+import {Traits} from "./Traits.ts";
 
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
@@ -139,8 +140,10 @@ export function getEffectiveTalents(study: Study | undefined,
                                     talent3Options: keyof TalentModifiers | undefined,
                                     talent4Options: keyof TalentModifiers | undefined,
                                     level5Talent: keyof TalentModifiers | undefined,
+                                    talentedTalent: keyof TalentModifiers | undefined,
                                     skills: SkillName[],
-                                    level: number): [TalentModifiers, BoostedTalents] {
+                                    level: number,
+                                    traits: Traits[]): [TalentModifiers, BoostedTalents] {
     const talents: TalentModifiers = {
         aura: aura,
         technique: technique,
@@ -203,6 +206,9 @@ export function getEffectiveTalents(study: Study | undefined,
     }
     if (level >= 5 && level5Talent) {
         talents[level5Talent] += 1;
+    }
+    if (traits.includes("Talented") && talentedTalent) {
+        talents[talentedTalent] += 1;
     }
     return [talents, boostedTalents];
 }

@@ -1,5 +1,5 @@
 import {Checkbox, FormControlLabel, FormHelperText, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
-import {affiliationFlaws, affiliationTraits, FlawList, selectableFlaws, selectableTraits, Trait, TraitList} from "./Traits.ts";
+import {affiliationFlaws, affiliationTraits, Flaws, selectableFlaws, selectableTraits, Trait, Traits} from "./Traits.ts";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 
 export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
@@ -45,7 +45,8 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                     {getDisplayedTraits().map(([trait, {description, effect}]) =>
                         <TableRow key={trait}>
                             <TableCell component="th" scope="row">
-                                {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.traits[trait as TraitList]} onChange={() => characterSheetFields.toggleTrait(trait as TraitList)}/>} label={trait}/>}
+                                {props.inPlay ? trait :
+                                    <FormControlLabel control={<Checkbox checked={characterSheetFields.traits.includes(trait as Traits)} onChange={() => characterSheetFields.toggleTrait(trait as Traits)}/>} label={trait}/>}
                             </TableCell>
                             <TableCell>
                                 {effect}
@@ -74,7 +75,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                     {getDisplayedFlaws().map(([trait, {description, effect}]) =>
                         <TableRow key={trait}>
                             <TableCell component="th" scope="row">
-                                {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.flaws[trait as FlawList]} onChange={() => characterSheetFields.toggleFlaw(trait as FlawList)}/>} label={trait}/>}
+                                {props.inPlay ? trait : <FormControlLabel control={<Checkbox checked={characterSheetFields.flaws.includes(trait as Flaws)} onChange={() => characterSheetFields.toggleFlaw(trait as Flaws)}/>} label={trait}/>}
                             </TableCell>
                             <TableCell>
                                 {effect}

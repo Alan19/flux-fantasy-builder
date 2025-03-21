@@ -1,5 +1,6 @@
 import {useLocalStorage} from "usehooks-ts";
 import {TalentModifiers} from "./KarmaSpecialty.ts";
+import {createToggleFunction} from "./utils.ts";
 
 export type SkillName = VitalitySkills | KarmaSkills | TalentSkills | PersonalitySkills;
 export type SkillTreeNode = {
@@ -246,8 +247,6 @@ export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode
     }
 }
 
-export const fullSkillTree: { [skillName in SkillName]: SkillTreeNode } = {...vitalitySkillTree, ...karmaSkillTree, ...personalitySkillTree, ...talentsSkillTree}
-
 export function useSkillTree() {
     const [skills, setSkills] = useLocalStorage<SkillName[]>("skill-selection", [])
     const [vitalityOptions, setVitalityOptions] = useLocalStorage<"MOV" | "DEF" | undefined>("vitality-options", undefined)
@@ -256,10 +255,9 @@ export function useSkillTree() {
     const [talent3Options, setTalent3Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-3-options", undefined)
     const [talent4Options, setTalent4Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-4-options", undefined)
     const [level5Talent, setLevel5Talent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
+    const [talentedTalent, setTalentedTalent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
 
-    function toggleSkill(skill: SkillName) {
-        setSkills(prevState => prevState.includes(skill) ? prevState.filter(value => value !== skill) : prevState.concat(skill))
-    }
+    const toggleSkill = createToggleFunction(setSkills);
 
     return {
         skills, toggleSkill,
@@ -268,6 +266,7 @@ export function useSkillTree() {
         talent2Options, setTalent2Options,
         talent3Options, setTalent3Options,
         talent4Options, setTalent4Options,
-        level5Talent, setLevel5Talent
+        level5Talent, setLevel5Talent,
+        talentedTalent, setTalentedTalent
     }
 }

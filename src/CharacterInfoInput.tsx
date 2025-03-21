@@ -16,7 +16,7 @@ export const CharacterInfoInput = () => {
                         </Typography>
                     </Link>
                 </div>
-                <Grid2 container>
+                <Grid2 container spacing={1}>
                     <Grid2 size={{md: 4}} style={{overflow: "hidden"}}>
                         <ColoredLogo/>
                         <Typography variant={"subtitle2"}>Character Builder</Typography>
@@ -24,7 +24,7 @@ export const CharacterInfoInput = () => {
                 </Grid2>
                 <CharacterIdentity/>
             </Container>
-            <div style={{marginTop: 16, marginRight: 16}}>
+            <div style={{marginTop: 16, marginRight: 16, position: "sticky", top: 16}}>
                 <ModeToggle/>
             </div>
         </div>

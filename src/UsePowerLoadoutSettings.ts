@@ -16,11 +16,43 @@ export enum PowerTier {
     advanced2
 }
 
+export type PowerLoadoutState = {
+    basicAttack: string;
+    basicCombo: string;
+    basicSignature: string;
+    basicDefense: string;
+    basic2Attack: string;
+    basic2Combo: string;
+    basic2Signature: string;
+    basic2Defense: string;
+    advancedAttack: string;
+    advancedCombo: string;
+    advancedSignature: string;
+    advancedDefense: string;
+    advanced2Attack: string;
+    advanced2Combo: string;
+    advanced2Signature: string;
+    advanced2Defense: string;
+    basicLocomotion: string;
+    basic2Locomotion: string;
+    advancedLocomotion: string;
+    advanced2Locomotion: string;
+    selectedSwapPower: string;
+    selectedAdvancedSwapPower: string;
+    selectedAttackTier: PowerTier | string;
+    selectedDefenseTier: PowerTier;
+    selectedComboTier: PowerTier;
+    selectedSignatureTier: PowerTier;
+    selectedLocomotionTier: PowerTier;
+}
+
 export type PowerLoadoutSettings = Record<PowerTier, { [type in PowerType]: [string, React.Dispatch<React.SetStateAction<string>>] }>
     & Record<'swapPower', [string, React.Dispatch<React.SetStateAction<string>>]>
     & Record<'advancedSwapPower', [string, React.Dispatch<React.SetStateAction<string>>]>
     & Record<PowerType.defense | PowerType.combo | PowerType.signature | PowerType.locomotion, [PowerTier, React.Dispatch<React.SetStateAction<PowerTier>>]>
-    & Record<PowerType.attack, [PowerTier | string, React.Dispatch<React.SetStateAction<PowerTier | string>>]>;
+    & Record<PowerType.attack, [PowerTier | string, React.Dispatch<React.SetStateAction<PowerTier | string>>]>
+    & Record<'serializePowerLoadoutState', () => PowerLoadoutState>
+    & Record<'deserializePowerLoadoutState', (json: string) => void>;
 
 export function usePowerLoadoutSettings(): PowerLoadoutSettings {
     // Karma Power Names
@@ -53,6 +85,36 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
     const [selectedComboTier, setSelectedComboTier] = useLocalStorage<PowerTier>('selected-combo-tier', PowerTier.basic)
     const [selectedSignatureTier, setSelectedSignatureTier] = useLocalStorage<PowerTier>('selected-signature-tier', PowerTier.basic)
     const [selectedLocomotionTier, setSelectedLocomotionTier] = useLocalStorage<PowerTier>('selected-locomotion-tier', PowerTier.basic)
+
+    const serializeState = (): PowerLoadoutState => ({
+        advanced2Attack: advanced2Attack,
+        advanced2Combo: advanced2Combo,
+        advanced2Defense: advanced2Defense,
+        advanced2Locomotion: advanced2Locomotion,
+        advanced2Signature: advanced2Signature,
+        advancedAttack: advancedAttack,
+        advancedCombo: advancedCombo,
+        advancedDefense: advancedDefense,
+        advancedLocomotion: advancedLocomotion,
+        advancedSignature: advancedSignature,
+        basic2Attack: basic2Attack,
+        basic2Combo: basic2Combo,
+        basic2Defense: basic2Defense,
+        basic2Locomotion: basic2Locomotion,
+        basic2Signature: basic2Signature,
+        basicAttack: basicAttack,
+        basicCombo: basicCombo,
+        basicDefense: basicDefense,
+        basicLocomotion: basicLocomotion,
+        basicSignature: basicSignature,
+        selectedAdvancedSwapPower: selectedAdvancedSwapPower,
+        selectedAttackTier: selectedAttackTier,
+        selectedComboTier: selectedComboTier,
+        selectedDefenseTier: selectedDefenseTier,
+        selectedLocomotionTier: selectedLocomotionTier,
+        selectedSignatureTier: selectedSignatureTier,
+        selectedSwapPower: selectedSwapPower
+    });
 
     return {
         [PowerTier.basic]: {
@@ -89,6 +151,35 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
         [PowerType.defense]: [selectedDefenseTier, setSelectedDefenseTier],
         [PowerType.combo]: [selectedComboTier, setSelectedComboTier],
         [PowerType.signature]: [selectedSignatureTier, setSelectedSignatureTier],
-        [PowerType.locomotion]: [selectedLocomotionTier, setSelectedLocomotionTier]
+        [PowerType.locomotion]: [selectedLocomotionTier, setSelectedLocomotionTier],
+        serializePowerLoadoutState: serializeState,
+        deserializePowerLoadoutState(json: string) {
+            const parsedJson = JSON.parse(json)
+            setBasicAttack(parsedJson.basicAttack)
+            setBasicCombo(parsedJson.basicCombo)
+            setBasicSignature(parsedJson.basicSignature)
+            setBasicDefense(parsedJson.basicDefense)
+            setBasic2Attack(parsedJson.basic2Attack)
+            setBasic2Combo(parsedJson.basic2Combo)
+            setBasic2Signature(parsedJson.basic2Signature)
+            setBasic2Defense(parsedJson.basic2Defense)
+            setAdvancedAttack(parsedJson.advancedAttack)
+            setAdvancedCombo(parsedJson.advancedCombo)
+            setAdvancedSignature(parsedJson.advancedSignature)
+            setAdvancedDefense(parsedJson.advancedDefense)
+            setAdvanced2Attack(parsedJson.advanced2Attack)
+            setAdvanced2Combo(parsedJson.advanced2Combo)
+            setAdvanced2Signature(parsedJson.advanced2Signature)
+            setAdvanced2Defense(parsedJson.advanced2Defense)
+            setBasicLocomotion(parsedJson.basicLocomotion)
+            setBasic2Locomotion(parsedJson.basic2Locomotion)
+            setAdvancedLocomotion(parsedJson.advancedLocomotion)
+            setAdvanced2Locomotion(parsedJson.advanced2Locomotion)
+            setSelectedAttackTier(parsedJson.selectedAttackTier)
+            setSelectedDefenseTier(parsedJson.selectedDefenseTier)
+            setSelectedComboTier(parsedJson.selectedComboTier)
+            setSelectedSignatureTier(parsedJson.selectedSignatureTier)
+            setSelectedLocomotionTier(parsedJson.selectedLocomotionTier)
+        }
     }
 }

@@ -24,10 +24,10 @@ importers:
         specifier: 7.0.0-beta.4
         version: 7.0.0-beta.4(@types/react@18.3.18)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mui/icons-material':
-        specifier: ^6.4.5
+        specifier: 6.4.7
         version: 6.4.7(@mui/material@6.4.7(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(@types/react@18.3.18)(react@19.0.0)
       '@mui/material':
-        specifier: ^6.4.5
+        specifier: 6.4.7
         version: 6.4.7(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@emotion/styled@11.14.0(@emotion/react@11.14.0(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react@19.0.0))(@types/react@18.3.18)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mui/material-next':
         specifier: 6.0.0-alpha.126
@@ -41,6 +41,9 @@ importers:
       react-icons:
         specifier: ^5.5.0
         version: 5.5.0(react@19.0.0)
+      sanitize-filename:
+        specifier: ^1.6.3
+        version: 1.6.3
       usehooks-ts:
         specifier: ^3.1.1
         version: 3.1.1(react@19.0.0)
@@ -1481,6 +1484,9 @@ packages:
   run-parallel@1.2.0:
     resolution: {integrity: sha512-5l4VyZR86LZ/lDxZTR6jqL8AFE2S0IFLMP26AbjsLVADxHdhB/c0GUsH+y39UfCi3dzz8OlQuPmnaJOMoDHQBA==}
 
+  sanitize-filename@1.6.3:
+    resolution: {integrity: sha512-y/52Mcy7aw3gRm7IrcGDFx/bCk4AhRh2eI9luHOQM86nZsqwiRkkq2GekHXBBD+SmPidc8i2PqtYZl+pWJ8Oeg==}
+
   scheduler@0.25.0:
     resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
 
@@ -1540,6 +1546,9 @@ packages:
     resolution: {integrity: sha512-pkonvlKk8/ZuR0D5tLW8ljt5I8kmxp2XKymhepUeOdCEfKpZaktSArkLHZt76OB1ZvO9bssUsDty4SWhLvZpLg==}
     engines: {node: '>=0.10.0'}
 
+  truncate-utf8-bytes@1.0.2:
+    resolution: {integrity: sha512-95Pu1QXQvruGEhv62XCMO3Mm90GscOCClvrIUwCM0PYOXK3kaF3l3sIHxx71ThJfcbM2O5Au6SO3AWCSEfW4mQ==}
+
   ts-api-utils@2.0.1:
     resolution: {integrity: sha512-dnlgjFSVetynI8nzgJ+qF62efpglpWRk8isUEWZGWlJYySCTD6aKvbUDu+zbPeDakk3bg5H4XpitHukgfL1m9w==}
     engines: {node: '>=18.12'}
@@ -1585,6 +1594,9 @@ packages:
     engines: {node: '>=16.15.0'}
     peerDependencies:
       react: ^16.8.0  || ^17 || ^18 || ^19 || ^19.0.0-rc
+
+  utf8-byte-length@1.0.5:
+    resolution: {integrity: sha512-Xn0w3MtiQ6zoz2vFyUVruaCL53O/DwUvkEeOvj+uulMm0BkUGYWmBYVyElqZaSLhY6ZD0ulfU3aBra2aVT4xfA==}
 
   vite@6.2.2:
     resolution: {integrity: sha512-yW7PeMM+LkDzc7CgJuRLMW2Jz0FxMOsVJ8Lv3gpgW9WLcb9cTW+121UEr1hvmfR7w3SegR5ItvYyzVz1vxNJgQ==}
@@ -3047,6 +3059,10 @@ snapshots:
     dependencies:
       queue-microtask: 1.2.3
 
+  sanitize-filename@1.6.3:
+    dependencies:
+      truncate-utf8-bytes: 1.0.2
+
   scheduler@0.25.0: {}
 
   semver@6.3.1: {}
@@ -3086,6 +3102,10 @@ snapshots:
   trim-repeated@1.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
+
+  truncate-utf8-bytes@1.0.2:
+    dependencies:
+      utf8-byte-length: 1.0.5
 
   ts-api-utils@2.0.1(typescript@5.6.3):
     dependencies:
@@ -3127,6 +3147,8 @@ snapshots:
     dependencies:
       lodash.debounce: 4.0.8
       react: 19.0.0
+
+  utf8-byte-length@1.0.5: {}
 
   vite@6.2.2:
     dependencies:

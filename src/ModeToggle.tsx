@@ -1,8 +1,9 @@
 import {Stack, Tooltip} from "@mui/material";
-import {Button, useColorScheme} from "@mui/material-next";
+import {Button, Divider, useColorScheme} from "@mui/material-next";
 import {AutoMode, DarkMode, LightMode} from "@mui/icons-material";
 import {useLocalStorage} from "usehooks-ts";
 import {useEffect} from "react";
+import {ImportExportCharacter} from "./ImportExportCharacter.tsx";
 
 export type AppTheme = 'Hugo' | 'Marco' | 'Lucky'
 
@@ -26,5 +27,7 @@ export function ModeToggle() {
         <Tooltip title={"System"} placement={"left"}>
             <Button variant={mode === 'system' ? "filled" : 'text'} onClick={() => setColorScheme('system')}><AutoMode/></Button>
         </Tooltip>
+        <Divider/>
+        <ImportExportCharacter/>
     </Stack>;
 }

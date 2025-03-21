@@ -197,8 +197,8 @@ export function CharacterIdentity() {
                             <Box><Typography variant={"h2"}>Select a Karma Study to view Karma Powers!</Typography></Box>}
                     </AccordionDetails>
                 </Accordion>
-                <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore/>} style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                <Accordion style={{background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                    <AccordionSummary expandIcon={<ExpandMore/>}>
                         <TypographyWithAdornment text={"Skill Tree"} coloredText/>
                     </AccordionSummary>
                     <AccordionDetails>

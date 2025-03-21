@@ -79,21 +79,8 @@ function getSpecialItems(karmaSpecialty: KarmaSpecialty) {
 
 export function RenderedCharacterSheet() {
     const characterSheetFields = useCharacterSheetFields();
-    const {skills, level5Talent, talent1Options, vitalityOptions, talent3Options, talent4Options, talent2Options} = useSkillTree();
-    const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study,
-        characterSheetFields.aura,
-        characterSheetFields.technique,
-        characterSheetFields.stamina,
-        characterSheetFields.function,
-        characterSheetFields.willpower,
-        characterSheetFields.agility,
-        talent1Options,
-        talent2Options,
-        talent3Options,
-        talent4Options,
-        level5Talent,
-        skills,
-        characterSheetFields.level)
+    const {skills, level5Talent, talent1Options, vitalityOptions, talent3Options, talent4Options, talent2Options, talentedTalent} = useSkillTree();
+    const [effectiveTalents, boostedTalents] = getEffectiveTalents(characterSheetFields.study, characterSheetFields.aura, characterSheetFields.technique, characterSheetFields.stamina, characterSheetFields.function, characterSheetFields.willpower, characterSheetFields.agility, talent1Options, talent2Options, talent3Options, talent4Options, level5Talent, talentedTalent, skills, characterSheetFields.level, characterSheetFields.traits)
     const [printMode, setPrintMode] = useState(false)
 
     function printCharacterSheet() {
@@ -430,13 +417,15 @@ export function RenderedCharacterSheet() {
                         </Stack>
                     </Grid>
                 </Grid>
-                <TypographyWithAdornment text={"Skill Tree"} coloredText/>
-                <Paper style={{padding: 16, background: "var(--md-sys-color-surfaceContainerHigh)"}}>
-                    <SkillTree readOnly/>
-                </Paper>
+                <div style={{marginTop: 16}}>
+                    <TypographyWithAdornment text={"Skill Tree"} coloredText/>
+                    <Paper style={{padding: 16, background: "var(--md-sys-color-surfaceContainerHigh)"}}>
+                        <SkillTree readOnly/>
+                    </Paper>
+                </div>
             </Container>
             {/*TODO Make this mobile compatible by putting this on the bottom*/}
-            <div style={{marginTop: 16, marginRight: 16}}>
+            <div style={{marginTop: 16, marginRight: 16, position: "sticky", top: 16}}>
                 <ModeToggle/>
             </div>
         </div>

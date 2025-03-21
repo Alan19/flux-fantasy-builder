@@ -1,6 +1,7 @@
 import {useLocalStorage} from "usehooks-ts";
 import {Affiliation, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {FlawList, TraitList} from "./Traits.ts";
+import {Flaws, Traits} from "./Traits.ts";
+import {createToggleFunction} from "./utils.ts";
 
 export function useCharacterSheetFields() {
     // Character creation choices
@@ -16,54 +17,11 @@ export function useCharacterSheetFields() {
     const [study, setStudy] = useLocalStorage<Study | undefined>('study', undefined)
     const [affiliation, setAffiliation] = useLocalStorage<Affiliation | undefined>('affiliation', undefined)
     const [background, setBackground] = useLocalStorage("background", "")
-    const [traits, setTraits] = useLocalStorage<Record<TraitList, boolean>>('traits', {
-        Adaptable: false,
-        Observant: false,
-        Resilient: false,
-        Thrifty: false,
-        "Good Looking": false,
-        Calm: false,
-        Dependable: false,
-        Determined: false,
-        Handy: false,
-        Honorable: false,
-        Inspirational: false,
-        Loyal: false,
-        Protective: false,
-        Spunky: false,
-        Talented: false
-    })
-    const [flaws, setFlaws] = useLocalStorage<Record<FlawList, boolean>>('flaws', {
-        Distant: false,
-        Distracted: false,
-        Extravagant: false,
-        Lovesick: false,
-        "Hot Headed": false,
-        "Tongue Tied": false,
-        Arrogant: false,
-        Clumsy: false,
-        Cowardly: false,
-        Insecure: false,
-        Paranoid: false,
-        Reckless: false,
-        Secretive: false,
-        Selfish: false,
-        Unmotivated: false
-    })
+    const [traits, setTraits] = useLocalStorage<Traits[]>('trait-list', [])
+    const [flaws, setFlaws] = useLocalStorage<Flaws[]>('flaw-list', [])
 
-    function toggleTrait(trait: TraitList) {
-        setTraits(prevState => ({
-            ...prevState,
-            [trait]: !prevState[trait]
-        }))
-    }
-
-    function toggleFlaw(trait: FlawList) {
-        setFlaws(prevState => ({
-            ...prevState,
-            [trait]: !prevState[trait]
-        }))
-    }
+    const toggleTrait = createToggleFunction(setTraits);
+    const toggleFlaw = createToggleFunction(setFlaws);
 
     // Attributes
     const [aura, setAura] = useLocalStorage<number>('aura', 1)
