@@ -94,9 +94,11 @@ export function KarmaPowerRow(props: Readonly<{
                             }}
                             value={currentPowerTierForPower}
                             size={"small"}>
-                        {powerType === PowerType.attack && <MenuItem value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0]}</MenuItem>}
-                        {powerType === PowerType.attack && <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]} disabled={!selectedSkills.includes(KarmaSkills.advancedAttacks)}>{powerLoadoutSettings.advancedSwapPower[0]}</MenuItem>}
-                        {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index} value={index}>{value}</MenuItem>)}
+                        {powerType === PowerType.attack && <MenuItem disabled={!powerLoadoutSettings.swapPower[0]} value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0] ?? "Unselected Basic Swap Power"}</MenuItem>}
+                        {powerType === PowerType.attack && <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]}
+                                                                     disabled={!selectedSkills.includes(KarmaSkills.advancedAttacks) || !powerLoadoutSettings.advancedSwapPower[0]}>{powerLoadoutSettings.advancedSwapPower[0] ?? "Unselected Advanced Swap Power"}</MenuItem>}
+                        {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index}
+                                                                                                               value={index}>{value ?? `Unnamed ${getTierName(index)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`}</MenuItem>)}
                     </Select>
                 </FormControl>}
         </TableCell>
