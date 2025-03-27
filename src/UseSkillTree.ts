@@ -260,7 +260,7 @@ export function useSkillTree() {
     const toggleSkill = createToggleFunction(setSkills);
 
     return {
-        skills, toggleSkill,
+        skills, setSkills, toggleSkill,
         vitalityOptions, setVitalityOptions,
         talent1Options, setTalent1Options,
         talent2Options, setTalent2Options,

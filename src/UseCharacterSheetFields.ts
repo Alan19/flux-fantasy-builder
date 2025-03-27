@@ -107,6 +107,8 @@ export function useCharacterSheetFields() {
         items,
         setItems,
         otherSkills,
-        setOtherSkills
+        setOtherSkills,
+        setTraits,
+        setFlaws
     }
 }
