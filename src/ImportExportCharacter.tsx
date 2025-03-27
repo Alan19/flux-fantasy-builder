@@ -22,7 +22,6 @@ export function ImportExportCharacter() {
     }
 
     function exportCharacter() {
-        console.log(serializeCharacter())
         const dataStr =
             'data:application/json;charset=utf-8,' +
             encodeURIComponent(JSON.stringify(serializeCharacter(), null, 2));
@@ -40,10 +39,9 @@ export function ImportExportCharacter() {
             fileReader.readAsText(event.target.files[0], "UTF-8");
             fileReader.onload = e => {
                 if (e.target !== null && typeof e.target.result === "string") {
-                    console.log("e.target.result", e.target.result);
                     const data = JSON.parse(e.target.result);
                     if (data.characterBackground) {
-                        // TODO Possibly add default values / error messages during import
+                        // TODO add error messages during import
                         characterSheetFields.setPlayerName(data.characterBackground.playerName)
                         characterSheetFields.setCharacterName(data.characterBackground.characterName)
                         characterSheetFields.setCharacterImageURL(data.characterBackground.characterImageURL)
@@ -61,7 +59,7 @@ export function ImportExportCharacter() {
                         characterSheetFields.setAura(data.characterBackground.aura)
                         characterSheetFields.setTechnique(data.characterBackground.technique)
                         characterSheetFields.setStamina(data.characterBackground.stamina)
-                        characterSheetFields.setFunction(data.characterBackground.functionStat)
+                        characterSheetFields.setFunction(data.characterBackground.function)
                         characterSheetFields.setWillpower(data.characterBackground.willpower)
                         characterSheetFields.setAgility(data.characterBackground.agility)
                         characterSheetFields.setLevel(data.characterBackground.level)
@@ -77,7 +75,7 @@ export function ImportExportCharacter() {
                         characterSheetFields.setOtherSkills(data.characterBackground.otherSkills)
                     }
                     if (data.powerLoadout) {
-                        powerLoadout.deserializePowerLoadoutState(data.powerLoadout)
+                        powerLoadout.deserializePowerLoadoutState(JSON.stringify(data.powerLoadout))
                     }
                     if (data.skills) {
                         skillTree.setSkills(data.skills.skills)
