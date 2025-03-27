@@ -2,7 +2,7 @@ import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
 import {useSkillTree} from "./UseSkillTree.ts";
 import {Button} from "@mui/material-next";
-import {SaveAlt, Upload} from "@mui/icons-material";
+import {RestartAlt, SaveAlt, Upload} from "@mui/icons-material";
 import sanitize from "sanitize-filename";
 
 export function ImportExportCharacter() {
@@ -92,16 +92,54 @@ export function ImportExportCharacter() {
         }
     }
 
+    function resetCharacter() {
+        if (window.confirm('Are you sure you want to reset your character? Please backup your character using the "Export" button if you want to restore them!')) {
+            characterSheetFields.setPlayerName("")
+            characterSheetFields.setCharacterName("")
+            characterSheetFields.setCharacterImageURL("")
+            characterSheetFields.setGearOfDestinyURL("")
+            characterSheetFields.setAge("")
+            characterSheetFields.setGender("")
+            characterSheetFields.setHeight("")
+            characterSheetFields.setWeight("")
+            characterSheetFields.setKarmaSpecialty(undefined)
+            characterSheetFields.setStudy(undefined)
+            characterSheetFields.setAffiliation(undefined)
+            characterSheetFields.setBackground("")
+            characterSheetFields.setTraits([])
+            characterSheetFields.setFlaws([])
+            characterSheetFields.setAura(1)
+            characterSheetFields.setTechnique(1)
+            characterSheetFields.setStamina(1)
+            characterSheetFields.setFunction(1)
+            characterSheetFields.setWillpower(1)
+            characterSheetFields.setAgility(1)
+            characterSheetFields.setLevel(1)
+            characterSheetFields.setMedKits(2)
+            characterSheetFields.setMerits(20)
+            characterSheetFields.setConfiguration("")
+            characterSheetFields.setPositiveKarma(0)
+            characterSheetFields.setNegativeKarma(0)
+            characterSheetFields.setKarmaPool(0)
+            characterSheetFields.setPaybackPoints(0)
+            characterSheetFields.setCurrentHP(0)
+            characterSheetFields.setItems("")
+            characterSheetFields.setOtherSkills("")
+            powerLoadout.deserializePowerLoadoutState(JSON.stringify({}))
+            skillTree.setSkills([])
+            skillTree.setVitalityOptions(undefined)
+            skillTree.setTalent1Options(undefined)
+            skillTree.setTalent2Options(undefined)
+            skillTree.setTalent3Options(undefined)
+            skillTree.setTalent4Options(undefined)
+            skillTree.setLevel5Talent(undefined)
+            skillTree.setTalentedTalent(undefined)
+        }
+    }
+
     return <>
-        <Button startIcon={<Upload/>} variant={"outlined"} color={"secondary"} component={"label"}>
-            Import
-            <input
-                type="file"
-                name={"image"}
-                onChange={importCharacter}
-                hidden
-            />
-        </Button>
-        <Button onClick={() => exportCharacter()} startIcon={<SaveAlt/>} variant={"outlined"} color={"secondary"}>Export</Button>
+        <Button startIcon={<Upload/>} variant={"outlined"} color={"secondary"} component={"label"}>Import<input type="file" name={"image"} onChange={importCharacter} hidden/></Button>
+        <Button onClick={exportCharacter} startIcon={<SaveAlt/>} variant={"outlined"} color={"secondary"}>Export</Button>
+        <Button onClick={resetCharacter} startIcon={<RestartAlt/>} variant={"outlined"} color={"secondary"}>Reset</Button>
     </>;
 }

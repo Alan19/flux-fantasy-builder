@@ -180,6 +180,8 @@ export function usePowerLoadoutSettings(): PowerLoadoutSettings {
             setSelectedComboTier(parsedJson.selectedComboTier)
             setSelectedSignatureTier(parsedJson.selectedSignatureTier)
             setSelectedLocomotionTier(parsedJson.selectedLocomotionTier)
+            setSelectedSwapPower(parsedJson.selectedSwapPower)
+            setSelectedAdvancedSwapPower(parsedJson.selectedAdvancedSwapPower)
         }
     }
 }
