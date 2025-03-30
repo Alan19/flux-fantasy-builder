@@ -44,7 +44,7 @@ export const selectableFlaws: Record<Flaws, Trait> = {
 }
 
 export const affiliationTraits: Record<Affiliation, { name: string, effect: string }> = {
-    "Wolfgang Academy": {
+    [Affiliation.academia]: {
         name: "Student",
         effect: "Any Technique or Willpower roll, roll 2 dice and take the better of the two rolls."
     },
@@ -75,7 +75,7 @@ export const affiliationTraits: Record<Affiliation, { name: string, effect: stri
 }
 
 export const affiliationFlaws: Record<Affiliation, { name: string, effect: string }> = {
-    "Wolfgang Academy": {
+    [Affiliation.academia]: {
         name: "Still Learning",
         effect: "All karma attacks cost 3 more KP."
     },

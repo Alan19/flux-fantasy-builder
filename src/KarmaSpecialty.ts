@@ -75,7 +75,7 @@ export function getHealingPercent(karmaSpecialty: KarmaSpecialty, skills: SkillN
 }
 
 export enum Affiliation {
-    wolfgangAcademy = 'Wolfgang Academy',
+    academia = 'Academia',
     gears = 'Great Escape Artist Society',
     inkFightingElite = 'Ink Fighting Elite',
     nka = 'National Karmastry Authority',
@@ -88,7 +88,7 @@ export function getDefenseModifier(affiliation: Affiliation, level: number, skil
     let defenseModifier;
     switch (affiliation) {
         case Affiliation.independent:
-        case Affiliation.wolfgangAcademy:
+        case Affiliation.academia:
             defenseModifier = 1;
             break
         case Affiliation.gears:

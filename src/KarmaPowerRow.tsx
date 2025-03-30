@@ -102,8 +102,9 @@ export function KarmaPowerRow(props: Readonly<{
                     </Select>
                 </FormControl>}
         </TableCell>
-        <TableCell
-            align="right">{isSwapPower(tierToDisplay) ? "" : getPowerCost(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints, powerType === PowerType.combo, selectedSkills.includes(PersonalitySkills.combo2), selectedSkills.includes(PersonalitySkills.combo3))}{paybackPoints >= 50 ? "(⬆)" : ""}</TableCell>
+        <TableCell align="right">
+            {isSwapPower(tierToDisplay) ? "" : getPowerCost(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints, powerType === PowerType.combo, selectedSkills.includes(PersonalitySkills.combo2), selectedSkills.includes(PersonalitySkills.combo3))}{paybackPoints >= 50 ? "(⬆)" : ""}
+        </TableCell>
         <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.damage : karmaPowerLoadout[powerType].damage[tierToDisplay])}</TableCell>
         <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.range : karmaPowerLoadout[powerType].range[tierToDisplay])}</TableCell>
         {isAttack && <TableCell align="right">{(isSwapPower(tierToDisplay) ? selectedSwapPower?.effect : karmaPowerLoadout.effects[tierToDisplay])}</TableCell>}
