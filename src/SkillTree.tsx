@@ -5,18 +5,6 @@ import {isSkillUnlocked} from "./utils.ts";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {TalentModifiers} from "./KarmaSpecialty.ts";
 
-// TODO Use props to allow for certain talents to be excluded
-function TalentMenuItems() {
-    return <>
-        <MenuItem value={"aura"}>Aura</MenuItem>
-        <MenuItem value={"stamina"}>Stamina</MenuItem>
-        <MenuItem value={"agility"}>Agility</MenuItem>
-        <MenuItem value={"function"}>Function</MenuItem>
-        <MenuItem value={"willpower"}>Willpower</MenuItem>
-        <MenuItem value={"technique"}>Technique</MenuItem>
-    </>;
-}
-
 // TODO Remove when readonly is done
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: false}) {
@@ -108,13 +96,23 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
             {skills.includes(TalentSkills.talent4) && <FormControl variant={"filled"}>
                 <InputLabel>Talent 4</InputLabel>
                 <Select value={talent4Options} onChange={event => setTalent4Options(event.target.value as keyof TalentModifiers)} variant={"filled"}>
-                    <TalentMenuItems/>
+                    <MenuItem value={"aura"}>Aura</MenuItem>
+                    <MenuItem value={"stamina"}>Stamina</MenuItem>
+                    <MenuItem value={"agility"}>Agility</MenuItem>
+                    <MenuItem value={"function"}>Function</MenuItem>
+                    <MenuItem value={"willpower"}>Willpower</MenuItem>
+                    <MenuItem value={"technique"}>Technique</MenuItem>
                 </Select>
             </FormControl>}
             {level >= 5 && <FormControl variant={"filled"}>
                 <InputLabel>Level 5</InputLabel>
                 <Select label={"Level 5"} value={level5Talent} onChange={event => setLevel5Talent(event.target.value as keyof TalentModifiers)}>
-                    <TalentMenuItems/>
+                    <MenuItem value={"aura"}>Aura</MenuItem>
+                    <MenuItem value={"stamina"}>Stamina</MenuItem>
+                    <MenuItem value={"agility"}>Agility</MenuItem>
+                    <MenuItem value={"function"}>Function</MenuItem>
+                    <MenuItem value={"willpower"}>Willpower</MenuItem>
+                    <MenuItem value={"technique"}>Technique</MenuItem>
                 </Select>
             </FormControl>}
             {skills.includes(VitalitySkills.vitalityEnhance) && <FormControl variant={"filled"}>

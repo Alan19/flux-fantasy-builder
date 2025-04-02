@@ -255,7 +255,7 @@ export function useSkillTree() {
     const [talent3Options, setTalent3Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-3-options", undefined)
     const [talent4Options, setTalent4Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-4-options", undefined)
     const [level5Talent, setLevel5Talent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
-    const [talentedTalent, setTalentedTalent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
+    const [talentedTalent, setTalentedTalent] = useLocalStorage<keyof TalentModifiers | undefined>("talented-talent", undefined)
 
     const toggleSkill = createToggleFunction(setSkills);
 
