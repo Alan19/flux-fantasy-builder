@@ -25,7 +25,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
         <TableContainer>
             <Table size={"small"}>
                 <TableHead>
-                    <TableRow>
+                    <TableRow style={{background: "var(--md-sys-color-secondaryContainer)"}}>
                         <TableCell>Trait</TableCell>
                         <TableCell>Effect</TableCell>
                         <TableCell>Description</TableCell>
@@ -56,7 +56,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
                     })}
                 </TableBody>
                 <TableHead>
-                    <TableRow>
+                    <TableRow style={{background: "var(--md-sys-color-secondaryContainer)"}}>
                         <TableCell>Flaw</TableCell>
                         <TableCell>Effect</TableCell>
                         <TableCell>Description</TableCell>
