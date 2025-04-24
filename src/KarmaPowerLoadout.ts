@@ -53,7 +53,7 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
         }
     } = {
         "Escape Artist": {
-            attackAndDefense: [5, 7, 15, 30],
+            attackAndDefense: [5, 10, 15, 30],
             combo: [7, 14, 19, 38],
             signature: [10, 20, 25, 50],
         },
