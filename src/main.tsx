@@ -8,6 +8,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 // @ts-expect-error Typescript is not recognizing the font
 import '@fontsource-variable/oxanium';
+import "beercss";
+import "material-dynamic-colors";
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

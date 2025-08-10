@@ -1,4 +1,4 @@
-import {FormControl, InputLabel, MenuItem, Select, TableCell, TableRow, TextField} from "@mui/material";
+import {FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
 
 import {isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
@@ -77,8 +77,8 @@ export function KarmaPowerRow(props: Readonly<{
     }
 
     const selectedSwapPower = swapPowers.basic.concat(swapPowers.advanced).find(value => value.name === powerLoadoutSettings.attack[0]);
-    return <TableRow>
-        <TableCell style={{paddingTop: 10}}>
+    return <tr>
+        <td style={{paddingTop: 10}}>
             {/*Textbox if the user is in editing mode, dropdown if the user is in-play mode*/}
             {editablePowerInfo ? <TextField fullWidth value={editablePowerInfo[1]} onChange={event => editablePowerInfo[2](event.target.value)} size={"small"} label={label} variant="outlined"/>
                 : <FormControl fullWidth style={{maxWidth: 200}}>
@@ -101,14 +101,14 @@ export function KarmaPowerRow(props: Readonly<{
                                                                                                                value={index}>{value ?? `Unnamed ${getTierName(index)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`}</MenuItem>)}
                     </Select>
                 </FormControl>}
-        </TableCell>
-        <TableCell align="right">
+        </td>
+        <td align="right">
             {isSwapPower(tierToDisplay) ? "" : getPowerCost(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints, powerType === PowerType.combo, selectedSkills.includes(PersonalitySkills.combo2), selectedSkills.includes(PersonalitySkills.combo3))}{paybackPoints >= 50 ? "(⬆)" : ""}
-        </TableCell>
-        <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.damage : karmaPowerLoadout[powerType].damage[tierToDisplay])}</TableCell>
-        <TableCell align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.range : karmaPowerLoadout[powerType].range[tierToDisplay])}</TableCell>
-        {isAttack && <TableCell align="right">{(isSwapPower(tierToDisplay) ? selectedSwapPower?.effect : karmaPowerLoadout.effects[tierToDisplay])}</TableCell>}
-        {powerType === PowerType.defense && !isSwapPower(tierToDisplay) && <TableCell align="right">+{karmaPowerLoadout.defense.effect[tierToDisplay]} to DEF on next turn.</TableCell>}
-        {powerType === PowerType.locomotion && !isSwapPower(tierToDisplay) && <TableCell align="right">+{locomotionRanges[tierToDisplay]} MOV</TableCell>}
-    </TableRow>
+        </td>
+        <td align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.damage : karmaPowerLoadout[powerType].damage[tierToDisplay])}</td>
+        <td align="right">{isAttack && (isSwapPower(tierToDisplay) ? selectedSwapPower?.range : karmaPowerLoadout[powerType].range[tierToDisplay])}</td>
+        {isAttack && <td align="right">{(isSwapPower(tierToDisplay) ? selectedSwapPower?.effect : karmaPowerLoadout.effects[tierToDisplay])}</td>}
+        {powerType === PowerType.defense && !isSwapPower(tierToDisplay) && <td align="right">+{karmaPowerLoadout.defense.effect[tierToDisplay]} to DEF on next turn.</td>}
+        {powerType === PowerType.locomotion && !isSwapPower(tierToDisplay) && <td align="right">+{locomotionRanges[tierToDisplay]} MOV</td>}
+    </tr>
 }

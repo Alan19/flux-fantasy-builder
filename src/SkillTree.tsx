@@ -1,9 +1,10 @@
-import Grid from "@mui/material/Grid2";
-import {Checkbox, FormControl, FormControlLabel, FormGroup, InputLabel, MenuItem, Select, Stack, Typography} from "@mui/material";
+import {Typography} from "@mui/material";
 import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "./UseSkillTree.ts";
 import {isSkillUnlocked} from "./utils.ts";
 import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
 import {TalentModifiers} from "./KarmaSpecialty.ts";
+import {BeerCSSCheckbox} from "./beer_wrappers/BeerCSSCheckbox.tsx";
+import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
 
 // TODO Remove when readonly is done
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -28,12 +29,7 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
     const {level, traits, aura, stamina, agility, technique, willpower, function: functionStat} = useCharacterSheetFields()
 
     function getSkillCheckbox(skillName: SkillName, skillData: SkillTreeNode) {
-        return <FormControlLabel control={<Checkbox/>}
-                                 checked={skills.includes(skillName)}
-                                 onChange={() => toggleSkill(skillName)}
-                                 disabled={!isSkillUnlocked(skillData, skills, level) && !skills.includes(skillName)}
-                                 label={skillName}
-                                 key={skillName}/>;
+        return <BeerCSSCheckbox label={skillName} checked={skills.includes(skillName)} onChange={() => toggleSkill(skillName)} disabled={!isSkillUnlocked(skillData, skills, level) && !skills.includes(skillName)} key={skillName}/>
     }
 
     const karmaSkillCount = skills.filter(value => (Object.values(KarmaSkills) as string[]).includes(value)).length;
@@ -44,95 +40,79 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
     return <>
         {/*TODO Disable skill selection if you run out of skill points*/}
         <Typography>You have {karmaSkillPoints} Karma skill points and {otherSkillPoints} skill points left!</Typography>
-        <Grid container spacing={2}>
+        <div className={'grid'}>
             {/*TODO Add error if you remove prerequisite*/}
-            <Grid size={{md: 3}}>
-                <Typography variant={"h6"}>Vitality</Typography>
-                <FormGroup>
+            <fieldset className={"l3"}>
+                <legend>Vitality</legend>
+                <nav className={"vertical"}>
                     {Object.entries(vitalitySkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
-                </FormGroup>
-            </Grid>
-            <Grid size={{md: 3}}>
-                <Typography variant={"h6"}>Personality</Typography>
-                <FormGroup>
+                </nav>
+            </fieldset>
+            <fieldset className={"l3"}>
+                <legend>Personality</legend>
+                <nav className={"vertical"}>
                     {Object.entries(personalitySkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
-                </FormGroup>
-            </Grid>
-            <Grid size={{md: 3}}>
-                <Typography variant={"h6"}>Karma</Typography>
-                <FormGroup>
+                </nav>
+            </fieldset>
+            <fieldset className={"l3"}>
+                <legend>Karma</legend>
+                <nav className={"vertical"}>
                     {Object.entries(karmaSkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
-                </FormGroup>
-            </Grid>
-            <Grid size={{md: 3}}>
-                <Typography variant={"h6"}>Talent</Typography>
-                <FormGroup>
+                </nav>
+            </fieldset>
+            <fieldset className={"l3"}>
+                <legend>Talent</legend>
+                <nav className={"vertical"}>
                     {Object.entries(talentsSkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
-                </FormGroup>
-            </Grid>
-        </Grid>
-        <Stack spacing={1}>
-            {skills.includes(TalentSkills.talent1) && <FormControl variant={"filled"}>
-                <InputLabel>Talent 1</InputLabel>
-                <Select value={talent1Options} onChange={event => setTalent1Options(event.target.value as keyof TalentModifiers)} variant={"filled"}>
-                    <MenuItem value={"aura"}>Aura</MenuItem>
-                    <MenuItem value={"stamina"}>Stamina</MenuItem>
-                </Select>
-            </FormControl>}
-            {skills.includes(TalentSkills.talent2) && <FormControl variant={"filled"}>
-                <InputLabel>Talent 2</InputLabel>
-                <Select value={talent2Options} onChange={event => setTalent2Options(event.target.value as keyof TalentModifiers)} variant={"filled"}>
-                    <MenuItem value={"agility"}>Agility</MenuItem>
-                    <MenuItem value={"function"}>Function</MenuItem>
-                </Select>
-            </FormControl>}
-            {skills.includes(TalentSkills.talent3) && <FormControl variant={"filled"}>
-                <InputLabel>Talent 3</InputLabel>
-                <Select value={talent3Options} onChange={event => setTalent3Options(event.target.value as keyof TalentModifiers)} variant={"filled"}>
-                    <MenuItem value={"willpower"}>Willpower</MenuItem>
-                    <MenuItem value={"technique"}>Technique</MenuItem>
-                </Select>
-            </FormControl>}
-            {skills.includes(TalentSkills.talent4) && <FormControl variant={"filled"}>
-                <InputLabel>Talent 4</InputLabel>
-                <Select value={talent4Options} onChange={event => setTalent4Options(event.target.value as keyof TalentModifiers)} variant={"filled"}>
-                    <MenuItem value={"aura"}>Aura</MenuItem>
-                    <MenuItem value={"stamina"}>Stamina</MenuItem>
-                    <MenuItem value={"agility"}>Agility</MenuItem>
-                    <MenuItem value={"function"}>Function</MenuItem>
-                    <MenuItem value={"willpower"}>Willpower</MenuItem>
-                    <MenuItem value={"technique"}>Technique</MenuItem>
-                </Select>
-            </FormControl>}
-            {level >= 5 && <FormControl variant={"filled"}>
-                <InputLabel>Level 5</InputLabel>
-                <Select label={"Level 5"} value={level5Talent} onChange={event => setLevel5Talent(event.target.value as keyof TalentModifiers)}>
-                    <MenuItem value={"aura"}>Aura</MenuItem>
-                    <MenuItem value={"stamina"}>Stamina</MenuItem>
-                    <MenuItem value={"agility"}>Agility</MenuItem>
-                    <MenuItem value={"function"}>Function</MenuItem>
-                    <MenuItem value={"willpower"}>Willpower</MenuItem>
-                    <MenuItem value={"technique"}>Technique</MenuItem>
-                </Select>
-            </FormControl>}
-            {skills.includes(VitalitySkills.vitalityEnhance) && <FormControl variant={"filled"}>
-                <InputLabel>Vitality Enhance</InputLabel>
-                <Select label={"Vitality Enhance"} value={vitalityOptions} onChange={event => setVitalityOptions(event.target.value as "MOV" | "DEF")}>
-                    <MenuItem value={"MOV"}>+MOV</MenuItem>
-                    <MenuItem value={"DEF"}>+DEF</MenuItem>
-                </Select>
-            </FormControl>}
-            {traits.includes("Talented") && <FormControl variant={"filled"}>
-                <InputLabel>Talented</InputLabel>
-                <Select label={"Talented"} value={talentedTalent} onChange={event => setTalentedTalent(event.target.value as keyof TalentModifiers)}>
-                    {aura < 3 && <MenuItem value={"aura"}>Aura</MenuItem>}
-                    {stamina < 3 && <MenuItem value={"stamina"}>Stamina</MenuItem>}
-                    {agility < 3 && <MenuItem value={"agility"}>Agility</MenuItem>}
-                    {functionStat < 3 && <MenuItem value={"function"}>Function</MenuItem>}
-                    {willpower < 3 && <MenuItem value={"willpower"}>Willpower</MenuItem>}
-                    {technique < 3 && <MenuItem value={"technique"}>Technique</MenuItem>}
-                </Select>
-            </FormControl>}
-        </Stack>
+                </nav>
+            </fieldset>
+        </div>
+        <nav className={"vertical"}>
+            <fieldset style={{width: '100%'}}>
+                <legend>Stat Boosts</legend>
+                {skills.includes(TalentSkills.talent1) && <BeerCSSSelect fill label={"Talent 1"} value={talent1Options} onChange={event => setTalent1Options(event.target.value as keyof TalentModifiers)}>
+                    <option value={"aura"}>Aura</option>
+                    <option value={"stamina"}>Stamina</option>
+                </BeerCSSSelect>}
+                {skills.includes(TalentSkills.talent2) && <BeerCSSSelect fill label={"Talent 3"} value={talent2Options} onChange={event => setTalent2Options(event.target.value as keyof TalentModifiers)}>
+                    <option value={"agility"}>Agility</option>
+                    <option value={"function"}>Function</option>
+                </BeerCSSSelect>}
+                {skills.includes(TalentSkills.talent3) && <BeerCSSSelect fill label={"Talent 3"} value={talent3Options} onChange={event => setTalent3Options(event.target.value as keyof TalentModifiers)}>
+                    <option value={"willpower"}>Willpower</option>
+                    <option value={"technique"}>Technique</option>
+                </BeerCSSSelect>}
+                {skills.includes(TalentSkills.talent4) &&
+                    <BeerCSSSelect label={"Talent 4"} fill value={talent4Options} onChange={event => setTalent4Options(event.target.value as keyof TalentModifiers)}>
+                        <option value={"aura"}>Aura</option>
+                        <option value={"stamina"}>Stamina</option>
+                        <option value={"agility"}>Agility</option>
+                        <option value={"function"}>Function</option>
+                        <option value={"willpower"}>Willpower</option>
+                        <option value={"technique"}>Technique</option>
+                    </BeerCSSSelect>}
+                {level >= 5 && <BeerCSSSelect label={"Level 5"} fill value={level5Talent} onChange={event => setLevel5Talent(event.target.value as keyof TalentModifiers)}>
+                    <option value={"aura"}>Aura</option>
+                    <option value={"stamina"}>Stamina</option>
+                    <option value={"agility"}>Agility</option>
+                    <option value={"function"}>Function</option>
+                    <option value={"willpower"}>Willpower</option>
+                    <option value={"technique"}>Technique</option>
+                </BeerCSSSelect>}
+                {skills.includes(VitalitySkills.vitalityEnhance) && <BeerCSSSelect fill label={"Vitality Enhance"} value={vitalityOptions} onChange={event => setVitalityOptions(event.target.value as "MOV" | "DEF")}>
+                    <option value={"MOV"}>+MOV</option>
+                    <option value={"DEF"}>+DEF</option>
+                </BeerCSSSelect>}
+                {traits.includes("Talented") && <BeerCSSSelect fill label={"Talented"} value={talentedTalent} onChange={event => setTalentedTalent(event.target.value as keyof TalentModifiers)}>
+                    {aura < 3 && <option value={"aura"}>Aura</option>}
+                    {stamina < 3 && <option value={"stamina"}>Stamina</option>}
+                    {agility < 3 && <option value={"agility"}>Agility</option>}
+                    {functionStat < 3 && <option value={"function"}>Function</option>}
+                    {willpower < 3 && <option value={"willpower"}>Willpower</option>}
+                    {technique < 3 && <option value={"technique"}>Technique</option>}
+                </BeerCSSSelect>}
+            </fieldset>
+
+        </nav>
     </>
 }

@@ -2,13 +2,14 @@ import {useLocalStorage} from "usehooks-ts";
 import {Affiliation, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 import {Flaws, Traits} from "./Traits.ts";
 import {createToggleFunction} from "./utils.ts";
+import {ChangeEvent, Dispatch, SetStateAction} from "react";
 
 export function useCharacterSheetFields() {
     // Character creation choices
     const [playerName, setPlayerName] = useLocalStorage('player-name', '')
     const [characterName, setCharacterName] = useLocalStorage('character-name', '')
-    const [characterImageURL, setCharacterImageURL] = useLocalStorage('character-image-url', '')
-    const [gearOfDestinyURL, setGearOfDestinyURL] = useLocalStorage('gear-of-destiny-url', '')
+    const [characterImageURL, setCharacterImageURL] = useLocalStorage('character-image-data', '')
+    const [gearOfDestinyURL, setGearOfDestinyURL] = useLocalStorage('gear-of-destiny-image-data', '')
     const [age, setAge] = useLocalStorage('age', '')
     const [gender, setGender] = useLocalStorage('gender', '')
     const [height, setHeight] = useLocalStorage('height', '')
@@ -44,6 +45,35 @@ export function useCharacterSheetFields() {
     const [currentHP, setCurrentHP] = useLocalStorage<number>('current-hp', 0)
     const [items, setItems] = useLocalStorage('items', '')
     const [otherSkills, setOtherSkills] = useLocalStorage('other-skills', '')
+
+    function getTalentHook(talent: 'Aura' | 'Stamina' | 'Agility' | 'Technique' | 'Willpower' | 'Function'): [number, (value: SetStateAction<number>) => void] {
+        switch (talent) {
+            case "Agility":
+                return [agility, setAgility]
+            case "Technique":
+                return [technique, setTechnique]
+            case "Willpower":
+                return [willpower, setWillpower]
+            case "Function":
+                return [functionStat, setFunction]
+            case 'Aura':
+                return [aura, setAura]
+            case 'Stamina':
+                return [stamina, setStamina]
+        }
+    }
+
+    function handleFileChange(event: ChangeEvent<HTMLInputElement>, updaterFunction: Dispatch<SetStateAction<string>>) {
+        const file = event.target.files?.[0]
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = () => {
+            const base64String = reader.result as string;
+            updaterFunction(base64String);
+        };
+        reader.readAsDataURL(file); // convert file to Base64
+    }
 
     return {
         playerName,
@@ -87,13 +117,13 @@ export function useCharacterSheetFields() {
         configuration,
         setConfiguration,
         characterImageURL,
-        setCharacterImageURL,
+        setCharacterImageURL: (event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, setCharacterImageURL),
         positiveKarma,
         setPositiveKarma,
         negativeKarma,
         setNegativeKarma,
         gearOfDestinyURL,
-        setGearOfDestinyURL,
+        setGearOfDestinyURL: (event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, setGearOfDestinyURL),
         karmaPool,
         setKarmaPool,
         paybackPoints,
@@ -109,6 +139,8 @@ export function useCharacterSheetFields() {
         otherSkills,
         setOtherSkills,
         setTraits,
-        setFlaws
+        setFlaws,
+        getTalentHook
     }
 }
+
