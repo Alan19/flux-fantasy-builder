@@ -5,5 +5,5 @@ function colorImage(color: string) {
 }
 
 export function ColoredLogo() {
-    return <img src={fluxFantasyLogo} style={{width: "100%", ...colorImage("var(--md-sys-color-primary)")}} alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>;
+    return <img src={fluxFantasyLogo} style={{width: "100%", ...colorImage("var(--primary)")}} alt={'The logo of Flux Fantasy, consisting of a stylized version of the text "Flux Fantasy"'}/>;
 }

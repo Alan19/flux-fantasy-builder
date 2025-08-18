@@ -1,8 +1,6 @@
-import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
+import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
 import {usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
 import {useSkillTree} from "./UseSkillTree.ts";
-import {Button} from "@mui/material-next";
-import {RestartAlt, SaveAlt, Upload} from "@mui/icons-material";
 import sanitize from "sanitize-filename";
 
 export function ImportExportCharacter() {
@@ -44,8 +42,8 @@ export function ImportExportCharacter() {
                         // TODO add error messages during import
                         characterSheetFields.setPlayerName(data.characterBackground.playerName)
                         characterSheetFields.setCharacterName(data.characterBackground.characterName)
-                        characterSheetFields.setCharacterImageURL(data.characterBackground.characterImageURL)
-                        characterSheetFields.setGearOfDestinyURL(data.characterBackground.gearOfDestinyURL)
+                        characterSheetFields.setCharacterImageData(data.characterBackground.characterImageURL)
+                        characterSheetFields.setGearOfDestiny(data.characterBackground.gearOfDestinyURL)
                         characterSheetFields.setAge(data.characterBackground.age)
                         characterSheetFields.setGender(data.characterBackground.gender)
                         characterSheetFields.setHeight(data.characterBackground.height)
@@ -96,8 +94,8 @@ export function ImportExportCharacter() {
         if (window.confirm('Are you sure you want to reset your character? Please backup your character using the "Export" button if you want to restore them!')) {
             characterSheetFields.setPlayerName("")
             characterSheetFields.setCharacterName("")
-            characterSheetFields.setCharacterImageURL("")
-            characterSheetFields.setGearOfDestinyURL("")
+            characterSheetFields.setCharacterImageData("")
+            characterSheetFields.setGearOfDestiny("")
             characterSheetFields.setAge("")
             characterSheetFields.setGender("")
             characterSheetFields.setHeight("")
@@ -137,9 +135,20 @@ export function ImportExportCharacter() {
         }
     }
 
-    return <>
-        <Button startIcon={<Upload/>} variant={"outlined"} color={"secondary"} component={"label"}>Import<input type="file" name={"image"} onChange={importCharacter} hidden/></Button>
-        <Button onClick={exportCharacter} startIcon={<SaveAlt/>} variant={"outlined"} color={"secondary"}>Export</Button>
-        <Button onClick={resetCharacter} startIcon={<RestartAlt/>} variant={"outlined"} color={"secondary"}>Reset</Button>
-    </>;
+    return <div className={"fixed bottom right large-margin"}>
+        <button className="extra circle tertiary-container">
+            <i>home_storage</i>
+        </button>
+        <menu className="top transparent no-wrap left right-align no-margin">
+            <li>
+                <button className={"tertiary"}><i>upload</i> Import<input type="file" name={"image"} onChange={importCharacter}/></button>
+            </li>
+            <li>
+                <button onClick={exportCharacter} className={"tertiary"}><i>save_alt</i> Export</button>
+            </li>
+            <li>
+                <button onClick={resetCharacter} className={"tertiary"}><i>restart_alt</i> Reset</button>
+            </li>
+        </menu>
+    </div>;
 }

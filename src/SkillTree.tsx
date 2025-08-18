@@ -1,7 +1,7 @@
 import {Typography} from "@mui/material";
 import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "./UseSkillTree.ts";
 import {isSkillUnlocked} from "./utils.ts";
-import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
+import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
 import {TalentModifiers} from "./KarmaSpecialty.ts";
 import {BeerCSSCheckbox} from "./beer_wrappers/BeerCSSCheckbox.tsx";
 import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
@@ -70,6 +70,7 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
         <nav className={"vertical"}>
             <fieldset style={{width: '100%'}}>
                 <legend>Stat Boosts</legend>
+                {/*TODO Add margins between selects*/}
                 {skills.includes(TalentSkills.talent1) && <BeerCSSSelect fill label={"Talent 1"} value={talent1Options} onChange={event => setTalent1Options(event.target.value as keyof TalentModifiers)}>
                     <option value={"aura"}>Aura</option>
                     <option value={"stamina"}>Stamina</option>

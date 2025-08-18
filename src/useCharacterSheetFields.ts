@@ -2,14 +2,14 @@ import {useLocalStorage} from "usehooks-ts";
 import {Affiliation, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
 import {Flaws, Traits} from "./Traits.ts";
 import {createToggleFunction} from "./utils.ts";
-import {ChangeEvent, Dispatch, SetStateAction} from "react";
+import {SetStateAction} from "react";
 
 export function useCharacterSheetFields() {
     // Character creation choices
     const [playerName, setPlayerName] = useLocalStorage('player-name', '')
     const [characterName, setCharacterName] = useLocalStorage('character-name', '')
-    const [characterImageURL, setCharacterImageURL] = useLocalStorage('character-image-data', '')
-    const [gearOfDestinyURL, setGearOfDestinyURL] = useLocalStorage('gear-of-destiny-image-data', '')
+    const [characterImageData, setCharacterImageData] = useLocalStorage('character-image-data', '')
+    const [gearOfDestiny, setGearOfDestiny] = useLocalStorage('gear-of-destiny-image-data', '')
     const [age, setAge] = useLocalStorage('age', '')
     const [gender, setGender] = useLocalStorage('gender', '')
     const [height, setHeight] = useLocalStorage('height', '')
@@ -63,18 +63,6 @@ export function useCharacterSheetFields() {
         }
     }
 
-    function handleFileChange(event: ChangeEvent<HTMLInputElement>, updaterFunction: Dispatch<SetStateAction<string>>) {
-        const file = event.target.files?.[0]
-        if (!file) return;
-
-        const reader = new FileReader();
-        reader.onload = () => {
-            const base64String = reader.result as string;
-            updaterFunction(base64String);
-        };
-        reader.readAsDataURL(file); // convert file to Base64
-    }
-
     return {
         playerName,
         setPlayerName,
@@ -116,14 +104,14 @@ export function useCharacterSheetFields() {
         setMerits,
         configuration,
         setConfiguration,
-        characterImageURL,
-        setCharacterImageURL: (event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, setCharacterImageURL),
+        characterImageData,
+        setCharacterImageData,
         positiveKarma,
         setPositiveKarma,
         negativeKarma,
         setNegativeKarma,
-        gearOfDestinyURL,
-        setGearOfDestinyURL: (event: ChangeEvent<HTMLInputElement>) => handleFileChange(event, setGearOfDestinyURL),
+        gearOfDestiny,
+        setGearOfDestiny,
         karmaPool,
         setKarmaPool,
         paybackPoints,

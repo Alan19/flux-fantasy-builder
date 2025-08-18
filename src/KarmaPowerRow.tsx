@@ -1,8 +1,9 @@
-import {FormControl, InputLabel, MenuItem, Select, TextField} from "@mui/material";
 import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
-
 import {isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
 import {KarmaSkills, PersonalitySkills, SkillName} from "./UseSkillTree.ts";
+import {BeerCSSTextField} from "./beer_wrappers/BeerCSSTextField.tsx";
+import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
+import _ from "lodash";
 
 function getNamesForPowerType(powerType: PowerType, powerLoadoutSettings: PowerLoadoutSettings): [string, string, string, string] {
     return [powerLoadoutSettings[0][powerType][0], powerLoadoutSettings[1][powerType][0], powerLoadoutSettings[2][powerType][0], powerLoadoutSettings[3][powerType][0]]
@@ -77,30 +78,29 @@ export function KarmaPowerRow(props: Readonly<{
     }
 
     const selectedSwapPower = swapPowers.basic.concat(swapPowers.advanced).find(value => value.name === powerLoadoutSettings.attack[0]);
+
+    function getPowerSelection() {
+        return <BeerCSSSelect label={label}
+                              onChange={event => {
+                                  if (powerType === PowerType.attack) {
+                                      setAttackPowerTier(event.target.value)
+                                  } else {
+                                      setCurrentPowerTierForPower(event.target.value as unknown as PowerTier);
+                                  }
+                              }}
+                              value={currentPowerTierForPower}
+                              inputSize={"small"}
+        >
+            {powerType === PowerType.attack && <option disabled={!powerLoadoutSettings.swapPower[0]} value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0] ?? "Unselected Basic Swap Power"}</option>}
+            {powerType === PowerType.attack && <option value={powerLoadoutSettings.advancedSwapPower[0]} disabled={!selectedSkills.includes(KarmaSkills.advancedAttacks) || !powerLoadoutSettings.advancedSwapPower[0]}>{powerLoadoutSettings.advancedSwapPower[0] ?? "Unselected Advanced Swap Power"}</option>}
+            {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <option disabled={isMenuItemDisabled(selectedSkills, index)} key={index} value={index}>{_.isEmpty(value) ? `Unnamed ${getTierName(index)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}` : value}</option>)}
+        </BeerCSSSelect>;
+    }
+
     return <tr>
         <td style={{paddingTop: 10}}>
             {/*Textbox if the user is in editing mode, dropdown if the user is in-play mode*/}
-            {editablePowerInfo ? <TextField fullWidth value={editablePowerInfo[1]} onChange={event => editablePowerInfo[2](event.target.value)} size={"small"} label={label} variant="outlined"/>
-                : <FormControl fullWidth style={{maxWidth: 200}}>
-                    <InputLabel>{label}</InputLabel>
-                    <Select label={label}
-                            fullWidth
-                            onChange={event => {
-                                if (powerType === PowerType.attack) {
-                                    setAttackPowerTier(event.target.value)
-                                } else {
-                                    setCurrentPowerTierForPower(event.target.value as PowerTier);
-                                }
-                            }}
-                            value={currentPowerTierForPower}
-                            size={"small"}>
-                        {powerType === PowerType.attack && <MenuItem disabled={!powerLoadoutSettings.swapPower[0]} value={powerLoadoutSettings.swapPower[0]}>{powerLoadoutSettings.swapPower[0] ?? "Unselected Basic Swap Power"}</MenuItem>}
-                        {powerType === PowerType.attack && <MenuItem value={powerLoadoutSettings.advancedSwapPower[0]}
-                                                                     disabled={!selectedSkills.includes(KarmaSkills.advancedAttacks) || !powerLoadoutSettings.advancedSwapPower[0]}>{powerLoadoutSettings.advancedSwapPower[0] ?? "Unselected Advanced Swap Power"}</MenuItem>}
-                        {getNamesForPowerType(powerType, powerLoadoutSettings).map((value, index) => <MenuItem disabled={isMenuItemDisabled(selectedSkills, index)} key={index}
-                                                                                                               value={index}>{value ?? `Unnamed ${getTierName(index)} ${powerType.charAt(0).toUpperCase()}${powerType.substring(1)}`}</MenuItem>)}
-                    </Select>
-                </FormControl>}
+            {editablePowerInfo ? <BeerCSSTextField value={editablePowerInfo[1]} onChange={event => editablePowerInfo[2](event.target.value)} label={label}/> : getPowerSelection()}
         </td>
         <td align="right">
             {isSwapPower(tierToDisplay) ? "" : getPowerCost(getBaseCost(powerType, tierToDisplay, karmaPowerLoadout.costs), props.paybackPoints, powerType === PowerType.combo, selectedSkills.includes(PersonalitySkills.combo2), selectedSkills.includes(PersonalitySkills.combo3))}{paybackPoints >= 50 ? "(⬆)" : ""}

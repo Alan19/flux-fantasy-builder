@@ -1,5 +1,5 @@
 import {affiliationFlaws, affiliationTraits, Flaws, selectableFlaws, selectableTraits, Trait, Traits} from "./Traits.ts";
-import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
+import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
 import {BeerCSSCheckbox} from "./beer_wrappers/BeerCSSCheckbox.tsx";
 
 export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
@@ -21,10 +21,10 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
         }
     }
 
-    return <div className={"medium-height scroll"}>
-        <table>
+    return <div className={"scroll"}>
+        <table className={"border"}>
             <thead>
-            <tr className={'primary'}>
+            <tr className={'primary-container'}>
                 <th>Trait</th>
                 <th>Effect</th>
                 <th>Description</th>
@@ -54,7 +54,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
             })}
             </tbody>
             <thead>
-            <tr className={'primary'}>
+            <tr className={'primary-container'}>
                 <th>Flaw</th>
                 <th>Effect</th>
                 <th>Description</th>

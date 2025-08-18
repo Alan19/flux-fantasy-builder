@@ -1,6 +1,6 @@
 import {KarmaPowerLoadout, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
 import {FormControlLabel, Radio} from "@mui/material";
-import {useCharacterSheetFields} from "./UseCharacterSheetFields.ts";
+import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
 import {PowerTier, PowerType, usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
 import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
 import {useSkillTree} from "./UseSkillTree.ts";
@@ -25,9 +25,9 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
     }
 
     return <div className={clsx("scroll", !props.readOnly && "medium-height")}>
-        <table className={"small"}>
+        <table className={"small border"}>
             <thead>
-            <tr>
+            <tr className={'primary-container'}>
                 <th>{readOnly ? "Selected" : "Basic"} Powers</th>
                 <th align="right">Cost</th>
                 <th align="right">Damage</th>
@@ -45,7 +45,7 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                                                                              selectedSkills={skills}/>) :
                 <>
                     {getPowerSetForTier(0)}
-                    <tr>
+                    <tr className={'primary-container'}>
                         <th>Basic Swap Powers</th>
                         <th align="right">Cost</th>
                         <th align="right">Damage</th>
@@ -63,7 +63,7 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                         <td align={"right"}>{value.range}</td>
                         <td align={"right"}>{value.effect}</td>
                     </tr>)}
-                    <tr>
+                    <tr className={'primary-container'}>
                         <th>Basic Tier 2 Powers</th>
                         <th align="right">Cost</th>
                         <th align="right">Damage</th>
@@ -71,7 +71,7 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                         <th align="right">Effect</th>
                     </tr>
                     {getPowerSetForTier(1)}
-                    <tr>
+                    <tr className={'primary-container'}>
                         <th>Advanced Powers</th>
                         <th align="right">Cost</th>
                         <th align="right">Damage</th>
@@ -79,7 +79,7 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                         <th align="right">Effect</th>
                     </tr>
                     {getPowerSetForTier(2)}
-                    <tr>
+                    <tr className={'primary-container'}>
                         <th>Advanced Swap Powers</th>
                         <th align="right">Cost</th>
                         <th align="right">Damage</th>

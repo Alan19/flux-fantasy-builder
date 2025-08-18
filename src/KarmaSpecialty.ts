@@ -74,6 +74,37 @@ export function getHealingPercent(karmaSpecialty: KarmaSpecialty, skills: SkillN
     return Math.min(healingPercentage, 100);
 }
 
+export function getBoostedTalent(study: Study): Talent {
+    switch (study) {
+        case EscapeArtistStudies.creativeKarmastry:
+        case InkFighterStudies.projectile:
+        case SpecialAgentStudies.tinker:
+        case ClockbotStudies.experimental:
+            return "Technique";
+        case EscapeArtistStudies.clockworkKarmastry:
+        case InkFighterStudies.animal:
+        case SpecialAgentStudies.scout:
+        case ClockbotStudies.heavy:
+            return "Agility";
+        case EscapeArtistStudies.bioKarmastry:
+        case InkFighterStudies.body:
+        case ClockbotStudies.medical:
+            return "Function"
+        case EscapeArtistStudies.machineKarmastry:
+        case SpecialAgentStudies.bodyguard:
+        case ClockbotStudies.decoy:
+            return "Stamina";
+        case EscapeArtistStudies.quantumKarmastry:
+        case InkFighterStudies.elemental:
+        case SpecialAgentStudies.disrupter:
+        case ClockbotStudies.karmastryAssist:
+            return "Willpower"
+        case InkFighterStudies.melee:
+        case SpecialAgentStudies.operative:
+            return "Aura"
+    }
+}
+
 export enum Affiliation {
     academia = 'Academia',
     gears = 'Great Escape Artist Society',
@@ -125,7 +156,7 @@ export interface TalentModifiers {
     agility: number;
 }
 
-type BoostedTalents = ("Aura" | "Technique" | "Agility" | "Stamina" | "Willpower" | "Function")[];
+export type Talent = "Aura" | "Technique" | "Agility" | "Stamina" | "Willpower" | "Function";
 
 // TODO Lower the number of parameters
 export function getEffectiveTalents(study: Study | undefined,
@@ -143,7 +174,7 @@ export function getEffectiveTalents(study: Study | undefined,
                                     talentedTalent: keyof TalentModifiers | undefined,
                                     skills: SkillName[],
                                     level: number,
-                                    traits: Traits[]): [TalentModifiers, BoostedTalents] {
+                                    traits: Traits[]): [TalentModifiers] {
     const talents: TalentModifiers = {
         aura: aura,
         technique: technique,
@@ -152,45 +183,8 @@ export function getEffectiveTalents(study: Study | undefined,
         willpower: willpower,
         agility: agility,
     }
-    const boostedTalents: BoostedTalents = [];
-    switch (study) {
-        case EscapeArtistStudies.creativeKarmastry:
-        case InkFighterStudies.projectile:
-        case SpecialAgentStudies.tinker:
-        case ClockbotStudies.experimental:
-            talents.technique += 1;
-            boostedTalents.push("Technique");
-            break;
-        case EscapeArtistStudies.clockworkKarmastry:
-        case InkFighterStudies.animal:
-        case SpecialAgentStudies.scout:
-        case ClockbotStudies.heavy:
-            talents.agility += 1;
-            boostedTalents.push("Agility");
-            break;
-        case EscapeArtistStudies.bioKarmastry:
-        case InkFighterStudies.body:
-        case ClockbotStudies.medical:
-            talents.function += 1;
-            boostedTalents.push("Function");
-            break;
-        case EscapeArtistStudies.machineKarmastry:
-        case SpecialAgentStudies.bodyguard:
-        case ClockbotStudies.decoy:
-            talents.stamina += 1;
-            boostedTalents.push("Stamina");
-            break;
-        case EscapeArtistStudies.quantumKarmastry:
-        case InkFighterStudies.elemental:
-        case SpecialAgentStudies.disrupter:
-        case ClockbotStudies.karmastryAssist:
-            talents.willpower += 1;
-            boostedTalents.push("Willpower");
-            break;
-        case InkFighterStudies.melee:
-        case SpecialAgentStudies.operative:
-            boostedTalents.push("Aura");
-            talents.aura += 1;
+    if (study) {
+        talents[getBoostedTalent(study).toLowerCase() as keyof TalentModifiers] += 1;
     }
     if (skills.includes(TalentSkills.talent1) && talent1Options) {
         talents[talent1Options] += 1;
@@ -210,7 +204,7 @@ export function getEffectiveTalents(study: Study | undefined,
     if (traits.includes("Talented") && talentedTalent) {
         talents[talentedTalent] += 1;
     }
-    return [talents, boostedTalents];
+    return [talents];
 }
 
 export function getMaxHP(effectiveTalents: TalentModifiers, level: number, skills: SkillName[]) {

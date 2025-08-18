@@ -3,9 +3,13 @@ import {CharacterInfoInput} from "./CharacterInfoInput.tsx";
 import {Route, Router} from "wouter";
 import {useHashLocation} from "wouter/use-hash-location";
 import {RenderedCharacterSheet} from "./RenderedCharacterSheet.tsx";
-import {createTheme, CssBaseline, ThemeProvider, Typography} from "@mui/material";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {CssVarsProvider} from "@mui/material-next";
 import {flux} from "./themes.ts";
+import {NavigationRail} from "./NavigationRail.tsx";
+import {useLocalStorage} from "usehooks-ts";
+import {Mode} from "./ModeToggle.tsx";
+import {ImportExportCharacter} from "./ImportExportCharacter.tsx";
 
 const theme = createTheme({
     typography: {
@@ -30,42 +34,11 @@ const theme = createTheme({
     },
 })
 
-function NavigationRail() {
-    return <nav className={"left"}>
-        <header>
-            <button className="extra circle transparent">
-                <i>menu_open</i>
-            </button>
-            <button className="extend square round">
-                <i>widgets</i>
-                <span>Explore</span>
-            </button>
-        </header>
-        <a>
-            <i>arrow_back</i>
-            <span>Left</span>
-        </a>
-        <a>
-            <i>arrow_forward</i>
-            <span>Right</span>
-        </a>
-        <a>
-            <i>checklist_rtl</i>
-            <span>RTL</span>
-        </a>
-        <a>
-            <i>checklist</i>
-            <span>LTR</span>
-        </a>
-        <a>
-            <i>code</i>
-            <span>Code</span>
-        </a>
-    </nav>;
-}
-
 function App() {
-    ui("theme", "#2a0066");
+    ui("theme", "#393bff");
+    const [colorScheme] = useLocalStorage<Mode>("preferred-color-scheme", "auto");
+
+    ui("mode", colorScheme)
 
     return (
         <CssVarsProvider theme={flux}>
@@ -74,12 +47,14 @@ function App() {
 
                 <Router hook={useHashLocation}>
                     <NavigationRail/>
-                    <main className={"responsive"}>
+                    <main className={"top-margin center"} style={{maxInlineSize: "95rem"}}>
                         <Route path="/"><CharacterInfoInput/></Route>
                         <Route path={"/sheet"}><RenderedCharacterSheet/></Route>
+                        <footer>Copyright © Herohelix, LLC</footer>
                     </main>
                 </Router>
-                <footer style={{textAlign: "right", marginTop: 16}}><Typography variant={"subtitle1"}>Copyright © Herohelix, LLC</Typography></footer>
+                <ImportExportCharacter />
+
             </ThemeProvider>
         </CssVarsProvider>
     )
