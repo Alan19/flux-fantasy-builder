@@ -1,4 +1,3 @@
-import {Typography} from "@mui/material";
 import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "./UseSkillTree.ts";
 import {isSkillUnlocked} from "./utils.ts";
 import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
@@ -39,7 +38,7 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
 
     return <>
         {/*TODO Disable skill selection if you run out of skill points*/}
-        <Typography>You have {karmaSkillPoints} Karma skill points and {otherSkillPoints} skill points left!</Typography>
+        <span>You have {karmaSkillPoints} Karma skill points and {otherSkillPoints} skill points left!</span>
         <div className={'grid'}>
             {/*TODO Add error if you remove prerequisite*/}
             <fieldset className={"l3"}>

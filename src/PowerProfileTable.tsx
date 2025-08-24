@@ -1,10 +1,10 @@
 import {KarmaPowerLoadout, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
-import {FormControlLabel, Radio} from "@mui/material";
 import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
 import {PowerTier, PowerType, usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
 import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
 import {useSkillTree} from "./UseSkillTree.ts";
 import {clsx} from "clsx";
+import {BeerCSSRadio} from "./beer_wrappers/BeerCSSRadio.tsx";
 
 export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, KarmaPowerLoadout], readOnly?: boolean }>) {
     const {readOnly = false, powers} = props;
@@ -54,10 +54,12 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                     </tr>
 
                     {swapPowers.basic.map(value => <tr key={value.name}>
-                        <td><FormControlLabel value={value.name}
-                                              onChange={() => powerNames.swapPower[1](value.name)}
-                                              control={<Radio size={"small"} checked={powerNames.swapPower[0] === value.name}/>}
-                                              label={value.name}/></td>
+                        <td>
+                            <BeerCSSRadio value={value.name}
+                                          onChange={() => powerNames.swapPower[1](value.name)}
+                                          checked={powerNames.swapPower[0] === value.name}
+                                          label={value.name}/>
+                        </td>
                         <td></td>
                         <td align={"right"}>{value.damage}</td>
                         <td align={"right"}>{value.range}</td>
@@ -87,10 +89,12 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                         <th align="right">Effect</th>
                     </tr>
                     {swapPowers.advanced.map(value => <tr key={value.name}>
-                        <th><FormControlLabel value={value.name}
-                                              onChange={() => powerNames.advancedSwapPower[1](value.name)}
-                                              control={<Radio size={"small"} checked={powerNames.advancedSwapPower[0] === value.name}/>}
-                                              label={value.name}/></th>
+                        <th><
+                            BeerCSSRadio value={value.name}
+                                          onChange={() => powerNames.advancedSwapPower[1](value.name)}
+                                          checked={powerNames.advancedSwapPower[0] === value.name}
+                                          label={value.name}/>
+                        </th>
                         <td align="right"></td>
                         <td align="right">{value.damage}</td>
                         <td align="right">{value.range}</td>

@@ -8,6 +8,7 @@ import {SkillTree} from "./SkillTree.tsx";
 import {BeerCSSTextField} from "./beer_wrappers/BeerCSSTextField.tsx";
 import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
 import {setFileBase64} from "./utils.ts";
+import {UnselectedKarmaStudyWarning} from "./UnselectedKarmaStudyWarning.tsx";
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();
@@ -90,26 +91,7 @@ export function CharacterIdentity() {
                     <fieldset style={{width: "100%"}}>
                         <legend><TypographyWithAdornment coloredText text={"Karma Powers"}/></legend>
                         <PowerProfileTable powers={getPowerLoadout(characterIdentity.karmaSpecialty, characterIdentity.study)}/>
-                    </fieldset> : <div>
-                        <i className="extra">warning</i>
-                        <h5>No Karma Study!</h5>
-                        <p>Choose a Karma Specialty and Karma Study to view Karma powers</p>
-                        <div className="space"></div>
-                        <nav className="center-align grid">
-                            <div className="field border label s6">
-                                <select onChange={event => characterIdentity.setKarmaSpecialty(event.target.value as KarmaSpecialty)} value={characterIdentity.karmaSpecialty}>
-                                    {Object.values(KarmaSpecialty).map(value => <option key={value} value={value}>{value}</option>)}
-                                </select>
-                                <label>Karma Specialty</label>
-                            </div>
-                            <div className="field border label s6">
-                                <select onChange={event => characterIdentity.setStudy(event.target.value as Study)} value={characterIdentity.study}>
-                                    {Object.values(getStudies(characterIdentity.karmaSpecialty)).map(value => <option key={value} value={value}>{value}</option>)}
-                                </select>
-                                <label>Karma Studies</label>
-                            </div>
-                        </nav>
-                    </div>}
+                    </fieldset> : <UnselectedKarmaStudyWarning />}
             </article>
         </div>
         <article>
