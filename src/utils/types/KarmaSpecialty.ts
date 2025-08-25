@@ -1,4 +1,4 @@
-import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "./UseSkillTree.ts";
+import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "../../hooks/useSkillTree.ts";
 import {Traits} from "./Traits.ts";
 
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}

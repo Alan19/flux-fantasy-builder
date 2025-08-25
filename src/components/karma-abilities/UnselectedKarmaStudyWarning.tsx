@@ -1,5 +1,5 @@
-import {getStudies, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
+import {getStudies, KarmaSpecialty, Study} from "../../utils/types/KarmaSpecialty.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
 
 export function UnselectedKarmaStudyWarning() {
     const {karmaSpecialty, setKarmaSpecialty, setStudy, study} = useCharacterSheetFields();

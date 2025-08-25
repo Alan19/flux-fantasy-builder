@@ -1,6 +1,6 @@
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
-import {useSkillTree} from "./UseSkillTree.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {usePowerLoadoutSettings} from "../../hooks/usePowerLoadoutSettings.ts";
+import {useSkillTree} from "../../hooks/useSkillTree.ts";
 import sanitize from "sanitize-filename";
 
 export function ImportExportCharacter() {

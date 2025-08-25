@@ -1,6 +1,6 @@
 import {useLocalStorage} from "usehooks-ts";
-import {TalentModifiers} from "./KarmaSpecialty.ts";
-import {createToggleFunction} from "./utils.ts";
+import {TalentModifiers} from "../utils/types/KarmaSpecialty.ts";
+import {createToggleFunction} from "../utils/utils.ts";
 
 export type SkillName = VitalitySkills | KarmaSkills | TalentSkills | PersonalitySkills;
 export type SkillTreeNode = {

@@ -1,7 +1,7 @@
 import {useLocalStorage} from "usehooks-ts";
-import {Affiliation, KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {Flaws, Traits} from "./Traits.ts";
-import {createToggleFunction} from "./utils.ts";
+import {Affiliation, KarmaSpecialty, Study} from "../utils/types/KarmaSpecialty.ts";
+import {Flaws, Traits} from "../utils/types/Traits.ts";
+import {createToggleFunction} from "../utils/utils.ts";
 import {SetStateAction} from "react";
 
 export function useCharacterSheetFields() {

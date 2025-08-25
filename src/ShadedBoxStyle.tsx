@@ -1,1 +1,0 @@
-export const shadedBoxStyle = {background: 'var(--md-sys-color-surfaceContainerHigh)', padding: 16,};

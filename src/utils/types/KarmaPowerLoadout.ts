@@ -1,5 +1,5 @@
 import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {PowerTier} from "./UsePowerLoadoutSettings.ts";
+import {PowerTier} from "../../hooks/usePowerLoadoutSettings.ts";
 
 interface KarmaAttack {
     damage: [number, number, number, number];

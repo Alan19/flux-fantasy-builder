@@ -1,9 +1,9 @@
-import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "./UseSkillTree.ts";
-import {isSkillUnlocked} from "./utils.ts";
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {TalentModifiers} from "./KarmaSpecialty.ts";
-import {BeerCSSCheckbox} from "./beer_wrappers/BeerCSSCheckbox.tsx";
-import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
+import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "../../hooks/useSkillTree.ts";
+import {isSkillUnlocked} from "../../utils/utils.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {TalentModifiers} from "../../utils/types/KarmaSpecialty.ts";
+import {BeerCSSCheckbox} from "../ui/beer-css-wrappers/BeerCSSCheckbox.tsx";
+import {BeerCSSSelect} from "../ui/beer-css-wrappers/BeerCSSSelect.tsx";
 
 // TODO Remove when readonly is done
 // eslint-disable-next-line @typescript-eslint/no-unused-vars

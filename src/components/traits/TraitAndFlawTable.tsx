@@ -1,6 +1,6 @@
-import {affiliationFlaws, affiliationTraits, Flaws, selectableFlaws, selectableTraits, Trait, Traits} from "./Traits.ts";
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {BeerCSSCheckbox} from "./beer_wrappers/BeerCSSCheckbox.tsx";
+import {affiliationFlaws, affiliationTraits, Flaws, selectableFlaws, selectableTraits, Trait, Traits} from "../../utils/types/Traits.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {BeerCSSCheckbox} from "../ui/beer-css-wrappers/BeerCSSCheckbox.tsx";
 
 export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
     const characterSheetFields = useCharacterSheetFields();

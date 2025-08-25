@@ -1,16 +1,16 @@
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {PowerProfileTable} from "./PowerProfileTable.tsx";
-import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
-import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier, KarmaSpecialty} from "./KarmaSpecialty.ts";
-import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {PowerProfileTable} from "../karma-abilities/PowerProfileTable.tsx";
+import {getPowerLoadout} from "../../utils/types/KarmaPowerLoadout.ts";
+import {getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier, KarmaSpecialty} from "../../utils/types/KarmaSpecialty.ts";
+import {TraitAndFlawTable} from "../traits/TraitAndFlawTable.tsx";
 import {useEffect, useState} from "react";
-import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
-import {SkillTree} from "./SkillTree.tsx";
-import {useSkillTree} from "./UseSkillTree.ts";
-import {ColoredLogo} from "./ColoredLogo.tsx";
-import {BeerCSSTextField} from "./beer_wrappers/BeerCSSTextField.tsx";
+import {TypographyWithAdornment} from "../ui/TypographyWithAdornment.tsx";
+import {SkillTree} from "../skills/SkillTree.tsx";
+import {useSkillTree} from "../../hooks/useSkillTree.ts";
+import {ColoredLogo} from "../ui/ColoredLogo.tsx";
+import {BeerCSSTextField} from "../ui/beer-css-wrappers/BeerCSSTextField.tsx";
 import {NumericFormat} from "react-number-format";
-import {UnselectedKarmaStudyWarning} from "./UnselectedKarmaStudyWarning.tsx";
+import {UnselectedKarmaStudyWarning} from "../karma-abilities/UnselectedKarmaStudyWarning.tsx";
 
 
 function getAdvantages(karmaSpecialty: KarmaSpecialty, level: number): string {
@@ -192,7 +192,7 @@ export function RenderedCharacterSheet() {
                                 </div>
                             </div>
                         </fieldset>
-                        <fieldset>
+                        <fieldset className={"bottom-padding large-padding"}>
                             <legend>
                                 <TypographyWithAdornment text={"Talents"} coloredText/>
                             </legend>
@@ -285,7 +285,7 @@ export function RenderedCharacterSheet() {
                         <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
                         <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
                     </fieldset>
-                    <fieldset className={"bottom-padding"}>
+                    <fieldset className={"bottom-padding large-padding"}>
                         <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
                         <div className={"grid"}>
                             <div className={"l6"}>

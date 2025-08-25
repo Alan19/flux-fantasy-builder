@@ -1,10 +1,10 @@
-import {KarmaPowerLoadout, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {PowerTier, PowerType, usePowerLoadoutSettings} from "./UsePowerLoadoutSettings.ts";
+import {KarmaPowerLoadout, SwapPowerChoices} from "../../utils/types/KarmaPowerLoadout.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {PowerTier, PowerType, usePowerLoadoutSettings} from "../../hooks/usePowerLoadoutSettings.ts";
 import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
-import {useSkillTree} from "./UseSkillTree.ts";
+import {useSkillTree} from "../../hooks/useSkillTree.ts";
 import {clsx} from "clsx";
-import {BeerCSSRadio} from "./beer_wrappers/BeerCSSRadio.tsx";
+import {BeerCSSRadio} from "../ui/beer-css-wrappers/BeerCSSRadio.tsx";
 
 export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, KarmaPowerLoadout], readOnly?: boolean }>) {
     const {readOnly = false, powers} = props;

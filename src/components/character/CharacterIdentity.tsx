@@ -1,14 +1,14 @@
-import {Affiliation, getBoostedTalent, getStudies, KarmaSpecialty, Study, Talent} from "./KarmaSpecialty.ts";
-import {useCharacterSheetFields} from "./useCharacterSheetFields.ts";
-import {TypographyWithAdornment} from "./TypographyWithAdornment.tsx";
-import {TraitAndFlawTable} from "./TraitAndFlawTable.tsx";
-import {PowerProfileTable} from "./PowerProfileTable.tsx";
-import {getPowerLoadout} from "./KarmaPowerLoadout.ts";
-import {SkillTree} from "./SkillTree.tsx";
-import {BeerCSSTextField} from "./beer_wrappers/BeerCSSTextField.tsx";
-import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
-import {setFileBase64} from "./utils.ts";
-import {UnselectedKarmaStudyWarning} from "./UnselectedKarmaStudyWarning.tsx";
+import {Affiliation, getBoostedTalent, getStudies, KarmaSpecialty, Study, Talent} from "../../utils/types/KarmaSpecialty.ts";
+import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
+import {TypographyWithAdornment} from "../ui/TypographyWithAdornment.tsx";
+import {TraitAndFlawTable} from "../traits/TraitAndFlawTable.tsx";
+import {PowerProfileTable} from "../karma-abilities/PowerProfileTable.tsx";
+import {getPowerLoadout} from "../../utils/types/KarmaPowerLoadout.ts";
+import {SkillTree} from "../skills/SkillTree.tsx";
+import {BeerCSSTextField} from "../ui/beer-css-wrappers/BeerCSSTextField.tsx";
+import {BeerCSSSelect} from "../ui/beer-css-wrappers/BeerCSSSelect.tsx";
+import {setFileBase64} from "../../utils/utils.ts";
+import {UnselectedKarmaStudyWarning} from "../karma-abilities/UnselectedKarmaStudyWarning.tsx";
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();

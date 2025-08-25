@@ -1,8 +1,8 @@
-import {PowerLoadoutSettings, PowerTier, PowerType} from "./UsePowerLoadoutSettings";
-import {isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "./KarmaPowerLoadout.ts";
-import {KarmaSkills, PersonalitySkills, SkillName} from "./UseSkillTree.ts";
-import {BeerCSSTextField} from "./beer_wrappers/BeerCSSTextField.tsx";
-import {BeerCSSSelect} from "./beer_wrappers/BeerCSSSelect.tsx";
+import {PowerLoadoutSettings, PowerTier, PowerType} from "../../hooks/usePowerLoadoutSettings.ts";
+import {isSwapPower, KarmaPowerLoadout, locomotionCosts, locomotionRanges, SpecialtyCosts, SwapPowerChoices} from "../../utils/types/KarmaPowerLoadout.ts";
+import {KarmaSkills, PersonalitySkills, SkillName} from "../../hooks/useSkillTree.ts";
+import {BeerCSSTextField} from "../ui/beer-css-wrappers/BeerCSSTextField.tsx";
+import {BeerCSSSelect} from "../ui/beer-css-wrappers/BeerCSSSelect.tsx";
 import _ from "lodash";
 
 function getNamesForPowerType(powerType: PowerType, powerLoadoutSettings: PowerLoadoutSettings): [string, string, string, string] {

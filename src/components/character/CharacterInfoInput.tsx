@@ -1,5 +1,5 @@
 import {CharacterIdentity} from "./CharacterIdentity.tsx";
-import {ColoredLogo} from "./ColoredLogo.tsx";
+import {ColoredLogo} from "../ui/ColoredLogo.tsx";
 
 export function CharacterInfoInput() {
     return <>

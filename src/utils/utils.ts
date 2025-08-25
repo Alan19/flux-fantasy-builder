@@ -1,4 +1,4 @@
-import {SkillTreeNode} from "./UseSkillTree.ts";
+import {SkillTreeNode} from "../hooks/useSkillTree.ts";
 import {ChangeEvent, Dispatch, SetStateAction} from "react";
 
 export function isSkillUnlocked(value: SkillTreeNode, enabledSkills: string[], level: number): boolean {

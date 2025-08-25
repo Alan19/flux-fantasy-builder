@@ -1,12 +1,12 @@
-import './App.css'
-import {CharacterInfoInput} from "./CharacterInfoInput.tsx";
+import './assets/App.css'
+import {CharacterInfoInput} from "./components/character/CharacterInfoInput.tsx";
 import {Route, Router} from "wouter";
 import {useHashLocation} from "wouter/use-hash-location";
-import {RenderedCharacterSheet} from "./RenderedCharacterSheet.tsx";
-import {NavigationRail} from "./NavigationRail.tsx";
+import {RenderedCharacterSheet} from "./components/character/RenderedCharacterSheet.tsx";
+import {NavigationRail} from "./components/layout/NavigationRail.tsx";
 import {useLocalStorage} from "usehooks-ts";
-import {Mode} from "./ModeToggle.tsx";
-import {ImportExportCharacter} from "./ImportExportCharacter.tsx";
+import {Mode} from "./components/layout/ModeToggle.tsx";
+import {ImportExportCharacter} from "./components/layout/ImportExportCharacter.tsx";
 
 function App() {
     ui("theme", "#393bff");
