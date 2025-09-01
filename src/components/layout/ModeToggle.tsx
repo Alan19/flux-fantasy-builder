@@ -1,11 +1,17 @@
 import {useLocalStorage} from "usehooks-ts";
 import {clsx} from "clsx";
+import {useEffect} from "react";
 
 export type AppTheme = 'Hugo' | 'Marco' | 'Lucky'
 
 export type Mode = 'light' | 'dark' | 'auto';
 export function ModeToggle() {
     const [colorScheme, setColorScheme] = useLocalStorage<Mode>("preferred-color-scheme", "auto");
+
+    // TODO Check if it's possible to detect a night mode switch
+    useEffect(() => {
+        ui("mode", colorScheme)
+    }, [colorScheme]);
 
     return <>
         <button onClick={() => setColorScheme("light")} className={clsx("circle", colorScheme === "light" ? "tertiary" : "border tertiary-text")}>

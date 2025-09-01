@@ -4,15 +4,10 @@ import {Route, Router} from "wouter";
 import {useHashLocation} from "wouter/use-hash-location";
 import {RenderedCharacterSheet} from "./components/character/RenderedCharacterSheet.tsx";
 import {NavigationRail} from "./components/layout/NavigationRail.tsx";
-import {useLocalStorage} from "usehooks-ts";
-import {Mode} from "./components/layout/ModeToggle.tsx";
 import {ImportExportCharacter} from "./components/layout/ImportExportCharacter.tsx";
 
 function App() {
     ui("theme", "#393bff");
-    const [colorScheme] = useLocalStorage<Mode>("preferred-color-scheme", "auto");
-
-    ui("mode", colorScheme)
 
     return <>
         <Router hook={useHashLocation}>
