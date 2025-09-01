@@ -22,6 +22,7 @@ export function CharacterIdentity() {
                             <BeerCSSTextField value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>
                             <BeerCSSTextField value={characterIdentity.characterName} onChange={(e) => characterIdentity.setCharacterName(e.target.value)} label="Character Name (+Alias)"/>
                             {/*TODO Add check mark to confirm that file has been uploaded and hash it to CRC or MD5*/}
+                            {/*TODO Stop the input from opening a file dialog twice*/}
                             <BeerCSSTextField accept="image/*" inputPrefix={<i>attach_file</i>} type={"file"} onChange={(e) => setFileBase64(e, characterIdentity.setCharacterImageData)} label="Character Image"/>
                             <BeerCSSTextField accept="image/*" inputPrefix={<i>attach_file</i>} type={"file"} onChange={(e) => setFileBase64(e, characterIdentity.setGearOfDestiny)} label="Gear of Destiny Image"/>
                             <div className={"grid no-margin"}>
