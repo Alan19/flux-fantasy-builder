@@ -41,25 +41,25 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
         <span>You have {karmaSkillPoints} Karma skill points and {otherSkillPoints} skill points left!</span>
         <div className={'grid'}>
             {/*TODO Add error if you remove prerequisite*/}
-            <fieldset className={"l3"}>
+            <fieldset className={"s6 l3"}>
                 <legend>Vitality</legend>
                 <nav className={"vertical"}>
                     {Object.entries(vitalitySkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
                 </nav>
             </fieldset>
-            <fieldset className={"l3"}>
+            <fieldset className={"s6 l3"}>
                 <legend>Personality</legend>
                 <nav className={"vertical"}>
                     {Object.entries(personalitySkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
                 </nav>
             </fieldset>
-            <fieldset className={"l3"}>
+            <fieldset className={"s6 l3"}>
                 <legend>Karma</legend>
                 <nav className={"vertical"}>
                     {Object.entries(karmaSkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}
                 </nav>
             </fieldset>
-            <fieldset className={"l3"}>
+            <fieldset className={"s6 l3"}>
                 <legend>Talent</legend>
                 <nav className={"vertical"}>
                     {Object.entries(talentsSkillTree).map(([key, value]) => getSkillCheckbox(key as SkillName, value))}

@@ -15,3 +15,53 @@ body {
         opacity: 0;
     }
 }
+
+@media only screen and (min-width: 1400px) {
+    .xl1 {
+        grid-area: auto/span 1 !important;
+    }
+
+    .xl2 {
+        grid-area: auto/span 2 !important;
+    }
+
+    .xl3 {
+        grid-area: auto/span 3 !important;
+    }
+
+    .xl4 {
+        grid-area: auto/span 4 !important;
+    }
+
+    .xl5 {
+        grid-area: auto/span 5 !important;
+    }
+
+    .xl6 {
+        grid-area: auto/span 6 !important;
+    }
+
+    .xl7 {
+        grid-area: auto/span 7 !important;
+    }
+
+    .xl8 {
+        grid-area: auto/span 8 !important;
+    }
+
+    .xl9 {
+        grid-area: auto/span 9 !important;
+    }
+
+    .xl10 {
+        grid-area: auto/span 10 !important;
+    }
+
+    .xl11 {
+        grid-area: auto/span 11 !important;
+    }
+
+    .xl12 {
+        grid-area: auto/span 12 !important;
+    }
+}

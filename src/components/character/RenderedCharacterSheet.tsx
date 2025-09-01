@@ -103,7 +103,7 @@ export function RenderedCharacterSheet() {
             </div>
             <div className={"fade"}>
                 <div className={"grid top-margin medium-space"}>
-                    <div className={"l3 s12"}>
+                    <div className={"xl3 l4 s12"}>
                         <div>
                             <TypographyWithAdornment text={"Portrait"} coloredText/>
                             <img src={characterSheetFields.characterImageData} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
@@ -136,7 +136,7 @@ export function RenderedCharacterSheet() {
                             <label>Advantages</label>
                         </div>
                         <div className={"grid"}>
-                            <div className={"l4"}>
+                            <div className={"s4"}>
                                 <NumericFormat value={characterSheetFields.merits}
                                                customInput={BeerCSSTextField}
                                                label={"Merits"}
@@ -144,7 +144,7 @@ export function RenderedCharacterSheet() {
                                                onChange={(e) => characterSheetFields.setMerits(Math.max(0, Number(e.target.value)))}
                                                thousandSeparator/>
                             </div>
-                            <div className={"l4"}>
+                            <div className={"s4"}>
                                 <NumericFormat
                                     customInput={BeerCSSTextField}
                                     label="Med+ Kit #"
@@ -153,7 +153,7 @@ export function RenderedCharacterSheet() {
                                     onChange={(e) => characterSheetFields.setMedKits(Math.max(0, Number(e.target.value)))}
                                 />
                             </div>
-                            <div className={"l4"}>
+                            <div className={"s4"}>
                                 <BeerCSSTextField
                                     label="Med+ Kit %"
                                     variant={"outlined"}
@@ -165,30 +165,30 @@ export function RenderedCharacterSheet() {
                         <BeerCSSTextField className={"top-margin"} label={'Background'} value={characterSheetFields.background} readOnly multiline/>
                         <BeerCSSTextField className={"top-margin"} label={'Karma Tool Configuration'} readOnly multiline value={characterSheetFields.configuration}/>
                     </div>
-                    <div className={"l6 s12"}>
+                    <div className={"xl6 s12 l8"}>
                         <div>
                             <fieldset>
                                 <legend><TypographyWithAdornment text={"Identity"} coloredText/></legend>
                                 <BeerCSSTextField variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} readOnly inputSize={"small"}/>
                                 <div className={"grid"}>
-                                    <div className={"l3"}>
+                                    <div className={"s3"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.age} label={"Age"} readOnly inputSize={"small"}/>
                                     </div>
-                                    <div className={"l3"}>
+                                    <div className={"s3"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.gender} label={"Gender"} readOnly inputSize={"small"}/>
                                     </div>
-                                    <div className={"l3"}>
+                                    <div className={"s3"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.height} label={"Height"} readOnly inputSize={"small"}/>
                                     </div>
-                                    <div className={"l3"}>
+                                    <div className={"s3"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.weight} label={"Weight"} readOnly inputSize={"small"}/>
                                     </div>
                                 </div>
                                 <div className={"grid"}>
-                                    <div className={"l6"}>
+                                    <div className={"s6"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.karmaSpecialty} label={"Karma Specialty"} readOnly inputSize={"small"}/>
                                     </div>
-                                    <div className={"l6"}>
+                                    <div className={"s6"}>
                                         <BeerCSSTextField variant={"outlined"} value={characterSheetFields.affiliation} label={"Affiliation"} readOnly inputSize={"small"}/>
                                     </div>
                                 </div>
@@ -199,32 +199,32 @@ export function RenderedCharacterSheet() {
                                 </legend>
                                 <div className={"grid"}>
                                     {/*TODO Add adornment and score increase for study talent boost*/}
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.aura}
                                                           label={"Aura"}
                                                           readOnly/>
                                     </div>
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.technique}
                                                           label={"Technique"}
                                                           readOnly/>
                                     </div>
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.stamina}
                                                           label={"Stamina"}
                                                           readOnly/>
                                     </div>
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.function}
                                                           label={"Function"}
                                                           readOnly/>
                                     </div>
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.willpower}
                                                           label={"Willpower"}
                                                           readOnly/>
                                     </div>
-                                    <div className={"l2"}>
+                                    <div className={"s4 l2"}>
                                         <BeerCSSTextField value={"+" + effectiveTalents.agility}
                                                           label={"Agility"}
                                                           readOnly/>
@@ -232,7 +232,7 @@ export function RenderedCharacterSheet() {
                                 </div>
                                 <div className={"grid"}>
                                     {/*TODO Add number range validation for level / HP / karma pool*/}
-                                    <div className={"l4"}>
+                                    <div className={"s4 l4"}>
                                         <BeerCSSTextField
                                             inputPrefix={<i>favorite</i>}
                                             type={"number"}
@@ -242,14 +242,14 @@ export function RenderedCharacterSheet() {
                                             helperText={`Max HP: ${getMaxHP(effectiveTalents, characterSheetFields.level, skills)}`}
                                         />
                                     </div>
-                                    <div className={"l4"}>
+                                    <div className={"s4 l4"}>
                                         <BeerCSSTextField
                                             inputPrefix={<i>shield</i>}
                                             readOnly
                                             value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level, skills, vitalityOptions) : "+1"}
                                             label={"DEF"}/>
                                     </div>
-                                    <div className={"l4"}>
+                                    <div className={"s4 l4"}>
                                         <BeerCSSTextField
                                             inputPrefix={<i>directions_run</i>}
                                             readOnly
@@ -266,7 +266,7 @@ export function RenderedCharacterSheet() {
                                 <UnselectedKarmaStudyWarning/>}
                         </div>
                     </div>
-                    <div className={"l3 s12"}>
+                    <div className={"xl3 l6 s12"}>
                         <BeerCSSTextField
                             label="Study"
                             variant={"outlined"}
@@ -289,7 +289,7 @@ export function RenderedCharacterSheet() {
                         <fieldset className={"bottom-padding large-padding"}>
                             <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
                             <div className={"grid"}>
-                                <div className={"l6"}>
+                                <div className={"s6"}>
                                     <NumericFormat customInput={BeerCSSTextField}
                                                    onChange={(e) => characterSheetFields.setKarmaPool(Math.max(0, Number(e.target.value)))}
                                                    variant={"outlined"}
@@ -297,7 +297,7 @@ export function RenderedCharacterSheet() {
                                                    value={characterSheetFields.karmaPool}
                                                    label={"Karma Pool"}/>
                                 </div>
-                                <div className={"l6"}>
+                                <div className={"s6"}>
                                     {/*TODO Find a way to fit /100 into the textfield*/}
                                     <NumericFormat
                                         customInput={BeerCSSTextField}
@@ -317,15 +317,13 @@ export function RenderedCharacterSheet() {
                             </button>}
                         </div>
                     </div>
-                </div>
-                <div className={"grid"} style={{gridAutoRows: "1fr"}}>
-                    <div className={"l3"}>
+                    <div className={"xl3 l6 m6"}>
                         <article>
                             <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
                             <TraitAndFlawTable inPlay/>
                         </article>
                     </div>
-                    <article className={"l9"}>
+                    <article className={"xl9 l12 m6"}>
                         <TypographyWithAdornment text={"Skill Tree"} coloredText/>
                         <SkillTree readOnly/>
                     </article>
