@@ -53,6 +53,7 @@ function getTierName(power: PowerTier | string) {
     }
 }
 
+// TODO Fix swap power selection
 export function KarmaPowerRow(props: Readonly<{
     powerType: PowerType
     karmaPowerLoadout: KarmaPowerLoadout,

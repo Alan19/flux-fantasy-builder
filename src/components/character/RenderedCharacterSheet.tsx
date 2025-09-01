@@ -266,70 +266,78 @@ export function RenderedCharacterSheet() {
                                 <UnselectedKarmaStudyWarning/>}
                         </div>
                     </div>
-                    <div className={"xl3 l6 s12"}>
-                        <BeerCSSTextField
-                            label="Study"
-                            variant={"outlined"}
-                            value={characterSheetFields.study}
-                            readOnly/>
-                        <NumericFormat
-                            customInput={BeerCSSTextField}
-                            label="Level"
-                            min={1}
-                            max={20}
-                            variant={"outlined"}
-                            className={"top-margin"}
-                            value={characterSheetFields.level}
-                            onChange={(e) => characterSheetFields.setLevel(Math.max(1, Number(e.target.value)))}
-                        />
-                        <fieldset>
-                            <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
-                            <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
-                        </fieldset>
-                        <fieldset className={"bottom-padding large-padding"}>
-                            <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
-                            <div className={"grid"}>
-                                <div className={"s6"}>
-                                    <NumericFormat customInput={BeerCSSTextField}
-                                                   onChange={(e) => characterSheetFields.setKarmaPool(Math.max(0, Number(e.target.value)))}
-                                                   variant={"outlined"}
-                                                   helperText={`Max Karma: ${characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level, skills) : 0}`}
-                                                   value={characterSheetFields.karmaPool}
-                                                   label={"Karma Pool"}/>
+                    <div className={"xl3 s12 grid"}>
+                        <div className={"m6 s12"}>
+                            <BeerCSSTextField
+                                label="Study"
+                                variant={"outlined"}
+                                value={characterSheetFields.study}
+                                readOnly/>
+                            <NumericFormat
+                                customInput={BeerCSSTextField}
+                                label="Level"
+                                min={1}
+                                max={20}
+                                variant={"outlined"}
+                                className={"top-margin"}
+                                value={characterSheetFields.level}
+                                onChange={(e) => characterSheetFields.setLevel(Math.max(1, Number(e.target.value)))}
+                            />
+                            <fieldset>
+                                <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
+                                <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
+                            </fieldset>
+                        </div>
+                        <div className={"m6 s12"}>
+                            <fieldset className={"bottom-padding large-padding"}>
+                                <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
+                                <div className={"grid"}>
+                                    <div className={"s6"}>
+                                        <NumericFormat customInput={BeerCSSTextField}
+                                                       onChange={(e) => characterSheetFields.setKarmaPool(Math.max(0, Number(e.target.value)))}
+                                                       variant={"outlined"}
+                                                       helperText={`Max Karma: ${characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level, skills) : 0}`}
+                                                       value={characterSheetFields.karmaPool}
+                                                       label={"Karma Pool"}/>
+                                    </div>
+                                    <div className={"s6"}>
+                                        {/*TODO Find a way to fit /100 into the textfield*/}
+                                        <NumericFormat
+                                            customInput={BeerCSSTextField}
+                                            onChange={(e) => characterSheetFields.setPaybackPoints(Math.max(0, Number(e.target.value)))}
+                                            variant={"outlined"}
+                                            value={characterSheetFields.paybackPoints}
+                                            inputPrefix={<i>check</i>}
+                                            label={"Payback"}/>
+                                    </div>
                                 </div>
-                                <div className={"s6"}>
-                                    {/*TODO Find a way to fit /100 into the textfield*/}
-                                    <NumericFormat
-                                        customInput={BeerCSSTextField}
-                                        onChange={(e) => characterSheetFields.setPaybackPoints(Math.max(0, Number(e.target.value)))}
-                                        variant={"outlined"}
-                                        value={characterSheetFields.paybackPoints}
-                                        inputPrefix={<i>check</i>}
-                                        label={"Payback"}/>
-                                </div>
+                            </fieldset>
+                            <BeerCSSTextField label={'Items'} addMargin multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
+                            <BeerCSSTextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
+                            {/*TODO Move this*/}
+                            <div style={{width: "100%", display: "flex"}} className={"top-margin"}>
+                                {!printMode && <button className={" border tertiary-text ripple no-margin"} style={{width: "100%"}} onClick={() => printCharacterSheet()}>
+                                    <i>print</i> <span>Print</span>
+                                </button>}
                             </div>
-                        </fieldset>
-                        <BeerCSSTextField label={'Items'} addMargin multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
-                        <BeerCSSTextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
-                        <div style={{width: "100%", display: "flex"}} className={"top-margin"}>
-                            {!printMode && <button className={" border tertiary-text ripple no-margin"} style={{width: "100%"}} onClick={() => printCharacterSheet()}>
-                                <i>print</i> <span>Print</span>
-                            </button>}
                         </div>
                     </div>
-                    <div className={"xl3 l6 m6"}>
-                        <article>
-                            <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
-                            <TraitAndFlawTable inPlay/>
-                        </article>
-                    </div>
-                    <article className={"xl9 l12 m6"}>
-                        <TypographyWithAdornment text={"Skill Tree"} coloredText/>
-                        <SkillTree readOnly/>
-                    </article>
                 </div>
+                <article>
+                    <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
+                    <TraitAndFlawTable inPlay/>
+                </article>
+                <article>
+                    <TypographyWithAdornment text={"Skill Tree"} coloredText/>
+                    <SkillTree readOnly/>
+                </article>
             </div>
-
+        </div>
+        <div>
+            <div className={""}>
+            </div>
+            <div className={""}>
+            </div>
 
         </div>
     </div>;
