@@ -97,238 +97,241 @@ export function RenderedCharacterSheet() {
                     <ColoredLogo/>
                     <span>Character Sheet</span>
                 </div>
-                <div className={"s8 bottom-margin"}>
+                <div className={"s8 bottom-margin fade"}>
                     <BeerCSSTextField variant={"filled"} value={characterSheetFields.playerName} label={"Player Name"} inputSize={"medium"} readOnly/>
                 </div>
             </div>
-            <div className={"grid top-margin medium-space"}>
-                <div className={"l3 s12"}>
-                    <div>
-                        <TypographyWithAdornment text={"Portrait"} coloredText/>
-                        <img src={characterSheetFields.characterImageData} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
-                    </div>
-                    <div className={"grid"}>
-                        <div className={"s6"}>
-                            {/*TODO Get a better numeric field*/}
-                            <BeerCSSTextField inputMode={"numeric"}
-                                              className={"s6"}
-                                              onChange={(e) => characterSheetFields.setPositiveKarma(Math.max(0, Number(e.target.value)))}
-                                              type={"number"}
-                                              min={0}
-                                              value={characterSheetFields.positiveKarma}
-                                              label={"Positive KAP"}/>
-
+            <div className={"fade"}>
+                <div className={"grid top-margin medium-space"}>
+                    <div className={"l3 s12"}>
+                        <div>
+                            <TypographyWithAdornment text={"Portrait"} coloredText/>
+                            <img src={characterSheetFields.characterImageData} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
                         </div>
-                        <div className={"s6"}>
-                            <BeerCSSTextField
-                                inputMode={"numeric"}
-                                className={"s6"}
-                                onChange={(e) => characterSheetFields.setNegativeKarma(Math.max(0, Number(e.target.value)))}
-                                type={"number"}
-                                value={characterSheetFields.negativeKarma}
-                                label={"Negative KAP"}/>
-
-                        </div>
-                    </div>
-                    <div className="field border label textarea extra">
-                        <textarea readOnly value={characterSheetFields.karmaSpecialty ? getAdvantages(characterSheetFields.karmaSpecialty, characterSheetFields.level) : ""}></textarea>
-                        <label>Advantages</label>
-                    </div>
-                    <div className={"grid"}>
-                        <div className={"l4"}>
-                            <NumericFormat value={characterSheetFields.merits}
-                                           customInput={BeerCSSTextField}
-                                           label={"Merits"}
-                                           inputPrefix={<i className={"tiny fill"}>hourglass</i>}
-                                           onChange={(e) => characterSheetFields.setMerits(Math.max(0, Number(e.target.value)))}
-                                           thousandSeparator/>
-                        </div>
-                        <div className={"l4"}>
-                            <NumericFormat
-                                customInput={BeerCSSTextField}
-                                label="Med+ Kit #"
-                                variant={"outlined"}
-                                value={characterSheetFields.medKits}
-                                onChange={(e) => characterSheetFields.setMedKits(Math.max(0, Number(e.target.value)))}
-                            />
-                        </div>
-                        <div className={"l4"}>
-                            <BeerCSSTextField
-                                label="Med+ Kit %"
-                                variant={"outlined"}
-                                value={characterSheetFields.karmaSpecialty ? (getHealingPercent(characterSheetFields.karmaSpecialty, skills) + "%") : ""}
-                            />
-                        </div>
-                    </div>
-                    <BeerCSSTextField className={"top-margin"} label={'Special Items'} placeholder={characterSheetFields.karmaSpecialty ? getSpecialItems(characterSheetFields.karmaSpecialty) : ""} readOnly/>
-                    <BeerCSSTextField className={"top-margin"} label={'Background'} value={characterSheetFields.background} readOnly multiline/>
-                    <BeerCSSTextField className={"top-margin"} label={'Karma Tool Configuration'} readOnly multiline value={characterSheetFields.configuration}/>
-                </div>
-                <div className={"l6 s12"}>
-                    <div>
-                        <fieldset>
-                            <legend><TypographyWithAdornment text={"Identity"} coloredText/></legend>
-                            <BeerCSSTextField variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} readOnly inputSize={"small"}/>
-                            <div className={"grid"}>
-                                <div className={"l3"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.age} label={"Age"} readOnly inputSize={"small"}/>
-                                </div>
-                                <div className={"l3"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.gender} label={"Gender"} readOnly inputSize={"small"}/>
-                                </div>
-                                <div className={"l3"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.height} label={"Height"} readOnly inputSize={"small"}/>
-                                </div>
-                                <div className={"l3"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.weight} label={"Weight"} readOnly inputSize={"small"}/>
-                                </div>
-                            </div>
-                            <div className={"grid"}>
-                                <div className={"l6"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.karmaSpecialty} label={"Karma Specialty"} readOnly inputSize={"small"}/>
-                                </div>
-                                <div className={"l6"}>
-                                    <BeerCSSTextField variant={"outlined"} value={characterSheetFields.affiliation} label={"Affiliation"} readOnly inputSize={"small"}/>
-                                </div>
-                            </div>
-                        </fieldset>
-                        <fieldset className={"bottom-padding large-padding"}>
-                            <legend>
-                                <TypographyWithAdornment text={"Talents"} coloredText/>
-                            </legend>
-                            <div className={"grid"}>
-                                {/*TODO Add adornment and score increase for study talent boost*/}
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.aura}
-                                                      label={"Aura"}
-                                                      readOnly/>
-                                </div>
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.technique}
-                                                      label={"Technique"}
-                                                      readOnly/>
-                                </div>
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.stamina}
-                                                      label={"Stamina"}
-                                                      readOnly/>
-                                </div>
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.function}
-                                                      label={"Function"}
-                                                      readOnly/>
-                                </div>
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.willpower}
-                                                      label={"Willpower"}
-                                                      readOnly/>
-                                </div>
-                                <div className={"l2"}>
-                                    <BeerCSSTextField value={"+" + effectiveTalents.agility}
-                                                      label={"Agility"}
-                                                      readOnly/>
-                                </div>
-                            </div>
-                            <div className={"grid"}>
-                                {/*TODO Add number range validation for level / HP / karma pool*/}
-                                <div className={"l4"}>
-                                    <BeerCSSTextField
-                                        inputPrefix={<i>favorite</i>}
-                                        type={"number"}
-                                        onChange={(e) => characterSheetFields.setCurrentHP(Math.max(0, Number(e.target.value)))}
-                                        value={characterSheetFields.currentHP}
-                                        label={`HP`}
-                                        helperText={`Max HP: ${getMaxHP(effectiveTalents, characterSheetFields.level, skills)}`}
-                                    />
-                                </div>
-                                <div className={"l4"}>
-                                    <BeerCSSTextField
-                                        inputPrefix={<i>shield</i>}
-                                        readOnly
-                                        value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level, skills, vitalityOptions) : "+1"}
-                                        label={"DEF"}/>
-                                </div>
-                                <div className={"l4"}>
-                                    <BeerCSSTextField
-                                        inputPrefix={<i>directions_run</i>}
-                                        readOnly
-                                        value={getMovModifier(effectiveTalents, skills, vitalityOptions)}
-                                        label={"MOV"}/>
-                                </div>
-                            </div>
-                        </fieldset>
-                        {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
-                            <fieldset>
-                                <legend><TypographyWithAdornment text={"Karma Power Profile"} coloredText/></legend>
-                                <PowerProfileTable powers={getPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/>
-                            </fieldset> :
-                            <UnselectedKarmaStudyWarning/>}
-                    </div>
-                </div>
-                <div className={"l3 s12"}>
-                    <BeerCSSTextField
-                        label="Study"
-                        variant={"outlined"}
-                        value={characterSheetFields.study}
-                        readOnly/>
-                    <NumericFormat
-                        customInput={BeerCSSTextField}
-                        label="Level"
-                        min={1}
-                        max={20}
-                        variant={"outlined"}
-                        className={"top-margin"}
-                        value={characterSheetFields.level}
-                        onChange={(e) => characterSheetFields.setLevel(Math.max(1, Number(e.target.value)))}
-                    />
-                    <fieldset>
-                        <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
-                        <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
-                    </fieldset>
-                    <fieldset className={"bottom-padding large-padding"}>
-                        <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
                         <div className={"grid"}>
-                            <div className={"l6"}>
-                                <NumericFormat customInput={BeerCSSTextField}
-                                               onChange={(e) => characterSheetFields.setKarmaPool(Math.max(0, Number(e.target.value)))}
-                                               variant={"outlined"}
-                                               helperText={`Max Karma: ${characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level, skills) : 0}`}
-                                               value={characterSheetFields.karmaPool}
-                                               label={"Karma Pool"}/>
+                            <div className={"s6"}>
+                                {/*TODO Get a better numeric field*/}
+                                <BeerCSSTextField inputMode={"numeric"}
+                                                  className={"s6"}
+                                                  onChange={(e) => characterSheetFields.setPositiveKarma(Math.max(0, Number(e.target.value)))}
+                                                  type={"number"}
+                                                  min={0}
+                                                  value={characterSheetFields.positiveKarma}
+                                                  label={"Positive KAP"}/>
+
                             </div>
-                            <div className={"l6"}>
-                                {/*TODO Find a way to fit /100 into the textfield*/}
+                            <div className={"s6"}>
+                                <BeerCSSTextField
+                                    inputMode={"numeric"}
+                                    className={"s6"}
+                                    onChange={(e) => characterSheetFields.setNegativeKarma(Math.max(0, Number(e.target.value)))}
+                                    type={"number"}
+                                    value={characterSheetFields.negativeKarma}
+                                    label={"Negative KAP"}/>
+
+                            </div>
+                        </div>
+                        <div className="field border label textarea extra">
+                            <textarea readOnly value={characterSheetFields.karmaSpecialty ? getAdvantages(characterSheetFields.karmaSpecialty, characterSheetFields.level) : ""}></textarea>
+                            <label>Advantages</label>
+                        </div>
+                        <div className={"grid"}>
+                            <div className={"l4"}>
+                                <NumericFormat value={characterSheetFields.merits}
+                                               customInput={BeerCSSTextField}
+                                               label={"Merits"}
+                                               inputPrefix={<i className={"tiny fill"}>hourglass</i>}
+                                               onChange={(e) => characterSheetFields.setMerits(Math.max(0, Number(e.target.value)))}
+                                               thousandSeparator/>
+                            </div>
+                            <div className={"l4"}>
                                 <NumericFormat
                                     customInput={BeerCSSTextField}
-                                    onChange={(e) => characterSheetFields.setPaybackPoints(Math.max(0, Number(e.target.value)))}
+                                    label="Med+ Kit #"
                                     variant={"outlined"}
-                                    value={characterSheetFields.paybackPoints}
-                                    inputPrefix={<i>check</i>}
-                                    label={"Payback"}/>
+                                    value={characterSheetFields.medKits}
+                                    onChange={(e) => characterSheetFields.setMedKits(Math.max(0, Number(e.target.value)))}
+                                />
+                            </div>
+                            <div className={"l4"}>
+                                <BeerCSSTextField
+                                    label="Med+ Kit %"
+                                    variant={"outlined"}
+                                    value={characterSheetFields.karmaSpecialty ? (getHealingPercent(characterSheetFields.karmaSpecialty, skills) + "%") : ""}
+                                />
                             </div>
                         </div>
-                    </fieldset>
-                    <BeerCSSTextField label={'Items'} addMargin multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
-                    <BeerCSSTextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
-                    <div style={{width: "100%", display: "flex"}} className={"top-margin"}>
-                        {!printMode && <button className={" border tertiary-text ripple no-margin"} style={{width: "100%"}} onClick={() => printCharacterSheet()}>
-                            <i>print</i> <span>Print</span>
-                        </button>}
+                        <BeerCSSTextField className={"top-margin"} label={'Special Items'} placeholder={characterSheetFields.karmaSpecialty ? getSpecialItems(characterSheetFields.karmaSpecialty) : ""} readOnly/>
+                        <BeerCSSTextField className={"top-margin"} label={'Background'} value={characterSheetFields.background} readOnly multiline/>
+                        <BeerCSSTextField className={"top-margin"} label={'Karma Tool Configuration'} readOnly multiline value={characterSheetFields.configuration}/>
+                    </div>
+                    <div className={"l6 s12"}>
+                        <div>
+                            <fieldset>
+                                <legend><TypographyWithAdornment text={"Identity"} coloredText/></legend>
+                                <BeerCSSTextField variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} readOnly inputSize={"small"}/>
+                                <div className={"grid"}>
+                                    <div className={"l3"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.age} label={"Age"} readOnly inputSize={"small"}/>
+                                    </div>
+                                    <div className={"l3"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.gender} label={"Gender"} readOnly inputSize={"small"}/>
+                                    </div>
+                                    <div className={"l3"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.height} label={"Height"} readOnly inputSize={"small"}/>
+                                    </div>
+                                    <div className={"l3"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.weight} label={"Weight"} readOnly inputSize={"small"}/>
+                                    </div>
+                                </div>
+                                <div className={"grid"}>
+                                    <div className={"l6"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.karmaSpecialty} label={"Karma Specialty"} readOnly inputSize={"small"}/>
+                                    </div>
+                                    <div className={"l6"}>
+                                        <BeerCSSTextField variant={"outlined"} value={characterSheetFields.affiliation} label={"Affiliation"} readOnly inputSize={"small"}/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            <fieldset className={"bottom-padding large-padding"}>
+                                <legend>
+                                    <TypographyWithAdornment text={"Talents"} coloredText/>
+                                </legend>
+                                <div className={"grid"}>
+                                    {/*TODO Add adornment and score increase for study talent boost*/}
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.aura}
+                                                          label={"Aura"}
+                                                          readOnly/>
+                                    </div>
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.technique}
+                                                          label={"Technique"}
+                                                          readOnly/>
+                                    </div>
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.stamina}
+                                                          label={"Stamina"}
+                                                          readOnly/>
+                                    </div>
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.function}
+                                                          label={"Function"}
+                                                          readOnly/>
+                                    </div>
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.willpower}
+                                                          label={"Willpower"}
+                                                          readOnly/>
+                                    </div>
+                                    <div className={"l2"}>
+                                        <BeerCSSTextField value={"+" + effectiveTalents.agility}
+                                                          label={"Agility"}
+                                                          readOnly/>
+                                    </div>
+                                </div>
+                                <div className={"grid"}>
+                                    {/*TODO Add number range validation for level / HP / karma pool*/}
+                                    <div className={"l4"}>
+                                        <BeerCSSTextField
+                                            inputPrefix={<i>favorite</i>}
+                                            type={"number"}
+                                            onChange={(e) => characterSheetFields.setCurrentHP(Math.max(0, Number(e.target.value)))}
+                                            value={characterSheetFields.currentHP}
+                                            label={`HP`}
+                                            helperText={`Max HP: ${getMaxHP(effectiveTalents, characterSheetFields.level, skills)}`}
+                                        />
+                                    </div>
+                                    <div className={"l4"}>
+                                        <BeerCSSTextField
+                                            inputPrefix={<i>shield</i>}
+                                            readOnly
+                                            value={characterSheetFields.affiliation ? "+" + getDefenseModifier(characterSheetFields.affiliation, characterSheetFields.level, skills, vitalityOptions) : "+1"}
+                                            label={"DEF"}/>
+                                    </div>
+                                    <div className={"l4"}>
+                                        <BeerCSSTextField
+                                            inputPrefix={<i>directions_run</i>}
+                                            readOnly
+                                            value={getMovModifier(effectiveTalents, skills, vitalityOptions)}
+                                            label={"MOV"}/>
+                                    </div>
+                                </div>
+                            </fieldset>
+                            {(characterSheetFields.karmaSpecialty && characterSheetFields.study) ?
+                                <fieldset>
+                                    <legend><TypographyWithAdornment text={"Karma Power Profile"} coloredText/></legend>
+                                    <PowerProfileTable powers={getPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/>
+                                </fieldset> :
+                                <UnselectedKarmaStudyWarning/>}
+                        </div>
+                    </div>
+                    <div className={"l3 s12"}>
+                        <BeerCSSTextField
+                            label="Study"
+                            variant={"outlined"}
+                            value={characterSheetFields.study}
+                            readOnly/>
+                        <NumericFormat
+                            customInput={BeerCSSTextField}
+                            label="Level"
+                            min={1}
+                            max={20}
+                            variant={"outlined"}
+                            className={"top-margin"}
+                            value={characterSheetFields.level}
+                            onChange={(e) => characterSheetFields.setLevel(Math.max(1, Number(e.target.value)))}
+                        />
+                        <fieldset>
+                            <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
+                            <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
+                        </fieldset>
+                        <fieldset className={"bottom-padding large-padding"}>
+                            <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
+                            <div className={"grid"}>
+                                <div className={"l6"}>
+                                    <NumericFormat customInput={BeerCSSTextField}
+                                                   onChange={(e) => characterSheetFields.setKarmaPool(Math.max(0, Number(e.target.value)))}
+                                                   variant={"outlined"}
+                                                   helperText={`Max Karma: ${characterSheetFields.karmaSpecialty ? getMaxKarma(characterSheetFields.karmaSpecialty, characterSheetFields.level, skills) : 0}`}
+                                                   value={characterSheetFields.karmaPool}
+                                                   label={"Karma Pool"}/>
+                                </div>
+                                <div className={"l6"}>
+                                    {/*TODO Find a way to fit /100 into the textfield*/}
+                                    <NumericFormat
+                                        customInput={BeerCSSTextField}
+                                        onChange={(e) => characterSheetFields.setPaybackPoints(Math.max(0, Number(e.target.value)))}
+                                        variant={"outlined"}
+                                        value={characterSheetFields.paybackPoints}
+                                        inputPrefix={<i>check</i>}
+                                        label={"Payback"}/>
+                                </div>
+                            </div>
+                        </fieldset>
+                        <BeerCSSTextField label={'Items'} addMargin multiline value={characterSheetFields.items} onChange={event => characterSheetFields.setItems(event.target.value)}/>
+                        <BeerCSSTextField label={'Other Learned Skills and Techniques'} multiline value={characterSheetFields.otherSkills} onChange={event => characterSheetFields.setOtherSkills(event.target.value)}/>
+                        <div style={{width: "100%", display: "flex"}} className={"top-margin"}>
+                            {!printMode && <button className={" border tertiary-text ripple no-margin"} style={{width: "100%"}} onClick={() => printCharacterSheet()}>
+                                <i>print</i> <span>Print</span>
+                            </button>}
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div className={"grid"} style={{gridAutoRows: "1fr"}}>
-                <div className={"l3"}>
-                    <article>
-                        <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
-                        <TraitAndFlawTable inPlay/>
+                <div className={"grid"} style={{gridAutoRows: "1fr"}}>
+                    <div className={"l3"}>
+                        <article>
+                            <TypographyWithAdornment text={"Traits & Flaws"} coloredText/>
+                            <TraitAndFlawTable inPlay/>
+                        </article>
+                    </div>
+                    <article className={"l9"}>
+                        <TypographyWithAdornment text={"Skill Tree"} coloredText/>
+                        <SkillTree readOnly/>
                     </article>
                 </div>
-                <article className={"l9"}>
-                    <TypographyWithAdornment text={"Skill Tree"} coloredText/>
-                    <SkillTree readOnly/>
-                </article>
             </div>
+
 
         </div>
     </div>;

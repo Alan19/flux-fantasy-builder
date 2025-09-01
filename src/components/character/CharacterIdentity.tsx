@@ -12,7 +12,7 @@ import {UnselectedKarmaStudyWarning} from "../karma-abilities/UnselectedKarmaStu
 
 export function CharacterIdentity() {
     const characterIdentity = useCharacterSheetFields();
-    return <div>
+    return <div className={"fade"}>
         <div>
             <article>
                 <div className={"grid"}>
