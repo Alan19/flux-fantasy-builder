@@ -266,8 +266,9 @@ export function RenderedCharacterSheet() {
                                 <UnselectedKarmaStudyWarning/>}
                         </div>
                     </div>
-                    <div className={"xl3 s12 grid"}>
-                        <div className={"m6 s12"}>
+                    <div className={"xl3 s12 grid no-space"}>
+                        {/*TODO Make this look better*/}
+                        <div className={"m6 s12 xl12"}>
                             <BeerCSSTextField
                                 label="Study"
                                 variant={"outlined"}
@@ -288,7 +289,7 @@ export function RenderedCharacterSheet() {
                                 <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
                             </fieldset>
                         </div>
-                        <div className={"m6 s12"}>
+                        <div className={"m6 s12 xl12"}>
                             <fieldset className={"bottom-padding large-padding"}>
                                 <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
                                 <div className={"grid"}>

@@ -16,7 +16,7 @@ export function CharacterIdentity() {
         <div>
             <article>
                 <div className={"grid"}>
-                    <fieldset className={"l5 s12"}>
+                    <fieldset className={"l5 s12 xl12"}>
                         <legend><TypographyWithAdornment coloredText text={"About You"}/></legend>
                         <div style={{display: "flex", flexDirection: "column", gap: 16}}>
                             <BeerCSSTextField value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>
