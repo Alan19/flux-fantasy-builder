@@ -16,7 +16,7 @@ export function CharacterIdentity() {
         <div>
             <article>
                 <div className={"grid"}>
-                    <fieldset className={"l5 s12 xl12"}>
+                    <fieldset className={"l5 s12"}>
                         <legend><TypographyWithAdornment coloredText text={"About You"}/></legend>
                         <div style={{display: "flex", flexDirection: "column", gap: 16}}>
                             <BeerCSSTextField value={characterIdentity.playerName} onChange={(e) => characterIdentity.setPlayerName(e.target.value)} label="Player Name"/>
@@ -47,7 +47,7 @@ export function CharacterIdentity() {
                     </fieldset>
                     <fieldset className={"l5 s12"}>
                         <legend><TypographyWithAdornment coloredText text={"Your Karmastry"}/></legend>
-                        <div style={{display: "flex", flexDirection: "column", gap: 16}}>
+                        <div style={{display: "flex", flexDirection: "column", gap: 16, height: "100%"}}>
                             <BeerCSSSelect label={"Karma Specialty"} onChange={event => characterIdentity.setKarmaSpecialty(event.target.value as KarmaSpecialty)} value={characterIdentity.karmaSpecialty}>
                                 {Object.values(KarmaSpecialty).map(value => <option key={value} value={value}>{value}</option>)}
                             </BeerCSSSelect>
@@ -56,15 +56,13 @@ export function CharacterIdentity() {
                                 {Object.values(getStudies(characterIdentity.karmaSpecialty)).map(value => <option key={value} value={value}>{value}</option>)}
                             </BeerCSSSelect>
                             <div className="field border label no-margin">
+                                {/*TODO Make sure this is set / nulled first*/}
                                 <select onChange={event => characterIdentity.setAffiliation(event.target.value as Affiliation)} value={characterIdentity.affiliation}>
                                     {Object.values(Affiliation).map(value => <option key={value} value={value}>{value}</option>)}
                                 </select>
                                 <label>Affiliation</label>
                             </div>
-                            <div className="field border label textarea no-margin">
-                                <textarea value={characterIdentity.configuration} onChange={event => characterIdentity.setConfiguration(event.target.value)}></textarea>
-                                <label>Torus, Special Weapon, or Sigil Configuration</label>
-                            </div>
+                            <BeerCSSTextField label={"Torus, Special Weapon, or Sigil Configuration"} multiline value={characterIdentity.configuration} onChange={event => characterIdentity.setConfiguration(event.target.value)} containerClass={"flex-one"} />
                         </div>
 
                     </fieldset>

@@ -1,5 +1,5 @@
 import * as React from "react";
-import {ReactNode} from "react";
+import {CSSProperties, ReactNode} from "react";
 import _ from "lodash";
 import {clsx} from "clsx";
 
@@ -13,6 +13,8 @@ interface CommonProps {
     variant?: "filled" | "outlined",
     addMargin?: boolean,
     helperText?: string,
+    containerStyle?: CSSProperties,
+    containerClass?: string
 }
 
 type InputProps = {
@@ -31,7 +33,6 @@ type TextareaProps = {
 > &
     CommonProps;
 
-
 export function BeerCSSTextField(props: InputProps | TextareaProps) {
     const className = clsx("field",
         props.multiline && "textarea",
@@ -41,11 +42,12 @@ export function BeerCSSTextField(props: InputProps | TextareaProps) {
         props.inputPrefix && "prefix",
         props.inputSuffix && "suffix",
         props.inputSize,
-        'auto-height');
+        'auto-height',
+        props.containerClass);
 
-    return <div className={className}>
+    return <div className={className} style={props.containerStyle}>
         {props.inputPrefix}
-        {props.multiline ? <textarea {..._.omit(props, ['label', 'inputSize', 'inputPrefix', 'inputSuffix', 'addMargin', 'helperText'])} className={clsx(props.className, props.placeholder && "active")}/> : <input {..._.omit(props, ['label', 'inputSize', 'inputPrefix', 'inputSuffix', 'addMargin', 'helperText'])} className={clsx(props.className, props.placeholder && "active")}/>}
+        {props.multiline ? <textarea {..._.omit(props, ['label', 'inputSize', 'inputPrefix', 'inputSuffix', 'addMargin', 'helperText', 'containerStyle', "containerClass"])} className={clsx(props.className, props.placeholder && "active")}/> : <input {..._.omit(props, ['label', 'inputSize', 'inputPrefix', 'inputSuffix', 'addMargin', 'helperText'])} className={clsx(props.className, props.placeholder && "active")}/>}
         {"type" in props && props.type === 'file' && <input type={"text"}/>}
         <label className={clsx(props.placeholder && "active")}>{props.label}</label>
         {props.inputSuffix}

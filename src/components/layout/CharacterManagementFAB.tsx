@@ -2,8 +2,9 @@ import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
 import {usePowerLoadoutSettings} from "../../hooks/usePowerLoadoutSettings.ts";
 import {useSkillTree} from "../../hooks/useSkillTree.ts";
 import sanitize from "sanitize-filename";
+import {usePrintRoute} from "../../hooks/usePrintRoute.ts";
 
-export function ImportExportCharacter() {
+export function CharacterManagementFAB() {
     const characterSheetFields = useCharacterSheetFields();
     const powerLoadout = usePowerLoadoutSettings();
     const skillTree = useSkillTree();
@@ -20,9 +21,7 @@ export function ImportExportCharacter() {
     }
 
     function exportCharacter() {
-        const dataStr =
-            'data:application/json;charset=utf-8,' +
-            encodeURIComponent(JSON.stringify(serializeCharacter(), null, 2));
+        const dataStr = `data:application/json;charset=utf-8,${encodeURIComponent(JSON.stringify(serializeCharacter(), null, 2))}`;
         const download = document.createElement('a');
         download.setAttribute('href', dataStr);
         download.setAttribute('download', sanitize(characterSheetFields.characterName) + '.json');
@@ -135,7 +134,9 @@ export function ImportExportCharacter() {
         }
     }
 
-    return <div className={"fixed bottom right large-margin"}>
+    const print = usePrintRoute();
+
+    return <div className={"fixed bottom right large-margin hide-when-printing"}>
         <button className="extra circle tertiary-container">
             <i>home_storage</i>
         </button>
@@ -148,6 +149,9 @@ export function ImportExportCharacter() {
             </li>
             <li>
                 <button onClick={resetCharacter} className={"tertiary"}><i>restart_alt</i> Reset</button>
+            </li>
+            <li>
+                <button onClick={() => print("/sheet")} className={"tertiary"}><i>print</i> Print</button>
             </li>
         </menu>
     </div>;

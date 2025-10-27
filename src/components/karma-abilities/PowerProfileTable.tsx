@@ -89,12 +89,12 @@ export function PowerProfileTable(props: Readonly<{ powers: [SwapPowerChoices, K
                         <th align="right">Effect</th>
                     </tr>
                     {swapPowers.advanced.map(value => <tr key={value.name}>
-                        <th><
+                        <td><
                             BeerCSSRadio value={value.name}
                                           onChange={() => powerNames.advancedSwapPower[1](value.name)}
                                           checked={powerNames.advancedSwapPower[0] === value.name}
                                           label={value.name}/>
-                        </th>
+                        </td>
                         <td align="right"></td>
                         <td align="right">{value.damage}</td>
                         <td align="right">{value.range}</td>

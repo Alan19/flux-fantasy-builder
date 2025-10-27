@@ -1,3 +1,22 @@
 #root {
     color: var(--on-surface);
 }
+
+.flex-half {
+    flex: 0.5
+}
+
+.flex-one {
+    flex: 1
+}
+
+@media print {
+    .page-break {
+        break-before: page !important;
+        visibility: hidden;
+    }
+
+    .hide-when-printing {
+        display: none !important;
+    }
+}

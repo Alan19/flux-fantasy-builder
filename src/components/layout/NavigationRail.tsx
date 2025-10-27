@@ -1,12 +1,12 @@
 import {Link, useLocation} from "wouter";
 import {clsx} from "clsx";
 import {ModeToggle} from "./ModeToggle.tsx";
-
+import '../../assets/App.css'
 export function NavigationRail() {
     const location = useLocation()[0];
     const topLevelPath = (location.match(/^\/[^/]*/) ?? [''])[0];
 
-    return <nav className={"m l left surface-container"}>
+    return <nav className={"m l left surface-container hide-when-printing"}>
         {/*TODO Add new header*/}
         <Link to={"/"} className={"top-margin"}>
             <i className={clsx(topLevelPath === "/" && "primary-container", "ripple")}>edit_document</i>
