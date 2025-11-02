@@ -20,3 +20,14 @@
         display: none !important;
     }
 }
+
+.justified-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.flex-column {
+    display: flex;
+    flex-direction: column;
+}

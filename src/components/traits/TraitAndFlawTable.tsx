@@ -31,18 +31,23 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
             </tr>
             </thead>
             <tbody>
-            {props.inPlay && characterSheetFields.affiliation && <>
-                <th scope="row">
-                    {affiliationTraits[characterSheetFields.affiliation].name}
-                </th>
-                <th>
-                    {affiliationTraits[characterSheetFields.affiliation].effect}
-                </th>
-            </>}
+            {props.inPlay && characterSheetFields.affiliation && <tr>
+                <td scope="row">
+                    <b>
+                        {affiliationTraits[characterSheetFields.affiliation].name}
+                    </b>
+                </td>
+                <td>
+                    <b>
+                        {affiliationTraits[characterSheetFields.affiliation].effect}
+                    </b>
+                </td>
+                <td/>
+            </tr>}
             {getDisplayedTraits().map(([trait, {description, effect}]) => {
                 return <tr key={trait}>
                     <td scope="row">
-                        {props.inPlay ? trait : <BeerCSSCheckbox label={trait} onChange={() => characterSheetFields.toggleTrait(trait as Traits)} checked={characterSheetFields.traits.includes(trait as Traits)} />}
+                        {props.inPlay ? trait : <BeerCSSCheckbox label={trait} onChange={() => characterSheetFields.toggleTrait(trait as Traits)} checked={characterSheetFields.traits.includes(trait as Traits)}/>}
                     </td>
                     <td>
                         {effect}
@@ -61,18 +66,23 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean }>) {
             </tr>
             </thead>
             <tbody>
-            {props.inPlay && characterSheetFields.affiliation && <>
-                <th scope="row">
-                    {affiliationFlaws[characterSheetFields.affiliation].name}
-                </th>
-                <th>
-                    {affiliationFlaws[characterSheetFields.affiliation].effect}
-                </th>
-            </>}
+            {props.inPlay && characterSheetFields.affiliation && <tr>
+                <td scope="row">
+                    <b>
+                        {affiliationFlaws[characterSheetFields.affiliation].name}
+                    </b>
+                </td>
+                <td>
+                    <b>
+                        {affiliationFlaws[characterSheetFields.affiliation].effect}
+                    </b>
+                </td>
+                <td />
+            </tr>}
             {getDisplayedFlaws().map(([trait, {description, effect}]) =>
                 <tr key={trait}>
                     <td scope="row">
-                        {props.inPlay ? trait : <BeerCSSCheckbox label={trait} onChange={() => characterSheetFields.toggleFlaw(trait as Flaws)} checked={characterSheetFields.flaws.includes(trait as Flaws)} />}
+                        {props.inPlay ? trait : <BeerCSSCheckbox label={trait} onChange={() => characterSheetFields.toggleFlaw(trait as Flaws)} checked={characterSheetFields.flaws.includes(trait as Flaws)}/>}
                     </td>
                     <td>
                         {effect}

@@ -37,7 +37,7 @@ export function RenderedCharacterSheet() {
                     <div className={"xl3 l4 s12"}>
                         <div>
                             <TypographyWithAdornment text={"Portrait"} coloredText/>
-                            <img src={characterSheetFields.characterImageData} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)'}}/>
+                            <img src={characterSheetFields.characterImageData} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)', objectFit: "cover", objectPosition: "top", height: "350px", border: "2px solid var(--outline-variant)"}}/>
                         </div>
                         <fieldset>
                             <legend><i>double_arrow</i>Karmic Alignment PTs</legend>
@@ -68,8 +68,7 @@ export function RenderedCharacterSheet() {
                         </div>
                         <BeerCSSTextField label={'Special Items'} multiline  value={characterSheetFields.karmaSpecialty ? getSpecialItems(characterSheetFields.karmaSpecialty) : ""} readOnly className={"top-margin"}/>
                     </div>
-                    <div className={"xl6 s12 l8"}>
-                        <div>
+                    <div className={"xl6 s12 l8 justified-column"}>
                             <fieldset>
                                 <legend><TypographyWithAdornment text={"Identity"} coloredText/></legend>
                                 <BeerCSSTextField variant={"outlined"} value={characterSheetFields.characterName} label={"Character Name (+Alias)"} readOnly/>
@@ -172,9 +171,8 @@ export function RenderedCharacterSheet() {
                                     <PowerProfileTable powers={getPowerLoadout(characterSheetFields.karmaSpecialty, characterSheetFields.study)} readOnly/>
                                 </fieldset> :
                                 <UnselectedKarmaStudyWarning/>}
-                        </div>
                     </div>
-                    <div className={"xl3 s12 no-space"}>
+                    <div className={"xl3 s12 no-space flex-column"}>
                         {/*TODO Make this look better*/}
                         <BeerCSSTextField
                             label="Study"
@@ -193,14 +191,16 @@ export function RenderedCharacterSheet() {
                             <legend><TypographyWithAdornment text={"Gear of Destiny"} coloredText/></legend>
                             <img src={characterSheetFields.gearOfDestiny} style={{width: '100%'}}/>
                         </fieldset>
-                        <fieldset style={{paddingTop: 0}}>
+                        <fieldset style={{paddingTop: 0, flex: 1}}>
                             <legend><TypographyWithAdornment text={"Karma Pool"} coloredText/></legend>
                             <MaterialNumberField onChange={(e) => characterSheetFields.setKarmaPool(Math.min(maxKarma, e))}
                                                  endAdornment={`/ ${maxKarma}`}
                                                  value={characterSheetFields.karmaPool}
                                                  max={maxKarma}
                                                  label={"Karma Pool"}/>
-                            {/*TODO Find a way to fit /100 into the textfield*/}
+                            <MaterialNumberField onChange={(e) => characterSheetFields.setExtraKarma(Math.min(characterSheetFields.extraKarma, e))}
+                                                 value={characterSheetFields.extraKarma}
+                                                 label={"Extra Karma"}/>
                             <MaterialNumberField
                                 onChange={(e) => characterSheetFields.setPaybackPoints(Math.min(100, e))}
                                 value={characterSheetFields.paybackPoints}

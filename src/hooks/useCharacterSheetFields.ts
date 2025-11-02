@@ -41,6 +41,7 @@ export function useCharacterSheetFields() {
     const [positiveKarma, setPositiveKarma] = useLocalStorage<number>('positive-karma', 0)
     const [negativeKarma, setNegativeKarma] = useLocalStorage<number>('negative-karma', 0)
     const [karmaPool, setKarmaPool] = useLocalStorage<number>('karma-pool', 0)
+    const [extraKarma, setExtraKarma] = useLocalStorage<number>('extra-karma', 0)
     const [paybackPoints, setPaybackPoints] = useLocalStorage<number>('payback-points', 0)
     const [currentHP, setCurrentHP] = useLocalStorage<number>('current-hp', 0)
     const [items, setItems] = useLocalStorage('items', '')
@@ -128,7 +129,9 @@ export function useCharacterSheetFields() {
         setOtherSkills,
         setTraits,
         setFlaws,
-        getTalentHook
+        getTalentHook,
+        extraKarma,
+        setExtraKarma
     }
 }
 
