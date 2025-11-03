@@ -18,7 +18,7 @@
     "@emotion/styled": "^11.14.0",
     "@fontsource-variable/oxanium": "^5.2.5",
     "@fontsource/roboto": "^5.1.1",
-    "beercss": "^3.11.33",
+    "beercss": "3.11.x",
     "clsx": "^2.1.1",
     "lodash": "^4.17.21",
     "material-dynamic-colors": "^1.1.2",
@@ -42,7 +42,7 @@
     "globals": "^15.14.0",
     "typescript": "~5.6.3",
     "typescript-eslint": "^8.24.1",
-    "vite": "7.1.5",
+    "vite": "7.1.11",
     "@types/node": "^24.3.0"
   },
   "overrides": {
