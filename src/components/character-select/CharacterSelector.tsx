@@ -1,14 +1,29 @@
 import {Dialog} from "@base-ui-components/react";
 import styles from './index.module.css';
 import {clsx} from "clsx";
-import {useReadLocalStorage} from "usehooks-ts";
 import {OCSaveData} from "../../utils/types/OCSaveData.ts";
-import {CharacterManager} from "../../utils/hooks/useOCLocalStorage.ts";
+import {CharacterManager} from "../../utils/AssembleLocalStorage.ts";
 
-interface CharacterSelectorProps {
-    createCharacter: () => void;
-    deleteCharacter: (id: string) => void;
-    characterList: string[],
+function SelectOCCard(props: Readonly<{ isSelected: boolean, ocData: OCSaveData, onSelect: () => void, onDelete: () => void }>) {
+    return <div>
+        <article className={clsx("no-padding small", props.isSelected && "primary-container")}>
+            <div className={"grid"}>
+                <div className="s6" style={{height: "12rem"}}>
+                    <img style={{width: "100%", height: "100%", objectFit: "cover", objectPosition: "top"}} src={props.ocData.background.characterImageData}/>
+                </div>
+                <div className="s6">
+                    <div className="padding">
+                        <h6>{props.ocData.background.characterName || "Unnamed Character"}</h6>
+                        <p>{`${props.ocData.background.study} ${props.ocData.background.karmaSpecialty}`}</p>
+                        <nav>
+                            <button onClick={props.onSelect} className="round">Select</button>
+                            <button className="round border" onClick={props.onDelete}>Delete</button>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </article>
+    </div>;
 }
 
 export function CharacterSelector({createCharacter, deleteCharacter, characterList, setCurrentCharacter, currentCharacter}: Readonly<Omit<CharacterManager, "importCharacter" | "exportCharacter">>) {
@@ -19,35 +34,23 @@ export function CharacterSelector({createCharacter, deleteCharacter, characterLi
                 <Dialog.Backdrop className={styles.Backdrop}/>
                 <Dialog.Popup className={clsx(styles.Popup, "surface")}>
                     <Dialog.Title className={styles.Title}>Select Your Character</Dialog.Title>
-                    <Dialog.Description className={styles.Description}>
-                        {characterList.map((item) => {
-                            const characterJSON = localStorage.getItem(item);
-                            if (characterJSON) {
-                                const ocData = JSON.parse(characterJSON) as OCSaveData;
-                                return <article key={item} className={clsx("no-padding small", (currentCharacter === item) && "primary-container")}>
-                                    <div className={"grid"}>
-                                        <div className="s6" style={{height: "12rem"}}>
-                                            <img style={{width: '100%', height: "100%", objectFit: "cover", objectPosition: "top"}} src={ocData.background.characterImageData}/>
-                                        </div>
-                                        <div className="s6">
-                                            <div className="padding">
-                                                <h6>{ocData.background.characterName ?? "Unnamed Character"}</h6>
-                                                <p>{`${ocData.background.study} ${ocData.background.karmaSpecialty}`}</p>
-                                                <nav>
-                                                    <button onClick={() => setCurrentCharacter(item)} className="round">Select</button>
-                                                    <button className="round border" onClick={() => deleteCharacter(item)}>Delete</button>
-                                                </nav>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </article>;
-                            }
-                            return <></>
-                        })}
-                        <button className={"secondary"} onClick={event => createCharacter()}>Create Character</button>
-                    </Dialog.Description>
+                    <div style={{blockSize: '32rem', overflowY: 'scroll', display: 'flex', flexDirection: 'column'}}>
+                            <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
+                                {characterList.map((item) => {
+                                    const characterJSON = localStorage.getItem(item);
+                                    if (characterJSON) {
+                                        const ocData = JSON.parse(characterJSON) as OCSaveData;
+                                        return <SelectOCCard key={item} isSelected={item === currentCharacter} ocData={ocData} onSelect={() => setCurrentCharacter(item)} onDelete={() => deleteCharacter(item)}/>;
+                                    }
+                                    return <></>
+                                })}
+                            </div>
+                    </div>
                     <div className={styles.Actions}>
-                        <Dialog.Close>Close</Dialog.Close>
+                        <div style={{display: "flex", alignItems: "baseline", justifyContent: "space-between", width: "100%"}}>
+                            <button className={"secondary top-margin"} onClick={() => createCharacter()}>Create Character</button>
+                            <Dialog.Close>Close</Dialog.Close>
+                        </div>
                     </div>
                 </Dialog.Popup>
             </Dialog.Portal>

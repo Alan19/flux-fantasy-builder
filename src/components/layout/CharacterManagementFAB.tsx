@@ -1,5 +1,5 @@
 import {usePrintRoute} from "../../utils/hooks/usePrintRoute.ts";
-import {CharacterManager} from "../../utils/hooks/useOCLocalStorage.ts";
+import {CharacterManager} from "../../utils/AssembleLocalStorage.ts";
 import {CharacterSelector} from "../character-select/CharacterSelector.tsx";
 
 interface CharacterManagementFABProps {

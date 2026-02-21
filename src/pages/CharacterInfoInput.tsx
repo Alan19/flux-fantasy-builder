@@ -3,7 +3,7 @@ import {ColoredLogo} from "../components/ui/ColoredLogo.tsx";
 import {useIsMobile} from "../utils/hooks/useIsMobile.ts";
 import {ModeToggle} from "../components/layout/ModeToggle.tsx";
 import {clsx} from "clsx";
-import {CharacterManager, OCSaveDataWithState} from "../utils/hooks/useOCLocalStorage.ts";
+import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStorage.ts";
 
 export function CharacterInfoInput(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     return <>

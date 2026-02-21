@@ -1,4 +1,4 @@
-import {CharacterBackground, CharacterInventory, CharacterTalents, OCSaveData, PowerLoadoutState, SkillSettings} from "../types/OCSaveData.ts";
+import {CharacterBackground, CharacterInventory, CharacterTalents, OCSaveData, PowerLoadoutState, SkillSettings} from "./types/OCSaveData.ts";
 import sanitize from "sanitize-filename";
 import {ChangeEvent} from "react";
 
@@ -107,7 +107,7 @@ export const extracted = (ocData: OCSaveData, setOCData: (value: (((prevState: O
         }
     }
 }
-export const assembleCharacterData = (characterList: string[], setCharacterList: (list: string[]) => void, setCurrentCharacter: (character: string) => void, deleteCurrentCharacter: () => void, currentCharacter: string, ocData: OCSaveData) => {
+export const assembleCharacterData = (characterList: string[], setCharacterList: (value: (((prevState: string[]) => string[]) | string[])) => void, setCurrentCharacter: (value: (((prevState: string) => string) | string)) => void, deleteCurrentCharacter: () => void, currentCharacter: string, ocData: OCSaveData) => {
     return {
         characterList,
         createCharacter() {
@@ -126,6 +126,7 @@ export const assembleCharacterData = (characterList: string[], setCharacterList:
                 } else {
                     const newCharacterID = crypto.randomUUID();
                     setCurrentCharacter(newCharacterID)
+                    setCharacterList([newCharacterID])
                 }
             }
         },

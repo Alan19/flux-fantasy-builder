@@ -7,24 +7,22 @@ import {CharacterManagementFAB} from "./components/layout/CharacterManagementFAB
 import {KarmaPowerDetails} from "./pages/KarmaPowerDetails.tsx";
 
 import {useLocalStorage} from "usehooks-ts";
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 import {OCSaveData} from "./utils/types/OCSaveData.ts";
 import {newCharacter} from "./utils/newCharacter.ts";
-import {assembleCharacterData, CharacterManager, extracted, OCSaveDataWithState} from "./utils/hooks/useOCLocalStorage.ts";
+import {assembleCharacterData, CharacterManager, extracted, OCSaveDataWithState} from "./utils/AssembleLocalStorage.ts";
 
 function useOCLocalStorage(): OCSaveDataWithState & { characters: CharacterManager } {
     const newUUID = crypto.randomUUID();
-    const [[currentCharacter, characterList], setCharacterDatabase, deleteCurrentCharacter] = useLocalStorage<[string, string[]]>("current-character", [newUUID, [newUUID]])
+    const [currentCharacter, setCurrentCharacter] = useLocalStorage<string>("current-character", newUUID)
     const [ocData, setOCData] = useLocalStorage<OCSaveData>(currentCharacter, newCharacter())
+    const [characterList, setCharacterList] = useLocalStorage<string[]>("characters", [newUUID])
 
-    const setCharacterList = useCallback(function setCharacterList(list: string[]) {
-        setCharacterDatabase(prevState => [prevState[0], list]);
-    }, [setCharacterDatabase]);
+    console.log("Local Storage Invoked", currentCharacter, ocData, characterList)
 
-    const setCurrentCharacter = useCallback(function setCurrentCharacter(character: string) {
-        setCharacterDatabase(prevState => [character, prevState[1]]);
-    }, [setCharacterDatabase]);
-
+    function deleteCurrentCharacter() {
+        localStorage.removeItem(currentCharacter);
+    }
     // Initialize fields
     // If your current character hasn't been written to storage yet, write it to storage as currentCharacter and characterList has already been updated
     // Setting the OC data is only done if the other keys have already been set

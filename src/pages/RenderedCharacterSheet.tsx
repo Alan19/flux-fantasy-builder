@@ -12,7 +12,7 @@ import {getSpecialItems} from "../components/character/GetSpecialItems.ts";
 import {ModeToggle} from "../components/layout/ModeToggle.tsx";
 import {useIsMobile} from "../utils/hooks/useIsMobile.ts";
 import {clsx} from "clsx";
-import {useOCLocalStorage} from "../utils/hooks/useOCLocalStorage.ts";
+import {useOCLocalStorage} from "../utils/AssembleLocalStorage.ts";
 
 
 export function RenderedCharacterSheet() {

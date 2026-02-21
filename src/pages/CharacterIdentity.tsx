@@ -5,7 +5,7 @@ import {KarmaPowerTable} from "../components/karma-abilities/KarmaPowerTable.tsx
 import {BeerCSSTextField} from "../components/ui/beer-css-wrappers/BeerCSSTextField.tsx";
 import {BeerCSSSelect} from "../components/ui/beer-css-wrappers/BeerCSSSelect.tsx";
 import {setFileBase64} from "../utils/utils.ts";
-import {CharacterManager, OCSaveDataWithState} from "../utils/hooks/useOCLocalStorage.ts";
+import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStorage.ts";
 
 export function CharacterIdentity(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     const ocSaveDataWithState = props.ocData;

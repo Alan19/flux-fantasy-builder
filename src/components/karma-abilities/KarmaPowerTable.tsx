@@ -1,5 +1,5 @@
 import {AdvancedSwapPowerChoice, BasicSwapPowerChoice, getPowerCost, getTierName, indexToAdvancedSwapPower, indexToBasicSwapPower, isPowerTierSwapPower, PowerTier, PowerType, SwapPower} from "../../utils/types/usePowerLoadoutSettings.ts";
-import {KarmaPowersGettersAndSetters} from "../../utils/hooks/useOCLocalStorage.ts";
+import {KarmaPowersGettersAndSetters} from "../../utils/AssembleLocalStorage.ts";
 import {BeerCSSRadio} from "../ui/beer-css-wrappers/BeerCSSRadio.tsx";
 import {KarmaSkills, PersonalitySkills, SkillName} from "../skills/SkillTreeInfo.ts";
 import {Study} from "../../utils/types/KarmaSpecialty.ts";
