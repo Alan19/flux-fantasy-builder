@@ -1,7 +1,3 @@
-import {useLocalStorage} from "usehooks-ts";
-import {TalentModifiers} from "../utils/types/KarmaSpecialty.ts";
-import {createToggleFunction} from "../utils/utils.ts";
-
 export type SkillName = VitalitySkills | KarmaSkills | TalentSkills | PersonalitySkills;
 export type SkillTreeNode = {
     description: string,
@@ -244,29 +240,5 @@ export const personalitySkillTree: { [skill in PersonalitySkills]: SkillTreeNode
     [PersonalitySkills.traits]: {
         description: "Gain a basic trait with no flaw.",
         links: [PersonalitySkills.affiliation],
-    }
-}
-
-export function useSkillTree() {
-    const [skills, setSkills] = useLocalStorage<SkillName[]>("skill-selection", [])
-    const [vitalityOptions, setVitalityOptions] = useLocalStorage<"MOV" | "DEF" | undefined>("vitality-options", undefined)
-    const [talent1Options, setTalent1Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-1-options", undefined)
-    const [talent2Options, setTalent2Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-2-options", undefined)
-    const [talent3Options, setTalent3Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-3-options", undefined)
-    const [talent4Options, setTalent4Options] = useLocalStorage<keyof TalentModifiers | undefined>("talent-4-options", undefined)
-    const [level5Talent, setLevel5Talent] = useLocalStorage<keyof TalentModifiers | undefined>("level-5-talent", undefined)
-    const [talentedTalent, setTalentedTalent] = useLocalStorage<keyof TalentModifiers | undefined>("talented-talent", undefined)
-
-    const toggleSkill = createToggleFunction(setSkills);
-
-    return {
-        skills, setSkills, toggleSkill,
-        vitalityOptions, setVitalityOptions,
-        talent1Options, setTalent1Options,
-        talent2Options, setTalent2Options,
-        talent3Options, setTalent3Options,
-        talent4Options, setTalent4Options,
-        level5Talent, setLevel5Talent,
-        talentedTalent, setTalentedTalent
     }
 }

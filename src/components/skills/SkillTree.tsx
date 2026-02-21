@@ -1,38 +1,45 @@
-import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, useSkillTree, VitalitySkills, vitalitySkillTree} from "../../hooks/useSkillTree.ts";
 import {isSkillUnlocked} from "../../utils/utils.ts";
-import {useCharacterSheetFields} from "../../hooks/useCharacterSheetFields.ts";
-import {TalentModifiers} from "../../utils/types/KarmaSpecialty.ts";
+import {Talent} from "../../utils/types/KarmaSpecialty.ts";
 import {BeerCSSCheckbox} from "../ui/beer-css-wrappers/BeerCSSCheckbox.tsx";
 import {BeerCSSSelect} from "../ui/beer-css-wrappers/BeerCSSSelect.tsx";
+import {KarmaSkills, karmaSkillTree, personalitySkillTree, SkillName, SkillTreeNode, TalentSkills, talentsSkillTree, VitalitySkills, vitalitySkillTree} from "./SkillTreeInfo.ts";
+import {Traits} from "../../utils/types/Traits.ts";
+import _ from "lodash";
 
-// TODO Remove when readonly is done
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: false}) {
-    const {skills, toggleSkill} = useSkillTree();
-    const {
-        level5Talent,
-        setLevel5Talent,
-        setTalent1Options,
-        setTalent2Options,
-        setTalent3Options,
-        setTalent4Options,
-        setTalentedTalent,
-        setVitalityOptions,
-        talent1Options,
-        talent2Options,
-        talent3Options,
-        talent4Options,
-        talentedTalent,
-        vitalityOptions
-    } = useSkillTree();
-    const {level, traits, aura, stamina, agility, technique, willpower, function: functionStat} = useCharacterSheetFields()
+export function SkillTree(props: Readonly<{
+    level: number,
+    traits: Traits[],
+    aura: number,
+    stamina: number,
+    agility: number,
+    technique: number,
+    willpower: number,
+    function: number,
+    selectedSkills: SkillName[],
+    setSelectedSkills: (skill: SkillName[]) => void,
+    talent1?: Talent.AURA | Talent.STAMINA,
+    talent2?: Talent.AGILITY | Talent.FUNCTION,
+    talent3?: Talent.TECHNIQUE | Talent.WILLPOWER,
+    talent4?: Talent,
+    level5Talent?: Talent,
+    talented?: Talent,
+    setTalent1: (choice:Talent.AURA | Talent.STAMINA ) => void,
+    setTalent2: (choice: Talent.AGILITY | Talent.FUNCTION) => void,
+    setTalent3: (choice: Talent.TECHNIQUE | Talent.WILLPOWER) => void,
+    setTalent4: (choice: Talent) => void,
+    setLevel5Talent: (choice: Talent) => void,
+    setTalented: (choice: Talent) => void,
+    vitalityEnhance?: "MOV" | "DEF",
+    setVitalityEnhance: (choice: "MOV" | "DEF") => void,
+}>) {
+    const {level, traits, aura, stamina, agility, technique, willpower, function: functionStat, selectedSkills} = props
 
     function getSkillCheckbox(skillName: SkillName, skillData: SkillTreeNode) {
-        return <BeerCSSCheckbox label={skillName} checked={skills.includes(skillName)} onChange={() => toggleSkill(skillName)} disabled={!isSkillUnlocked(skillData, skills, level) && !skills.includes(skillName)} key={skillName}/>
+        return <BeerCSSCheckbox label={skillName} checked={selectedSkills.includes(skillName)} onChange={() => props.setSelectedSkills(_.xor(props.selectedSkills, [skillName]))} disabled={!isSkillUnlocked(skillData, selectedSkills, level) && !selectedSkills.includes(skillName)} key={skillName}/>
     }
 
-    const karmaSkillCount = skills.filter(value => (Object.values(KarmaSkills) as string[]).includes(value)).length;
-    const nonKarmaSkillCount = skills.filter(value => !(Object.values(KarmaSkills) as string[]).includes(value)).length;
+    const karmaSkillCount = selectedSkills.filter(value => (Object.values(KarmaSkills) as string[]).includes(value)).length;
+    const nonKarmaSkillCount = selectedSkills.filter(value => !(Object.values(KarmaSkills) as string[]).includes(value)).length;
     const karmaSkillPoints = Math.max(level - 1 - karmaSkillCount, 0);
     const otherSkillPoints = (level - 1) * 2 + (level > 3 ? 1 : 0) - Math.max(karmaSkillCount - (level - 1), 0) - nonKarmaSkillCount;
 
@@ -70,20 +77,20 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
             <fieldset style={{width: '100%'}}>
                 <legend>Stat Boosts</legend>
                 {/*TODO Add margins between selects*/}
-                {skills.includes(TalentSkills.talent1) && <BeerCSSSelect fill label={"Talent 1"} value={talent1Options} onChange={event => setTalent1Options(event.target.value as keyof TalentModifiers)}>
-                    <option value={"aura"}>Aura</option>
-                    <option value={"stamina"}>Stamina</option>
+                {selectedSkills.includes(TalentSkills.talent1) && <BeerCSSSelect fill label={"Talent 1"} value={props.talent1} onChange={event => props.setTalent1(event.target.value as Talent.AURA | Talent.STAMINA)}>
+                    <option value={"Aura"}>Aura</option>
+                    <option value={"Stamina"}>Stamina</option>
                 </BeerCSSSelect>}
-                {skills.includes(TalentSkills.talent2) && <BeerCSSSelect fill label={"Talent 3"} value={talent2Options} onChange={event => setTalent2Options(event.target.value as keyof TalentModifiers)}>
-                    <option value={"agility"}>Agility</option>
-                    <option value={"function"}>Function</option>
+                {selectedSkills.includes(TalentSkills.talent2) && <BeerCSSSelect fill label={"Talent 3"} value={props.talent2} onChange={event => props.setTalent2(event.target.value as Talent.AGILITY | Talent.FUNCTION)}>
+                    <option value={"Agility"}>Agility</option>
+                    <option value={"Function"}>Function</option>
                 </BeerCSSSelect>}
-                {skills.includes(TalentSkills.talent3) && <BeerCSSSelect fill label={"Talent 3"} value={talent3Options} onChange={event => setTalent3Options(event.target.value as keyof TalentModifiers)}>
-                    <option value={"willpower"}>Willpower</option>
-                    <option value={"technique"}>Technique</option>
+                {selectedSkills.includes(TalentSkills.talent3) && <BeerCSSSelect fill label={"Talent 3"} value={props.talent3} onChange={event => props.setTalent3(event.target.value as Talent.TECHNIQUE | Talent.WILLPOWER)}>
+                    <option value={"Willpower"}>Willpower</option>
+                    <option value={"Technique"}>Technique</option>
                 </BeerCSSSelect>}
-                {skills.includes(TalentSkills.talent4) &&
-                    <BeerCSSSelect label={"Talent 4"} fill value={talent4Options} onChange={event => setTalent4Options(event.target.value as keyof TalentModifiers)}>
+                {selectedSkills.includes(TalentSkills.talent4) &&
+                    <BeerCSSSelect label={"Talent 4"} fill value={props.talent4} onChange={event => props.setTalent4(event.target.value as Talent)}>
                         <option value={"aura"}>Aura</option>
                         <option value={"stamina"}>Stamina</option>
                         <option value={"agility"}>Agility</option>
@@ -91,7 +98,7 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
                         <option value={"willpower"}>Willpower</option>
                         <option value={"technique"}>Technique</option>
                     </BeerCSSSelect>}
-                {level >= 5 && <BeerCSSSelect label={"Level 5"} fill value={level5Talent} onChange={event => setLevel5Talent(event.target.value as keyof TalentModifiers)}>
+                {level >= 5 && <BeerCSSSelect label={"Level 5"} fill value={props.level5Talent} onChange={event => props.setLevel5Talent(event.target.value as Talent)}>
                     <option value={"aura"}>Aura</option>
                     <option value={"stamina"}>Stamina</option>
                     <option value={"agility"}>Agility</option>
@@ -99,11 +106,11 @@ export function SkillTree(_props: Readonly<{ readOnly?: boolean }> = {readOnly: 
                     <option value={"willpower"}>Willpower</option>
                     <option value={"technique"}>Technique</option>
                 </BeerCSSSelect>}
-                {skills.includes(VitalitySkills.vitalityEnhance) && <BeerCSSSelect fill label={"Vitality Enhance"} value={vitalityOptions} onChange={event => setVitalityOptions(event.target.value as "MOV" | "DEF")}>
+                {selectedSkills.includes(VitalitySkills.vitalityEnhance) && <BeerCSSSelect fill label={"Vitality Enhance"} value={props.vitalityEnhance} onChange={event => props.setVitalityEnhance(event.target.value as "MOV" | "DEF")}>
                     <option value={"MOV"}>+MOV</option>
                     <option value={"DEF"}>+DEF</option>
                 </BeerCSSSelect>}
-                {traits.includes("Talented") && <BeerCSSSelect fill label={"Talented"} value={talentedTalent} onChange={event => setTalentedTalent(event.target.value as keyof TalentModifiers)}>
+                {traits.includes("Talented") && <BeerCSSSelect fill label={"Talented"} value={props.talented} onChange={event => props.setTalented(event.target.value as Talent)}>
                     {aura < 3 && <option value={"aura"}>Aura</option>}
                     {stamina < 3 && <option value={"stamina"}>Stamina</option>}
                     {agility < 3 && <option value={"agility"}>Agility</option>}

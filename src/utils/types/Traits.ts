@@ -1,6 +1,6 @@
 import {Affiliation} from "./KarmaSpecialty.ts";
 
-export interface Trait {
+export interface TraitText {
     description: string;
     effect: string;
 }
@@ -8,7 +8,7 @@ export interface Trait {
 export type Traits = "Dependable" | "Good Looking" | "Handy" | "Determined" | "Calm" | "Talented" | "Loyal" | "Inspirational" | "Honorable" | "Spunky" | "Protective" | "Thrifty" | "Observant" | "Adaptable" | "Resilient"
 export type Flaws = "Hot Headed" | "Insecure" | "Tongue Tied" | "Arrogant" | "Reckless" | "Selfish" | "Unmotivated" | "Clumsy" | "Paranoid" | "Cowardly" | "Secretive" | "Lovesick" | "Distracted" | "Extravagant" | "Distant"
 
-export const selectableTraits: Record<Traits, Trait> = {
+export const selectableTraits: Record<Traits, TraitText> = {
     Dependable: {description: "People rely upon and look up to you.", effect: "Ability to perform Combos at -2 KP cost."},
     "Good Looking": {description: "Hey there, handsome!", effect: "+2 to Aura rolls when the initial roll is lower than 10."},
     Handy: {description: "You're good at fixing things.", effect: "Pass 3 Technique Checks without rolling per session."},
@@ -25,7 +25,7 @@ export const selectableTraits: Record<Traits, Trait> = {
     Thrifty: {description: "You're always finding a good deal.", effect: "Gain an additional +⧗5 when finding merits"},
     Observant: {description: "Great eye!", effect: "+2 to Function rolls when the initial roll is lower than 10."}
 }
-export const selectableFlaws: Record<Flaws, Trait> = {
+export const selectableFlaws: Record<Flaws, TraitText> = {
     "Hot Headed": {description: "You get too worked up too quickly.", effect: "Lose your first Turn at the start of battle."},
     Insecure: {description: "You're not sure if you're doing things right.", effect: "-2 to Cooldown rolls for karma recharging"},
     "Tongue Tied": {description: "Oops, you said the wrong thing again.", effect: "-1 to Aura rolls."},

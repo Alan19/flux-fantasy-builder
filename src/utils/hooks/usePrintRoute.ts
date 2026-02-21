@@ -9,7 +9,7 @@ export function usePrintRoute() {
         // TODO Print immediately if you are on the same route
         setTimeout(() => {
             console.log("Delayed for 1 second.");
-            window.print();                        // 4. open the print dialog
+            globalThis.print();                        // 4. open the print dialog
             nav(returnTo);                         // 5. dialog closes → go back
         }, 650); // 3. let it render
     };

@@ -1,5 +1,6 @@
-import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "../../hooks/useSkillTree.ts";
-import {Traits} from "./Traits.ts";
+import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "../../components/skills/SkillTreeInfo.ts";
+
+import {OCSaveData} from "./OCSaveData.ts";
 
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
@@ -80,28 +81,28 @@ export function getBoostedTalent(study: Study): Talent {
         case InkFighterStudies.projectile:
         case SpecialAgentStudies.tinker:
         case ClockbotStudies.experimental:
-            return "Technique";
+            return Talent.TECHNIQUE;
         case EscapeArtistStudies.clockworkKarmastry:
         case InkFighterStudies.animal:
         case SpecialAgentStudies.scout:
         case ClockbotStudies.heavy:
-            return "Agility";
+            return Talent.AGILITY;
         case EscapeArtistStudies.bioKarmastry:
         case InkFighterStudies.body:
         case ClockbotStudies.medical:
-            return "Function"
+            return Talent.FUNCTION
         case EscapeArtistStudies.machineKarmastry:
         case SpecialAgentStudies.bodyguard:
         case ClockbotStudies.decoy:
-            return "Stamina";
+            return Talent.STAMINA;
         case EscapeArtistStudies.quantumKarmastry:
         case InkFighterStudies.elemental:
         case SpecialAgentStudies.disrupter:
         case ClockbotStudies.karmastryAssist:
-            return "Willpower"
+            return Talent.WILLPOWER
         case InkFighterStudies.melee:
         case SpecialAgentStudies.operative:
-            return "Aura"
+            return Talent.AURA
     }
 }
 
@@ -147,47 +148,26 @@ export function getDefenseModifier(affiliation: Affiliation, level: number, skil
     return defenseModifier;
 }
 
-export interface TalentModifiers {
-    aura: number;
-    technique: number;
-    stamina: number;
-    function: number;
-    willpower: number;
-    agility: number;
+export enum Talent {
+    AURA = "Aura", TECHNIQUE = "Technique", AGILITY = "Agility", STAMINA = "Stamina", WILLPOWER = "Willpower", FUNCTION = "Function"
 }
 
-export type Talent = "Aura" | "Technique" | "Agility" | "Stamina" | "Willpower" | "Function";
+export type TalentModifiers = { [key in Talent]: number }
 
-// TODO Lower the number of parameters
-export function getEffectiveTalents(study: Study | undefined,
-                                    aura: number,
-                                    technique: number,
-                                    stamina: number,
-                                    functionStat: number,
-                                    willpower: number,
-                                    agility: number,
-                                    talent1Options: keyof TalentModifiers | undefined,
-                                    talent2Options: keyof TalentModifiers | undefined,
-                                    talent3Options: keyof TalentModifiers | undefined,
-                                    talent4Options: keyof TalentModifiers | undefined,
-                                    level5Talent: keyof TalentModifiers | undefined,
-                                    talentedTalent: keyof TalentModifiers | undefined,
-                                    skills: SkillName[],
-                                    level: number,
-                                    traits: Traits[]): [TalentModifiers] {
+export function getEffectiveTalents({aura, stamina, technique, function: functionStat, willpower, agility, study, skills, "talent-1": talent1, "talent-2": talent2Options, "talent-3": talent3Options, "talent-4": talent4Options, level, "level-5-talent-boost": level5Talent, traits, "talented-boost": talentedTalent}: OCSaveData): [TalentModifiers] {
     const talents: TalentModifiers = {
-        aura: aura,
-        technique: technique,
-        stamina: stamina,
-        function: functionStat,
-        willpower: willpower,
-        agility: agility,
+        Aura: aura,
+        Technique: technique,
+        Stamina: stamina,
+        Function: functionStat,
+        Willpower: willpower,
+        Agility: agility,
     }
     if (study) {
         talents[getBoostedTalent(study).toLowerCase() as keyof TalentModifiers] += 1;
     }
-    if (skills.includes(TalentSkills.talent1) && talent1Options) {
-        talents[talent1Options] += 1;
+    if (skills.includes(TalentSkills.talent1) && talent1) {
+        talents[talent1] += 1;
     }
     if (skills.includes(TalentSkills.talent2) && talent2Options) {
         talents[talent2Options] += 1;
@@ -209,7 +189,7 @@ export function getEffectiveTalents(study: Study | undefined,
 
 export function getMaxHP(effectiveTalents: TalentModifiers, level: number, skills: SkillName[]) {
     let totalHP = 10;
-    totalHP += (effectiveTalents.function ?? 0)
+    totalHP += (effectiveTalents.Function ?? 0)
     if (level >= 3) {
         totalHP += 7;
     }
@@ -230,7 +210,7 @@ export function getMaxHP(effectiveTalents: TalentModifiers, level: number, skill
 
 export function getMovModifier(effectiveTalents: TalentModifiers, skills: SkillName[], vitalityOption: "DEF" | "MOV" | undefined) {
     let totalMOV = 1;
-    totalMOV += (effectiveTalents.agility ?? 0);
+    totalMOV += (effectiveTalents.Agility ?? 0);
     if (skills.includes(VitalitySkills.movementEnhance)) {
         totalMOV += 1;
     }

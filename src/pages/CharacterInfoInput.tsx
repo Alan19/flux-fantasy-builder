@@ -1,10 +1,11 @@
 import {CharacterIdentity} from "./CharacterIdentity.tsx";
-import {ColoredLogo} from "../ui/ColoredLogo.tsx";
-import {useIsMobile} from "../../hooks/useIsMobile.ts";
-import {ModeToggle} from "../layout/ModeToggle.tsx";
+import {ColoredLogo} from "../components/ui/ColoredLogo.tsx";
+import {useIsMobile} from "../utils/hooks/useIsMobile.ts";
+import {ModeToggle} from "../components/layout/ModeToggle.tsx";
 import {clsx} from "clsx";
+import {CharacterManager, OCSaveDataWithState} from "../utils/hooks/useOCLocalStorage.ts";
 
-export function CharacterInfoInput() {
+export function CharacterInfoInput(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     return <>
         <div style={{display: "flex", gap: '2rem', alignItems: "baseline"}}>
             <div style={{flex: "1", maxWidth: "500px"}}>
@@ -15,6 +16,6 @@ export function CharacterInfoInput() {
                 {useIsMobile() && <div><ModeToggle className={clsx("circle border tertiary-text")}/></div>}
             </div>
         </div>
-        <CharacterIdentity/>
+        <CharacterIdentity ocData={props.ocData}/>
     </>
 }

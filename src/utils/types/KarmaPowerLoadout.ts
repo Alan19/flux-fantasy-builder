@@ -1,5 +1,4 @@
-import {KarmaSpecialty, Study} from "./KarmaSpecialty.ts";
-import {PowerTier} from "../../hooks/usePowerLoadoutSettings.ts";
+import {ClockbotStudies, EscapeArtistStudies, InkFighterStudies, KarmaSpecialty, SpecialAgentStudies, Study} from "./KarmaSpecialty.ts";
 
 interface KarmaAttack {
     damage: [number, number, number, number];
@@ -10,15 +9,11 @@ interface KarmaUtility {
     effect: [number, number, number, number];
 }
 
-export interface SwapPower {
+export interface SwapPowerData {
     effect?: string;
     name: string;
     damage: number;
     range: string;
-}
-
-export function isSwapPower(power: string | PowerTier): power is string {
-    return typeof power === 'string';
 }
 
 export type KarmaPowerSet = {
@@ -33,7 +28,7 @@ export interface KarmaPowerLoadout extends KarmaPowerSet {
     effects: [string?, string?, string?, string?];
 }
 
-export type SwapPowerChoices = { basic: [SwapPower, SwapPower, SwapPower], advanced: [SwapPower, SwapPower, SwapPower] };
+export type SwapPowerOptions = { setup: [SwapPowerData, SwapPowerData, SwapPowerData], advanced: [SwapPowerData, SwapPowerData, SwapPowerData] };
 
 export type SpecialtyCosts = {
     attackAndDefense: [number, number, number, number];
@@ -41,10 +36,46 @@ export type SpecialtyCosts = {
     signature: [number, number, number, number]
 };
 
-export const locomotionCosts = [3, 5, 7, 9];
+export const locomotionCosts: [number, number, number, number] = [3, 5, 7, 9];
 export const locomotionRanges: [number, number, number, number] = [1, 2, 3, 4];
 
-export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapPowerChoices, KarmaPowerLoadout] {
+const getSpecialtyOfStudy = (study: EscapeArtistStudies | InkFighterStudies | SpecialAgentStudies | ClockbotStudies) => {
+    let specialty: KarmaSpecialty;
+
+    switch (study) {
+        case ClockbotStudies.experimental:
+        case ClockbotStudies.decoy:
+        case ClockbotStudies.heavy:
+        case ClockbotStudies.karmastryAssist:
+        case ClockbotStudies.medical:
+            specialty = KarmaSpecialty.clockbot;
+            break;
+        case EscapeArtistStudies.bioKarmastry:
+        case EscapeArtistStudies.clockworkKarmastry:
+        case EscapeArtistStudies.creativeKarmastry:
+        case EscapeArtistStudies.machineKarmastry:
+        case EscapeArtistStudies.quantumKarmastry:
+            specialty = KarmaSpecialty.escapeArtist;
+            break;
+        case InkFighterStudies.animal:
+        case InkFighterStudies.body:
+        case InkFighterStudies.elemental:
+        case InkFighterStudies.melee:
+        case InkFighterStudies.projectile:
+            specialty = KarmaSpecialty.inkFighter;
+            break;
+        case SpecialAgentStudies.bodyguard:
+        case SpecialAgentStudies.disrupter:
+        case SpecialAgentStudies.operative:
+        case SpecialAgentStudies.scout:
+        case SpecialAgentStudies.tinker:
+            specialty = KarmaSpecialty.specialAgent;
+    }
+    return specialty;
+}
+
+export function getKarmaPowerStatsForStudy(study: Study): [SwapPowerOptions, KarmaPowerLoadout] {
+    const specialty = getSpecialtyOfStudy(study);
     const costs: {
         [specialty in KarmaSpecialty]: {
             attackAndDefense: [number, number, number, number];
@@ -253,9 +284,9 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
     const escapeArtistSwapPowerEffect = "+5 KP restored";
     const specialAgentSwapPowerEffect = "Reduces the Perception Threshold of enemy target by 2.";
     const clockbotSwapPowerEffect = "+2 damage to humans.";
-    const swapPowers: { [specialty in KarmaSpecialty]: SwapPowerChoices } = {
+    const swapPowers: { [specialty in KarmaSpecialty]: SwapPowerOptions } = {
         [KarmaSpecialty.specialAgent]: {
-            basic: [
+            setup: [
                 {name: "Baton", damage: 4, range: "1-2"},
                 {name: "Net Trap", damage: 5, range: "0-1"},
                 {name: "Taser", damage: 6, range: "0"}
@@ -268,7 +299,7 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
 
         },
         [KarmaSpecialty.inkFighter]: {
-            basic: [
+            setup: [
                 {name: "Jab", damage: 5, range: "1"},
                 {name: "Round House", damage: 4, range: "3"},
                 {name: "Upper Cut", damage: 6, range: "0"}
@@ -280,7 +311,7 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
             ]
         },
         [KarmaSpecialty.clockbot]: {
-            basic: [
+            setup: [
                 {name: "Pound", damage: 3, range: "1-2"},
                 {name: "Metal Fist", damage: 4, range: "0-1"},
                 {name: "Shoulder Check", damage: 5, range: "0"}
@@ -292,7 +323,7 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
             ],
         },
         [KarmaSpecialty.escapeArtist]: {
-            basic: [
+            setup: [
                 {name: "Punch", damage: 3, range: "1"},
                 {name: "Running Kick", damage: 2, range: "2"},
                 {name: "Bite", damage: 4, range: "0"}
@@ -306,4 +337,3 @@ export function getPowerLoadout(specialty: KarmaSpecialty, study: Study): [SwapP
     }
     return [swapPowers[specialty], loadouts[study]];
 }
-
