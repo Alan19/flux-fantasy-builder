@@ -6,7 +6,7 @@ import {clsx} from "clsx";
 export type InputSize = "small" | "medium" | "large" | "extra";
 
 interface CommonProps {
-    label?: string,
+    label?: string | ReactNode,
     inputSize?: InputSize,
     inputPrefix?: ReactNode,
     inputSuffix?: ReactNode,

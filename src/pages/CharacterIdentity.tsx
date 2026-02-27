@@ -7,9 +7,7 @@ import {BeerCSSSelect} from "../components/ui/beer-css-wrappers/BeerCSSSelect.ts
 import {setFileBase64} from "../utils/utils.ts";
 import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStorage.ts";
 
-export function CharacterIdentity(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
-    const ocSaveDataWithState = props.ocData;
-    const {background: characterIdentity, talents} = ocSaveDataWithState;
+export function CharacterIdentity({ocData: {background: characterIdentity, inventory, karmaPowers, skills, talents}}: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     const [playerName, setPlayerName] = characterIdentity.playerName;
     const [characterName, setCharacterName] = characterIdentity.characterName;
     const [characterImageData, setCharacterImageData] = characterIdentity.characterImageData;
@@ -25,7 +23,7 @@ export function CharacterIdentity(props: Readonly<{ ocData: OCSaveDataWithState 
     const [flaws, setFlaws] = characterIdentity.flaws;
     const [karmaEquipmentConfiguration, setKarmaEquipmentConfiguration] = characterIdentity.karmaEquipmentConfiguration;
     const [affiliation, setAffiliation] = characterIdentity.affiliation;
-    
+
     const [aura, setAura] = talents.aura;
     const [agility, setAgility] = talents.agility;
     const [stamina, setStamina] = talents.stamina;
@@ -75,14 +73,10 @@ export function CharacterIdentity(props: Readonly<{ ocData: OCSaveDataWithState 
                             <BeerCSSSelect label={"Karma Study"} onChange={event => setStudy(event.target.value as Study)} value={study}>
                                 {Object.values(getStudies(karmaSpecialty)).map(value => <option key={value} value={value}>{value}</option>)}
                             </BeerCSSSelect>
-                            <div className="field border label no-margin">
-                                {/*TODO Make sure this is set / nulled first*/}
-                                <select onChange={event => setAffiliation(event.target.value as Affiliation)} value={affiliation}>
-                                    {Object.values(Affiliation).map(value => <option key={value} value={value}>{value}</option>)}
-                                </select>
-                                <label>Affiliation</label>
-                            </div>
-                            <BeerCSSTextField label={"Torus, Special Weapon, or Sigil Configuration"} multiline value={karmaEquipmentConfiguration} onChange={event => setKarmaEquipmentConfiguration(event.target.value)} containerClass={"flex-one"}/>
+                            <BeerCSSSelect label={"Affiliation"} onChange={event => setAffiliation(event.target.value as Affiliation)} value={affiliation}>
+                                {Object.values(Affiliation).map(value => <option key={value} value={value}>{value}</option>)}
+                            </BeerCSSSelect>
+                            <BeerCSSTextField accept="image/*" inputPrefix={<i>attach_file</i>} type={"file"} label={"Torus, Special Weapon, or Sigil Configuration"} onChange={e => setFileBase64(e, setKarmaEquipmentConfiguration)} inputSuffix={karmaEquipmentConfiguration && <i>check</i>}/>
                         </div>
 
                     </fieldset>
@@ -113,19 +107,15 @@ export function CharacterIdentity(props: Readonly<{ ocData: OCSaveDataWithState 
             <article className="middle-align center-align">
                 {<fieldset style={{width: "100%"}}>
                     <legend><TypographyWithAdornment coloredText text={"Karma Powers"}/></legend>
-                    <KarmaPowerTable displayMode={"basic"} study={study} karmaPowerLoadout={ocSaveDataWithState.karmaPowers} skills={ocSaveDataWithState.skills.unlockedSkills[0]} isOverPaybackThreshold={ocSaveDataWithState.inventory.payback[0] >= 50} />
+                    <KarmaPowerTable displayMode={"basic"} study={study} karmaPowerLoadout={karmaPowers} skills={skills.unlockedSkills[0]} isOverPaybackThreshold={inventory.payback[0] >= 50}/>
                 </fieldset>}
             </article>
         </div>
         <article>
             <fieldset>
                 <legend><TypographyWithAdornment text={"Traits and Flaws"} coloredText/></legend>
-                <TraitAndFlawTable flaws={flaws} traits={traits} affiliation={affiliation} setTraits={setTraits} setFlaws={setFlaws} />
+                <TraitAndFlawTable flaws={flaws} traits={traits} affiliation={affiliation} setTraits={setTraits} setFlaws={setFlaws}/>
             </fieldset>
-        </article>
-        <article>
-            <TypographyWithAdornment text={"Skill Tree"} coloredText/>
-            {/*<SkillTree characterOptions={characterIdentity}/>*/}
         </article>
     </div>;
 }

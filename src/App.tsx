@@ -9,35 +9,30 @@ import {KarmaPowerDetails} from "./pages/KarmaPowerDetails.tsx";
 import {useLocalStorage} from "usehooks-ts";
 import {useEffect} from "react";
 import {OCSaveData} from "./utils/types/OCSaveData.ts";
-import {newCharacter} from "./utils/newCharacter.ts";
+import {getNewCharacter} from "./utils/getNewCharacter.ts";
 import {assembleCharacterData, CharacterManager, extracted, OCSaveDataWithState} from "./utils/AssembleLocalStorage.ts";
+import {RenderedCharacterSheet} from "./pages/RenderedCharacterSheet.tsx";
 
 function useOCLocalStorage(): OCSaveDataWithState & { characters: CharacterManager } {
     const newUUID = crypto.randomUUID();
     const [currentCharacter, setCurrentCharacter] = useLocalStorage<string>("current-character", newUUID)
-    const [ocData, setOCData] = useLocalStorage<OCSaveData>(currentCharacter, newCharacter())
+    const [ocData, setOCData] = useLocalStorage<OCSaveData>(currentCharacter, getNewCharacter())
     const [characterList, setCharacterList] = useLocalStorage<string[]>("characters", [newUUID])
-
-    console.log("Local Storage Invoked", currentCharacter, ocData, characterList)
 
     function deleteCurrentCharacter() {
         localStorage.removeItem(currentCharacter);
     }
+
     // Initialize fields
     // If your current character hasn't been written to storage yet, write it to storage as currentCharacter and characterList has already been updated
     // Setting the OC data is only done if the other keys have already been set
     useEffect(() => {
-        console.log(`Processing ${currentCharacter}`)
         if (!localStorage.getItem("current-character")) {
-            console.log(`Initializing data for ${currentCharacter}`)
-            console.log(currentCharacter, characterList)
             setCurrentCharacter(currentCharacter);
             setOCData(ocData);
             setCharacterList(characterList);
         } else if (!localStorage.getItem(currentCharacter)) {
-            console.log(`Initializing data for new character: ${currentCharacter}`)
-            console.log(`${localStorage.getItem("current-character")}`, currentCharacter)
-            setOCData(newCharacter());
+            setOCData(getNewCharacter());
         }
     }, [characterList, currentCharacter, ocData, setCharacterList, setCurrentCharacter, setOCData]);
 
@@ -55,7 +50,7 @@ function App() {
             <NavigationRail/>
             <main className={"large-padding center"} style={{maxInlineSize: "95rem"}}>
                 <Route path="/"><CharacterInfoInput ocData={ocData}/></Route>
-                {/*<Route path={"/sheet"}><RenderedCharacterSheet/></Route>*/}
+                <Route path={"/sheet"}><RenderedCharacterSheet ocData={ocData} /></Route>
                 <Route path={"/powers"}><KarmaPowerDetails ocData={ocData}/></Route>
                 <footer>Copyright © Herohelix, LLC</footer>
             </main>

@@ -6,18 +6,18 @@ import {CharacterManager} from "../../utils/AssembleLocalStorage.ts";
 
 function SelectOCCard(props: Readonly<{ isSelected: boolean, ocData: OCSaveData, onSelect: () => void, onDelete: () => void }>) {
     return <div>
-        <article className={clsx("no-padding small", props.isSelected && "primary-container")}>
+        <article className={clsx("no-padding small", props.isSelected && "secondary-container")}>
             <div className={"grid"}>
-                <div className="s6" style={{height: "12rem"}}>
+                <div className="s4" style={{height: "12rem"}}>
                     <img style={{width: "100%", height: "100%", objectFit: "cover", objectPosition: "top"}} src={props.ocData.background.characterImageData}/>
                 </div>
-                <div className="s6">
+                <div className="s8">
                     <div className="padding">
                         <h6>{props.ocData.background.characterName || "Unnamed Character"}</h6>
-                        <p>{`${props.ocData.background.study} ${props.ocData.background.karmaSpecialty}`}</p>
+                        <p><b>{props.ocData.background.study}</b> {props.ocData.background.karmaSpecialty}</p>
                         <nav>
                             <button onClick={props.onSelect} className="round">Select</button>
-                            <button className="round border" onClick={props.onDelete}>Delete</button>
+                            <button className="round error-border border error-text" onClick={props.onDelete}>Delete</button>
                         </nav>
                     </div>
                 </div>
@@ -32,7 +32,7 @@ export function CharacterSelector({createCharacter, deleteCharacter, characterLi
             <Dialog.Trigger className={"tertiary"}><i>restart_alt</i> Select Character</Dialog.Trigger>
             <Dialog.Portal>
                 <Dialog.Backdrop className={styles.Backdrop}/>
-                <Dialog.Popup className={clsx(styles.Popup, "surface")}>
+                <Dialog.Popup className={clsx(styles.Popup, "surface-container")}>
                     <Dialog.Title className={styles.Title}>Select Your Character</Dialog.Title>
                     <div style={{blockSize: '32rem', overflowY: 'scroll', display: 'flex', flexDirection: 'column'}}>
                             <div style={{display: 'flex', flexDirection: 'column', gap: '1rem'}}>
@@ -48,8 +48,8 @@ export function CharacterSelector({createCharacter, deleteCharacter, characterLi
                     </div>
                     <div className={styles.Actions}>
                         <div style={{display: "flex", alignItems: "baseline", justifyContent: "space-between", width: "100%"}}>
-                            <button className={"secondary top-margin"} onClick={() => createCharacter()}>Create Character</button>
-                            <Dialog.Close>Close</Dialog.Close>
+                            <button className={"secondary-border border secondary-text top-margin"} onClick={() => createCharacter()}>Create Character</button>
+                            <Dialog.Close className={"border"}>Close</Dialog.Close>
                         </div>
                     </div>
                 </Dialog.Popup>

@@ -1,6 +1,6 @@
 import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "../../components/skills/SkillTreeInfo.ts";
 
-import {OCSaveData} from "./OCSaveData.ts";
+import {CharacterTalents, SkillSettings} from "./OCSaveData.ts";
 
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
@@ -75,7 +75,7 @@ export function getHealingPercent(karmaSpecialty: KarmaSpecialty, skills: SkillN
     return Math.min(healingPercentage, 100);
 }
 
-export function getBoostedTalent(study: Study): Talent {
+export function getBoostedTalent(study: Study): Talent{
     switch (study) {
         case EscapeArtistStudies.creativeKarmastry:
         case InkFighterStudies.projectile:
@@ -154,37 +154,57 @@ export enum Talent {
 
 export type TalentModifiers = { [key in Talent]: number }
 
-export function getEffectiveTalents({aura, stamina, technique, function: functionStat, willpower, agility, study, skills, "talent-1": talent1, "talent-2": talent2Options, "talent-3": talent3Options, "talent-4": talent4Options, level, "level-5-talent-boost": level5Talent, traits, "talented-boost": talentedTalent}: OCSaveData): [TalentModifiers] {
-    const talents: TalentModifiers = {
-        Aura: aura,
-        Technique: technique,
-        Stamina: stamina,
-        Function: functionStat,
-        Willpower: willpower,
-        Agility: agility,
-    }
+interface TalentCalculation {
+    talentModifiers: CharacterTalents,
+    skills: Omit<SkillSettings, "vitalityEnhance">,
+    study: Study,
+    level: number,
+    talented: boolean
+}
+
+export function getBaseTalents(talentModifiers: CharacterTalents, study: Study) {
+    const baseTalents = {
+        Aura: talentModifiers.aura,
+        Technique: talentModifiers.technique,
+        Stamina: talentModifiers.stamina,
+        Function: talentModifiers.function,
+        Willpower: talentModifiers.willpower,
+        Agility: talentModifiers.agility,
+    };
     if (study) {
-        talents[getBoostedTalent(study).toLowerCase() as keyof TalentModifiers] += 1;
+        baseTalents[getBoostedTalent(study)] += 1;
     }
-    if (skills.includes(TalentSkills.talent1) && talent1) {
-        talents[talent1] += 1;
+    return baseTalents;
+}
+
+export function getEffectiveTalents({talentModifiers, skills, study, level, talented}: TalentCalculation): TalentModifiers {
+    const talents: TalentModifiers = getBaseTalents(talentModifiers, study)
+    if (skills.unlockedSkills.includes(TalentSkills.talent1) && skills.talent1) {
+        talents[skills.talent1] += 1;
     }
-    if (skills.includes(TalentSkills.talent2) && talent2Options) {
-        talents[talent2Options] += 1;
+    if (skills.unlockedSkills.includes(TalentSkills.talent2) && skills.talent2) {
+        talents[skills.talent2] += 1;
     }
-    if (skills.includes(TalentSkills.talent3) && talent3Options) {
-        talents[talent3Options] += 1;
+    if (skills.unlockedSkills.includes(TalentSkills.talent3) && skills.talent3) {
+        talents[skills.talent3] += 1;
     }
-    if (skills.includes(TalentSkills.talent4) && talent4Options) {
-        talents[talent4Options] += 1;
+    if (skills.unlockedSkills.includes(TalentSkills.talent4) && skills.talent4) {
+        talents[skills.talent4] += 1;
     }
-    if (level >= 5 && level5Talent) {
-        talents[level5Talent] += 1;
+    if (level >= 5 && skills.level5TalentBoost) {
+        talents[skills.level5TalentBoost] += 1;
     }
-    if (traits.includes("Talented") && talentedTalent) {
-        talents[talentedTalent] += 1;
+    if (talented && skills.talentedBoost) {
+        talents[skills.talentedBoost] += 1;
     }
-    return [talents];
+    talents.Aura += talentModifiers.bonusAura;
+    talents.Agility += talentModifiers.bonusAgility;
+    talents.Function += talentModifiers.bonusFunction;
+    talents.Stamina += talentModifiers.bonusStamina;
+    talents.Function += talentModifiers.bonusFunction;
+    talents.Willpower += talentModifiers.bonusWillpower;
+    talents.Agility += talentModifiers.bonusAgility;
+    return talents;
 }
 
 export function getMaxHP(effectiveTalents: TalentModifiers, level: number, skills: SkillName[]) {

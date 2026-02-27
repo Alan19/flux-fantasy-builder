@@ -43,7 +43,13 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean, traits: Tr
                 <td><b>{affiliationTraits[props.affiliation].effect}</b></td>
                 <td/>
             </tr>}
-            {getDisplayedTraits().map(([trait, {description, effect}]) => <TraitRow key={trait} name={trait} onChange={() => props.setTraits(_.xor(props.traits, [trait]))} checked={props.traits.includes(trait)} effect={effect} description={description} />)}
+            {getDisplayedTraits().map(([trait, {description, effect}]) => <TraitRow key={trait}
+                                                                                    name={trait}
+                                                                                    onChange={() => props.setTraits(_.xor(props.traits, [trait]))}
+                                                                                    checked={props.traits.includes(trait)}
+                                                                                    effect={effect}
+                                                                                    inPlay={props.inPlay}
+                                                                                    description={description}/>)}
             </tbody>
             <thead>
             <tr className={'primary-container'}>
@@ -67,7 +73,7 @@ export function TraitAndFlawTable(props: Readonly<{ inPlay?: boolean, traits: Tr
                                                                                   description={description}/>)}
             </tbody>
         </table>
-        {/*TODO Update color when done*/}
+        {/*TODO Update color when done, and limit it to 4 traits total*/}
         {/*{!props.inPlay && <label style={{color: characterSheetFields.traits.length !== characterSheetFields.flaws.length ? 'var(--on-error-container)' : 'inherit'}}>The number of traits and flaws should be equal!</label>}*/}
     </div>;
 }

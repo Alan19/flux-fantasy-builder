@@ -3,9 +3,10 @@ import sanitize from "sanitize-filename";
 import {ChangeEvent} from "react";
 
 export type KarmaPowersGettersAndSetters = { [Field in keyof PowerLoadoutState]: [PowerLoadoutState[Field], (val: PowerLoadoutState[Field]) => void] };
+export type SkillSettingsGettersAndSetters = { [Field in keyof SkillSettings]: [SkillSettings[Field], (val: SkillSettings[Field]) => void] };
 export type OCSaveDataWithState = {
     karmaPowers: KarmaPowersGettersAndSetters,
-    skills: { [Field in keyof SkillSettings]: [SkillSettings[Field], (val: SkillSettings[Field]) => void] },
+    skills: SkillSettingsGettersAndSetters,
     talents: { [Field in keyof CharacterTalents]: [CharacterTalents[Field], (val: CharacterTalents[Field]) => void] },
     inventory: { [Field in keyof CharacterInventory]: [CharacterInventory[Field], (val: CharacterInventory[Field]) => void] },
     background: { [Field in keyof CharacterBackground]: [CharacterBackground[Field], (val: CharacterBackground[Field]) => void] },

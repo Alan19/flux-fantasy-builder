@@ -2,7 +2,7 @@ import {Affiliation, EscapeArtistStudies, KarmaSpecialty} from "./types/KarmaSpe
 import {AdvancedSwapPowerChoice, BasicSwapPowerChoice, PowerTier} from "./types/usePowerLoadoutSettings.ts";
 import {OCSaveData} from "./types/OCSaveData.ts";
 
-export function newCharacter(): OCSaveData {
+export function getNewCharacter(): OCSaveData {
     return {
         background: {
             playerName: "",
@@ -19,11 +19,11 @@ export function newCharacter(): OCSaveData {
             background: "",
             traits: [],
             flaws: [],
-            level: 0,
+            level: 1,
             karmaEquipmentConfiguration: ""
         }, inventory: {
-            medKits: 0,
-            merits: 0,
+            medKits: 2,
+            merits: 20,
             positiveKarma: 0,
             negativeKarma: 0,
             karmaPool: 0,

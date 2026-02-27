@@ -9,16 +9,16 @@ import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStora
 export function KarmaPowerDetails(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     const {inventory, skills, karmaPowers, background} = props.ocData;
     return <div>
-        <div style={{display: "flex", maxWidth: "500px"}}>
-            <div>
+        <div className={"grid medium-space"}>
+            <div className={"s11 l4"}>
                 <ColoredLogo/>
-                <span>Character Builder</span>
+                <span>Character Sheet</span>
             </div>
-            <div>
+            <div className={"s1"}>
                 {useIsMobile() && <div><ModeToggle className={clsx("circle border tertiary-text")}/></div>}
             </div>
         </div>
-        <article>
+        <article className={"fade"}>
             <fieldset>
                 <legend>
                     <TypographyWithAdornment text={"Karma Powers"} coloredText/>

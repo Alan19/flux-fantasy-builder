@@ -7,12 +7,12 @@ import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStora
 
 export function CharacterInfoInput(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     return <>
-        <div style={{display: "flex", gap: '2rem', alignItems: "baseline"}}>
-            <div style={{flex: "1", maxWidth: "500px"}}>
+        <div className={"grid medium-space"}>
+            <div className={"s11 l4"}>
                 <ColoredLogo/>
-                <span>Character Builder</span>
+                <span>Character Sheet</span>
             </div>
-            <div>
+            <div className={"s1"}>
                 {useIsMobile() && <div><ModeToggle className={clsx("circle border tertiary-text")}/></div>}
             </div>
         </div>

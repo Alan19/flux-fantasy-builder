@@ -1,6 +1,6 @@
 import {KarmaSpecialty} from "../../utils/types/KarmaSpecialty.ts";
 
-export function Advantages({karmaSpecialty, level}: { karmaSpecialty: KarmaSpecialty, level: number }) {
+export function Advantages({karmaSpecialty, level}: Readonly<{ karmaSpecialty: KarmaSpecialty, level: number }>) {
     let advantages: string[] = [];
     switch (karmaSpecialty) {
         case KarmaSpecialty.escapeArtist:
