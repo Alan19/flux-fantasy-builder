@@ -87,6 +87,7 @@ export type PowerLoadoutState = {
     selectedComboTier: PowerTier;
     selectedSignatureTier: PowerTier;
     selectedLocomotionTier: PowerTier;
+    karmaPowerDescriptions: string;
 }
 export type OCSaveData = {
     // PowerLoadoutState & SkillSettings & CharacterTalents & CharacterInventory & CharacterBackground

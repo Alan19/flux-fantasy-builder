@@ -5,6 +5,7 @@ import {clsx} from "clsx";
 import {KarmaPowerTable} from "../components/karma-abilities/KarmaPowerTable.tsx";
 import {TypographyWithAdornment} from "../components/ui/TypographyWithAdornment.tsx";
 import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStorage.ts";
+import {BeerCSSTextField} from "../components/ui/beer-css-wrappers/BeerCSSTextField.tsx";
 
 export function KarmaPowerDetails(props: Readonly<{ ocData: OCSaveDataWithState & { characters: CharacterManager } }>) {
     const {inventory, skills, karmaPowers, background} = props.ocData;
@@ -24,6 +25,7 @@ export function KarmaPowerDetails(props: Readonly<{ ocData: OCSaveDataWithState 
                     <TypographyWithAdornment text={"Karma Powers"} coloredText/>
                 </legend>
                 <KarmaPowerTable displayMode={"edit"} karmaPowerLoadout={karmaPowers} skills={skills.unlockedSkills[0]} study={background.study[0]} isOverPaybackThreshold={inventory.payback[0] >= 50}/>
+                <BeerCSSTextField className={"top-margin"} multiline value={karmaPowers.karmaPowerDescriptions[0]} onChange={event => karmaPowers.karmaPowerDescriptions[1](event.target.value)} label={"Karma Power Description"} />
             </fieldset>
         </article>
     </div>;

@@ -81,7 +81,8 @@ export const extracted = (ocData: OCSaveData, setOCData: (value: (((prevState: O
             "selectedDefenseTier": [karmaPowers.selectedDefenseTier, val => setOCData({...ocData, karmaPowers: {...karmaPowers, selectedDefenseTier: val}})],
             "selectedComboTier": [karmaPowers.selectedComboTier, val => setOCData({...ocData, karmaPowers: {...karmaPowers, selectedComboTier: val}})],
             "selectedSignatureTier": [karmaPowers.selectedSignatureTier, val => setOCData({...ocData, karmaPowers: {...karmaPowers, selectedSignatureTier: val}})],
-            "selectedLocomotionTier": [karmaPowers.selectedLocomotionTier, val => setOCData({...ocData, karmaPowers: {...karmaPowers, selectedLocomotionTier: val}})]
+            "selectedLocomotionTier": [karmaPowers.selectedLocomotionTier, val => setOCData({...ocData, karmaPowers: {...karmaPowers, selectedLocomotionTier: val}})],
+            karmaPowerDescriptions: [karmaPowers.karmaPowerDescriptions, val => setOCData({...ocData, karmaPowers: {...karmaPowers, karmaPowerDescriptions: val}})],
         }, talents: {
             aura: [talents.aura, val => setOCData({...ocData, talents: {...talents, aura: val}})],
             technique: [talents.technique, val => setOCData({...ocData, talents: {...talents, technique: val}})],

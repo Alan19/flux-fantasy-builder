@@ -59,7 +59,8 @@ export function getNewCharacter(): OCSaveData {
             selectedDefenseTier: PowerTier.Basic,
             selectedComboTier: PowerTier.Basic,
             selectedSignatureTier: PowerTier.Basic,
-            selectedLocomotionTier: PowerTier.Basic
+            selectedLocomotionTier: PowerTier.Basic,
+            karmaPowerDescriptions: ""
         }, skills: {
             unlockedSkills: [],
             vitalityEnhance: undefined,
