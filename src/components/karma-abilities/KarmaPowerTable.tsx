@@ -3,13 +3,11 @@ import {KarmaPowersGettersAndSetters} from "../../utils/AssembleLocalStorage.ts"
 import {BeerCSSRadio} from "../ui/beer-css-wrappers/BeerCSSRadio.tsx";
 import {KarmaSkills, PersonalitySkills, SkillName} from "../skills/SkillTreeInfo.ts";
 import {Study} from "../../utils/types/KarmaSpecialty.ts";
-import {getKarmaPowerStatsForStudy, locomotionCosts, locomotionRanges} from "../../utils/types/KarmaPowerLoadout.ts";
-import {BeerCSSTextField} from "../ui/beer-css-wrappers/BeerCSSTextField.tsx";
-import {ChangeEvent} from "react";
+import {locomotionCosts, locomotionRanges} from "../../utils/types/KarmaPowerLoadout.ts";
 import {BeerCSSSelect} from "../ui/beer-css-wrappers/BeerCSSSelect.tsx";
+import {KarmaPowerRow} from "./KarmaPowerRow.tsx";
+import {getKarmaPowerStatsForStudy} from "../../utils/karma-powers/getKarmaPowerStatsForStudy.ts";
 
-
-type KarmaPowerRowProps = { powerName: string, onChange: (event: ChangeEvent<HTMLInputElement>) => void, label: string, cost: number, damage?: number, range?: string, effect?: string, isOverPaybackThreshold: boolean };
 
 function isPowerTierUnlocked(tier: PowerTier, skills: SkillName[]) {
     switch (tier) {
@@ -22,19 +20,6 @@ function isPowerTierUnlocked(tier: PowerTier, skills: SkillName[]) {
         case PowerTier["Advanced 2"]:
             return skills.includes(KarmaSkills.advancedAttacks2)
     }
-}
-
-function KarmaPowerRow(props: Readonly<KarmaPowerRowProps>) {
-    const {powerName, cost, damage, onChange, range, effect, isOverPaybackThreshold, label} = props;
-    return <tr>
-        <td style={{paddingTop: 10}}><BeerCSSTextField value={powerName} onChange={onChange} label={label}/></td>
-        <td align="right">
-            {cost}{isOverPaybackThreshold && "(⬆)"}
-        </td>
-        <td align="right">{damage}</td>
-        <td align="right">{range}</td>
-        <td>{effect}</td>
-    </tr>
 }
 
 // TODO Add warning if you don't have the appropriate skill for higher level karma powers

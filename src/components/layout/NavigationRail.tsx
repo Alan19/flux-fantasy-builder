@@ -5,7 +5,7 @@ import '../../assets/App.css'
 import {useIsMobile} from "../../utils/hooks/useIsMobile.ts";
 export function NavigationRail() {
     const location = useLocation()[0];
-    const topLevelPath = (location.match(/^\/[^/]*/) ?? [''])[0];
+    const topLevelPath = (new RegExp(/^\/[^/]*/).exec(location) ?? [''])[0];
     const isMobile = useIsMobile();
 
     return <nav className={clsx("surface-container hide-when-printing", !isMobile ? "left" : "bottom")}>
@@ -21,6 +21,10 @@ export function NavigationRail() {
         <Link to={"/powers"}>
             <i className={clsx(topLevelPath === "/powers" && "primary-container", "ripple")}>swords</i>
             <span className={clsx(topLevelPath === "/powers" && "bold")}>Powers</span>
+        </Link>
+        <Link to={"/skill-tree"}>
+            <i className={clsx(topLevelPath === "/skill-tree" && "primary-container", "ripple")}>dynamic_form</i>
+            <span className={clsx(topLevelPath === "/skill-tree" && "bold")}>Skills</span>
         </Link>
         {!useIsMobile() && <div className={"absolute bottom bottom-margin"} style={{display: "flex", gap: ".5rem", flexDirection: "column"}}>
             <ModeToggle/>

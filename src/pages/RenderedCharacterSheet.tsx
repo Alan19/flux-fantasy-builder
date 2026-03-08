@@ -1,5 +1,5 @@
 import {KarmaPowerTable} from "../components/karma-abilities/KarmaPowerTable.tsx";
-import {getBaseTalents, getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier} from "../utils/types/KarmaSpecialty.ts";
+import {getBaseTalentModifersWithStudyBonus, getBaseTalentModifiers, getDefenseModifier, getEffectiveTalents, getHealingPercent, getMaxHP, getMaxKarma, getMovModifier} from "../utils/types/KarmaSpecialty.ts";
 import {TraitAndFlawTable} from "../components/traits/TraitAndFlawTable.tsx";
 import {TypographyWithAdornment} from "../components/ui/TypographyWithAdornment.tsx";
 import {ColoredLogo} from "../components/ui/ColoredLogo.tsx";
@@ -11,7 +11,7 @@ import {ModeToggle} from "../components/layout/ModeToggle.tsx";
 import {useIsMobile} from "../utils/hooks/useIsMobile.ts";
 import {clsx} from "clsx";
 import {CharacterManager, OCSaveDataWithState} from "../utils/AssembleLocalStorage.ts";
-import {CharacterTalents, SkillSettings} from "../utils/types/OCSaveData.ts";
+import {SkillSettings} from "../utils/types/OCSaveData.ts";
 import _ from "lodash";
 import {SkillTree} from "../components/skills/SkillTree.tsx";
 
@@ -49,7 +49,7 @@ export function RenderedCharacterSheet({ocData}: Readonly<RenderedCharacterSheet
         negativeKarma: [negativeKarma, setNegativeKarma],
         currentHP: [currentHP, setCurrentHP],
     } = ocData.inventory;
-    const effectiveTalents = getEffectiveTalents({study: study, talented: ocData.background.traits[0].includes("Talented"), talentModifiers: Object.entries(ocData.talents).reduce((previousValue, currentValue) => ({...previousValue, [currentValue[0]]: currentValue[1][0]}), {}) as CharacterTalents, level: level, skills: Object.entries(_.omit(ocData.skills, "vitalityEnhance")).reduce((previousValue, currentValue) => ({...previousValue, [currentValue[0]]: currentValue[1][0]}), {}) as SkillSettings})
+    const effectiveTalents = getEffectiveTalents({study: study, talented: ocData.background.traits[0].includes("Talented"), talentModifiers: getBaseTalentModifiers(ocData), level: level, skills: Object.entries(_.omit(ocData.skills, "vitalityEnhance")).reduce((previousValue, currentValue) => ({...previousValue, [currentValue[0]]: currentValue[1][0]}), {}) as SkillSettings})
 
     const maxKarma = getMaxKarma(karmaSpecialty, level, ocData.skills.unlockedSkills[0]);
     const maxHP = getMaxHP(effectiveTalents, level, ocData.skills.unlockedSkills[0]);
@@ -267,7 +267,7 @@ export function RenderedCharacterSheet({ocData}: Readonly<RenderedCharacterSheet
                 </div>
                 <article>
                     <TypographyWithAdornment text={"Skill Tree"} coloredText/>
-                    <SkillTree skills={ocData.skills} level={level} isTalented={traits.includes("Talented")} talentModifiers={getBaseTalents(Object.entries(ocData.talents).reduce((previousValue, currentValue) => ({...previousValue, [currentValue[0]]: currentValue[1][0]}), {}) as CharacterTalents, study)} />
+                    <SkillTree skills={ocData.skills} level={level} isTalented={traits.includes("Talented")} talentModifiers={getBaseTalentModifersWithStudyBonus(getBaseTalentModifiers(ocData), study)} />
                 </article>
             </div>
         </div>

@@ -25,6 +25,7 @@ export function KarmaPowerDetails(props: Readonly<{ ocData: OCSaveDataWithState 
                     <TypographyWithAdornment text={"Karma Powers"} coloredText/>
                 </legend>
                 <KarmaPowerTable displayMode={"edit"} karmaPowerLoadout={karmaPowers} skills={skills.unlockedSkills[0]} study={background.study[0]} isOverPaybackThreshold={inventory.payback[0] >= 50}/>
+                <hr className={"top-margin"} />
                 <BeerCSSTextField className={"top-margin"} multiline value={karmaPowers.karmaPowerDescriptions[0]} onChange={event => karmaPowers.karmaPowerDescriptions[1](event.target.value)} label={"Karma Power Description"} />
             </fieldset>
         </article>

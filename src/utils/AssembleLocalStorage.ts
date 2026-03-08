@@ -22,7 +22,7 @@ export type CharacterManager = {
     setCurrentCharacter: React.Dispatch<React.SetStateAction<string>>,
     currentCharacter: string
 }
-export const extracted = (ocData: OCSaveData, setOCData: (value: (((prevState: OCSaveData) => OCSaveData) | OCSaveData)) => void): OCSaveDataWithState => {
+export const getOCData = (ocData: OCSaveData, setOCData: (value: (((prevState: OCSaveData) => OCSaveData) | OCSaveData)) => void): OCSaveDataWithState => {
     const {skills, inventory, background, talents, karmaPowers} = ocData;
 
     return {

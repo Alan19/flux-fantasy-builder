@@ -1,5 +1,4 @@
 import './assets/App.css'
-import {CharacterInfoInput} from "./pages/CharacterInfoInput.tsx";
 import {Route, Router} from "wouter";
 import {useHashLocation} from "wouter/use-hash-location";
 import {NavigationRail} from "./components/layout/NavigationRail.tsx";
@@ -10,8 +9,10 @@ import {useLocalStorage} from "usehooks-ts";
 import {useEffect} from "react";
 import {OCSaveData} from "./utils/types/OCSaveData.ts";
 import {getNewCharacter} from "./utils/getNewCharacter.ts";
-import {assembleCharacterData, CharacterManager, extracted, OCSaveDataWithState} from "./utils/AssembleLocalStorage.ts";
+import {assembleCharacterData, CharacterManager, getOCData, OCSaveDataWithState} from "./utils/AssembleLocalStorage.ts";
 import {RenderedCharacterSheet} from "./pages/RenderedCharacterSheet.tsx";
+import {SkillTreePage} from "./pages/SkillTreePage.tsx";
+import {CharacterIdentity} from "./pages/CharacterIdentity.tsx";
 
 function useOCLocalStorage(): OCSaveDataWithState & { characters: CharacterManager } {
     const newUUID = crypto.randomUUID();
@@ -36,7 +37,7 @@ function useOCLocalStorage(): OCSaveDataWithState & { characters: CharacterManag
         }
     }, [characterList, currentCharacter, ocData, setCharacterList, setCurrentCharacter, setOCData]);
 
-    return {...extracted(ocData, setOCData), characters: assembleCharacterData(characterList, setCharacterList, setCurrentCharacter, deleteCurrentCharacter, currentCharacter, ocData)};
+    return {...getOCData(ocData, setOCData), characters: assembleCharacterData(characterList, setCharacterList, setCurrentCharacter, deleteCurrentCharacter, currentCharacter, ocData)};
 }
 
 
@@ -49,9 +50,10 @@ function App() {
         <Router hook={useHashLocation}>
             <NavigationRail/>
             <main className={"large-padding center"} style={{maxInlineSize: "95rem"}}>
-                <Route path="/"><CharacterInfoInput ocData={ocData}/></Route>
-                <Route path={"/sheet"}><RenderedCharacterSheet ocData={ocData} /></Route>
+                <Route path="/"><CharacterIdentity ocData={ocData}/></Route>
+                <Route path={"/sheet"}><RenderedCharacterSheet ocData={ocData}/></Route>
                 <Route path={"/powers"}><KarmaPowerDetails ocData={ocData}/></Route>
+                <Route path={"/skill-tree"}><SkillTreePage ocData={ocData}/></Route>
                 <footer>Copyright © Herohelix, LLC</footer>
             </main>
         </Router>

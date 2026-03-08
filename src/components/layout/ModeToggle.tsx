@@ -2,7 +2,7 @@ import {useTernaryDarkMode} from "usehooks-ts";
 import {clsx} from "clsx";
 import {useEffect} from "react";
 
-export function ModeToggle(props: { className?: string }) {
+export function ModeToggle(props: Readonly<{ className?: string }>) {
     const {ternaryDarkMode, toggleTernaryDarkMode} = useTernaryDarkMode()
 
     // TODO Check if it's possible to detect a night mode switch
@@ -21,10 +21,8 @@ export function ModeToggle(props: { className?: string }) {
         }
     })()
 
-    return <>
-        <button onClick={toggleTernaryDarkMode} className={props.className ?? clsx("circle border extra tertiary-border tertiary-text")}>
-            <i>{iconName}</i>
-            <span>{label}</span>
-        </button>
-    </>;
+    return <button onClick={toggleTernaryDarkMode} className={props.className ?? clsx("circle border extra tertiary-border tertiary-text")}>
+        <i>{iconName}</i>
+        <span>{label}</span>
+    </button>;
 }

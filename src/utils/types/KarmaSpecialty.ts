@@ -1,6 +1,7 @@
 import {KarmaSkills, SkillName, TalentSkills, VitalitySkills} from "../../components/skills/SkillTreeInfo.ts";
 
 import {CharacterTalents, SkillSettings} from "./OCSaveData.ts";
+import {OCSaveDataWithState} from "../AssembleLocalStorage.ts";
 
 export enum KarmaSpecialty {escapeArtist = 'Escape Artist', inkFighter = 'Ink Fighter', specialAgent = 'Special Agent', clockbot = 'Clockbot'}
 
@@ -162,7 +163,7 @@ interface TalentCalculation {
     talented: boolean
 }
 
-export function getBaseTalents(talentModifiers: CharacterTalents, study: Study) {
+export function getBaseTalentModifersWithStudyBonus(talentModifiers: CharacterTalents, study: Study) {
     const baseTalents = {
         Aura: talentModifiers.aura,
         Technique: talentModifiers.technique,
@@ -178,7 +179,7 @@ export function getBaseTalents(talentModifiers: CharacterTalents, study: Study) 
 }
 
 export function getEffectiveTalents({talentModifiers, skills, study, level, talented}: TalentCalculation): TalentModifiers {
-    const talents: TalentModifiers = getBaseTalents(talentModifiers, study)
+    const talents: TalentModifiers = getBaseTalentModifersWithStudyBonus(talentModifiers, study)
     if (skills.unlockedSkills.includes(TalentSkills.talent1) && skills.talent1) {
         talents[skills.talent1] += 1;
     }
@@ -240,3 +241,7 @@ export function getMovModifier(effectiveTalents: TalentModifiers, skills: SkillN
     return totalMOV;
 }
 
+//TODO Make this dumber / neater
+export function getBaseTalentModifiers(ocData: OCSaveDataWithState) {
+    return Object.entries(ocData.talents).reduce((previousValue, currentValue) => ({...previousValue, [currentValue[0]]: currentValue[1][0]}), {}) as CharacterTalents
+}

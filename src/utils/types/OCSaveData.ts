@@ -90,7 +90,6 @@ export type PowerLoadoutState = {
     karmaPowerDescriptions: string;
 }
 export type OCSaveData = {
-    // PowerLoadoutState & SkillSettings & CharacterTalents & CharacterInventory & CharacterBackground
     karmaPowers: PowerLoadoutState,
     skills: SkillSettings,
     talents: CharacterTalents,
