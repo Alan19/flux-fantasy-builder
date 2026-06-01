@@ -4,7 +4,7 @@ import styles from './index.module.css';
 import {clsx} from "clsx";
 import {CSSProperties, ReactNode} from "react";
 
-export function MaterialNumberField(props: { value: number, onChange: (newVal: number) => unknown, label: string, className?: string, style?: CSSProperties, min?: number, max?: number, inputPrefix?: ReactNode, helperText?: string, endAdornment?: string, decrementButton?: boolean, incrementButton?: boolean }) {
+export function MaterialNumberField(props: Readonly<{ value: number, onChange: (newVal: number) => unknown, label: string, className?: string, style?: CSSProperties, min?: number, max?: number, inputPrefix?: ReactNode, helperText?: string, endAdornment?: string, decrementButton?: boolean, incrementButton?: boolean }>) {
     const id = React.useId();
     return <NumberField.Root value={props.value} id={id} min={props.min ?? 0} max={props.max} style={{display: "flex", alignItems: "center", ...props.style}} className={clsx("top-margin", props.className)}>
         {props.decrementButton && <NumberField.Decrement className={"transparent square border ripple"} style={{marginLeft: 0}} onClick={() => props.onChange(props.value - 1)}>

@@ -49,12 +49,12 @@ function App() {
     return <>
         <Router hook={useHashLocation}>
             <NavigationRail/>
-            <main className={"large-padding center"} style={{maxInlineSize: "95rem"}}>
+            <main className={"large-padding center"} style={{maxInlineSize: "95rem", display: "flex", flexDirection: "column"}}>
                 <Route path="/"><CharacterIdentity ocData={ocData}/></Route>
                 <Route path={"/sheet"}><RenderedCharacterSheet ocData={ocData}/></Route>
                 <Route path={"/powers"}><KarmaPowerDetails ocData={ocData}/></Route>
                 <Route path={"/skill-tree"}><SkillTreePage ocData={ocData}/></Route>
-                <footer>Copyright © Herohelix, LLC</footer>
+                <footer className={"bottom-align bottom"} style={{flex: 1}}>Copyright © Herohelix, LLC</footer>
             </main>
         </Router>
         <CharacterManagementFAB characters={characters}/>
