@@ -1,64 +1,39 @@
-import './assets/App.css'
-import {Route, Router} from "wouter";
-import {useHashLocation} from "wouter/use-hash-location";
-import {NavigationRail} from "./components/layout/NavigationRail.tsx";
-import {CharacterManagementFAB} from "./components/layout/CharacterManagementFAB.tsx";
-import {KarmaPowerDetails} from "./pages/KarmaPowerDetails.tsx";
-
-import {useLocalStorage} from "usehooks-ts";
-import {useEffect} from "react";
-import {OCSaveData} from "./utils/types/OCSaveData.ts";
-import {getNewCharacter} from "./utils/getNewCharacter.ts";
-import {assembleCharacterData, CharacterManager, getOCData, OCSaveDataWithState} from "./utils/AssembleLocalStorage.ts";
-import {RenderedCharacterSheet} from "./pages/RenderedCharacterSheet.tsx";
-import {SkillTreePage} from "./pages/SkillTreePage.tsx";
-import {CharacterIdentity} from "./pages/CharacterIdentity.tsx";
-
-function useOCLocalStorage(): OCSaveDataWithState & { characters: CharacterManager } {
-    const newUUID = crypto.randomUUID();
-    const [currentCharacter, setCurrentCharacter] = useLocalStorage<string>("current-character", newUUID)
-    const [ocData, setOCData] = useLocalStorage<OCSaveData>(currentCharacter, getNewCharacter())
-    const [characterList, setCharacterList] = useLocalStorage<string[]>("characters", [newUUID])
-
-    function deleteCurrentCharacter() {
-        localStorage.removeItem(currentCharacter);
-    }
-
-    // Initialize fields
-    // If your current character hasn't been written to storage yet, write it to storage as currentCharacter and characterList has already been updated
-    // Setting the OC data is only done if the other keys have already been set
-    useEffect(() => {
-        if (!localStorage.getItem("current-character")) {
-            setCurrentCharacter(currentCharacter);
-            setOCData(ocData);
-            setCharacterList(characterList);
-        } else if (!localStorage.getItem(currentCharacter)) {
-            setOCData(getNewCharacter());
-        }
-    }, [characterList, currentCharacter, ocData, setCharacterList, setCurrentCharacter, setOCData]);
-
-    return {...getOCData(ocData, setOCData), characters: assembleCharacterData(characterList, setCharacterList, setCurrentCharacter, deleteCurrentCharacter, currentCharacter, ocData)};
-}
+import './App.css'
+import {db} from "./logic/data-store.ts";
+import {useLiveQuery} from "dexie-react-hooks";
+import {CharacterSheet} from "./components/sheet/CharacterSheet.tsx";
 
 
 function App() {
-    ui("theme", "#393bff");
-    const ocData = useOCLocalStorage();
-    const characters = ocData.characters;
+    ui('theme', '#4b19c8')
+    ui('mode', 'light')
 
-    return <>
-        <Router hook={useHashLocation}>
-            <NavigationRail/>
-            <main className={"large-padding center"} style={{maxInlineSize: "95rem", display: "flex", flexDirection: "column"}}>
-                <Route path="/"><CharacterIdentity ocData={ocData}/></Route>
-                <Route path={"/sheet"}><RenderedCharacterSheet ocData={ocData}/></Route>
-                <Route path={"/powers"}><KarmaPowerDetails ocData={ocData}/></Route>
-                <Route path={"/skill-tree"}><SkillTreePage ocData={ocData}/></Route>
-                <footer className={"bottom-align bottom"} style={{flex: 1}}>Copyright © Herohelix, LLC</footer>
-            </main>
-        </Router>
-        <CharacterManagementFAB characters={characters}/>
-    </>
+    db.characters.where('id').above(0).first().then(value => {
+        if (value) {
+            db.powers.where('characterID').equals(value.id).toArray().then(value1 => console.log(value, value1))
+        }
+    })
+    const character = useLiveQuery(() => db.characters.where('id').above(0).first())
+    const powerKit = useLiveQuery(() => {
+        if (character?.id) {
+            return db.powers.where('characterID').equals(character.id).toArray();
+        }
+        else {
+            return []
+        }
+    })
+
+    function changeName(event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) {
+        if (character?.id) {
+            db.characters.update(character.id, {characterName: event.target.value});
+        }
+    }
+
+    return <div className={"top-margin"}>
+        {/*<button onClick={event => createEntry()}>Add</button>*/}
+        {character && powerKit && <CharacterSheet saveData={character} powerKit={powerKit} />}
+
+    </div>
 }
 
 export default App

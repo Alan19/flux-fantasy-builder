@@ -1,13 +1,8 @@
-import {StrictMode} from 'react'
-import {createRoot} from 'react-dom/client'
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/700.css';
-// @ts-expect-error Typescript is not recognizing the font
-import '@fontsource-variable/oxanium';
+import '@fontsource-variable/oxanium/wght.css';
 import "beercss";
 import "material-dynamic-colors";
 
