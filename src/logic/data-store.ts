@@ -1,15 +1,15 @@
-import Dexie, {type EntityTable} from "dexie";
+import Dexie, {type EntityTable, type Table} from "dexie";
 import {Affiliation, NonKarmaPower, type PowerKit, PowerTiers, type SaveData, SpecialAgentStudies} from "./save-data.ts";
 
 export const db = new Dexie("characterDatabase") as Dexie & {
     characters: EntityTable<SaveData & { id: string }, "id">,
-    powers: EntityTable<PowerKit & { characterID: string, tier: PowerTiers }, "characterID">
+    powers: Table<PowerKit & { characterID: string, tier: PowerTiers }, [string, PowerTiers]>
 }
 
 // Schema declaration:
 db.version(1).stores({
     characters: "++id, playerName, characterName",
-    powers: "[characterID+tier], id"
+    powers: "[characterID+tier]"
 })
 
 export function createEntry() {

@@ -8,19 +8,17 @@ function App() {
     ui('theme', '#4b19c8')
     ui('mode', 'light')
 
-    db.characters.where('id').above(0).first().then(value => {
-        if (value) {
-            db.powers.where('characterID').equals(value.id).toArray().then(value1 => console.log(value, value1))
-        }
-    })
+    const activeCharacterID = () => db.characters.where('id').above(0).first();
     const character = useLiveQuery(() => db.characters.where('id').above(0).first())
-    const powerKit = useLiveQuery(() => {
-        if (character?.id) {
-            return db.powers.where('characterID').equals(character.id).toArray();
-        }
-        else {
-            return []
-        }
+
+    const powerKit = useLiveQuery(async () => {
+        return activeCharacterID().then(value => {
+            if (value?.id) {
+                return db.powers.where('characterID').equals(value.id).toArray();
+            } else {
+                return undefined;
+            }
+        })
     })
 
     function changeName(event: React.ChangeEvent<HTMLInputElement, HTMLInputElement>) {
@@ -31,7 +29,7 @@ function App() {
 
     return <div className={"top-margin"}>
         {/*<button onClick={event => createEntry()}>Add</button>*/}
-        {character && powerKit && <CharacterSheet saveData={character} powerKit={powerKit} />}
+        {character && powerKit && <CharacterSheet saveData={character} powerKit={powerKit}/>}
 
     </div>
 }
