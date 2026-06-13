@@ -2,6 +2,7 @@ import {ClockbotStudies, EscapeArtistStudies, InkFighterStudies, type KarmaStudy
 import {db} from "../../logic/data-store.ts";
 import {getMaxKarma} from "../../logic/stats.ts";
 import * as _ from "lodash";
+import {BlobImage} from "../ui/BlobImage.tsx";
 
 export function RightColumn(props: Readonly<{ saveData: SaveData & { id: string } }>) {
     const maxKarma = getMaxKarma(props.saveData.study, props.saveData.level);
@@ -32,8 +33,8 @@ export function RightColumn(props: Readonly<{ saveData: SaveData & { id: string 
         </div>
         <h6 className={'bold upper'}><i>double_arrow</i>Gear of Destiny</h6>
         <div>
-            <input type={"file"}/>
-            <img src={"https://alcorsiteartbucket.s3.amazonaws.com/webp/alcors_logos_2.webp"} style={{width: "100%", objectFit: "cover", objectPosition: "top", aspectRatio: 1, border: "2px solid var(--outline-variant)"}}/>
+            <input type={"file"} style={{cursor: "pointer"}} onChange={event => db.characters.update(props.saveData.id, {gearOfDestinyImageData: event.target.files?.[0]})}/>
+            <BlobImage blob={props.saveData.gearOfDestinyImageData} imgProps={{style: {width: "100%", objectFit: "cover", objectPosition: "top", aspectRatio: 1, border: "2px solid var(--outline-variant)"}, className: "tiny-padding"}}/>
         </div>
 
         <div className={"border top-margin"} style={{flex: 1}}>

@@ -1,12 +1,16 @@
 import type {SaveData} from "../../logic/save-data.ts";
 import {db} from "../../logic/data-store.ts";
 import {getAdvantages, getMedKitPercent} from "../../logic/stats.ts";
+import {BlobImage} from "../ui/BlobImage.tsx";
 
 export default function LeftColumn(props: Readonly<{ saveData: SaveData & { id: string } }>) {
     return <div style={{display: "flex", gap: '1rem', flexDirection: "column"}}>
         <div>
             <h6 className={'bold upper'}><i>double_arrow</i>Portrait</h6>
-            <img src={"https://alcorsiteartbucket.s3.amazonaws.com/webp/special_agent_tinker_alcor.webp"} style={{width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)', objectFit: "cover", objectPosition: "top", aspectRatio: 1 / 1.1, border: "2px solid var(--outline-variant)"}}/>
+            <div>
+                <input type={"file"} onChange={event => db.characters.update(props.saveData.id, {portraitImageData: event.target.files?.[0]})} style={{cursor: "pointer"}}/>
+                <BlobImage blob={props.saveData.portraitImageData} imgProps={{style: {width: "100%", clipPath: 'polygon(0 0, 100% 0, 100% 75%, 75% 100%, 0 100%)', objectFit: "cover", objectPosition: "top", aspectRatio: 1 / 1.1, border: "2px solid var(--outline-variant)"}}}/>
+            </div>
         </div>
         <div>
             <div style={{display: "flex", justifyContent: "stretch"}}>

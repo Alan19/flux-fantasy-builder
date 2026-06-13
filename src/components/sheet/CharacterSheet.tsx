@@ -6,12 +6,15 @@ import {MiddleColumn} from "./MiddleColumn.tsx";
 import {RightColumn} from "./RightColumn.tsx";
 import {ActiveKarmastryPowerKit} from "./ActiveKarmastryPowerKit.tsx";
 import {KarmastryPowerKit} from "./KarmastryPowerKit.tsx";
-import {useState} from "react";
-import ControlledInput from "../ui/ControlledInput.tsx";
+import {useEffect, useState} from "react";
 
 export function CharacterSheet(props: Readonly<{ saveData: SaveData & { id: string }, powerKit: (PowerKit & { characterID: string, tier: PowerTiers })[] }>) {
-    console.log(props.saveData.background)
-    const [background, setBackground] = useState('')
+    const [background, setBackground] = useState(props.saveData.background)
+
+    useEffect(() => {
+        db.characters.update(props.saveData.id, {background: background})
+    }, [background, props.saveData.id]);
+
     return <div className={"main responsive grid medium-space"}>
         <div className={'l3 s12'}>
             <ColoredLogo/>
@@ -35,7 +38,7 @@ export function CharacterSheet(props: Readonly<{ saveData: SaveData & { id: stri
         </div>
         <div className={"s12 l6"}>
             <div className="field label border extra">
-                <ControlledInput value={props.saveData.background} onChange={event => db.characters.update(props.saveData.id, {background: event.target.value})}></ControlledInput>
+                <textarea value={background} onChange={event => setBackground(event.target.value)}></textarea>
                 <label><i className={"middle"}>double_arrow</i>Background</label>
             </div>
         </div>

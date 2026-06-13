@@ -11,6 +11,7 @@ function App() {
     const activeCharacterID = () => db.characters.where('id').above(0).first();
     const character = useLiveQuery(() => db.characters.where('id').above(0).first())
 
+    console.log(character)
     const powerKit = useLiveQuery(async () => {
         return activeCharacterID().then(value => {
             if (value?.id) {
